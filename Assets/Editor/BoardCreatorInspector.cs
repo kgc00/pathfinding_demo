@@ -6,10 +6,10 @@ using UnityEngine;
 [CustomEditor (typeof (BoardCreator))]
 public class BoardCreatorInspector : Editor {
 
-    string[] unitTypeNames;
+    string[] unitNames;
     int spawnUnitIndex = 0;
     string fileName = "";
-    string[] tileTypeNames;
+    string[] tileNames;
     int spawnTileIndex = 0;
 
     public BoardCreator Current {
@@ -24,8 +24,8 @@ public class BoardCreatorInspector : Editor {
     // }
 
     public override void OnInspectorGUI () {
-        // unitTypeNames = getUnitNames ();
-        // tileTypeNames = getTileNames ();
+        unitNames = getUnitNames ();
+        tileNames = getTileNames ();
 
         DrawDefaultInspector ();
 
@@ -34,39 +34,39 @@ public class BoardCreatorInspector : Editor {
         fileName = GUILayout.TextField (fileName, 25);
         GUILayout.EndHorizontal ();
 
-        // GUILayout.BeginHorizontal ("box");
-        // GUILayout.Label ("Spawn");
-        // spawnTileIndex = EditorGUILayout.Popup (spawnTileIndex, tileTypeNames);
-        // Current.UpdateSelectedTileType (spawnTileIndex);
-        // GUILayout.EndHorizontal ();
+        GUILayout.BeginHorizontal ("box");
+        GUILayout.Label ("Spawn Tile");
+        spawnTileIndex = EditorGUILayout.Popup (spawnTileIndex, tileNames);
+        Current.UpdateSelectedTileType (spawnTileIndex);
+        GUILayout.EndHorizontal ();
 
-        // GUILayout.BeginHorizontal ("box");
-        // GUILayout.Label ("Spawn");
-        // spawnUnitIndex = EditorGUILayout.Popup (spawnUnitIndex, unitTypeNames);
-        // Current.UpdateSelectedUnitType (spawnUnitIndex);
-        // GUILayout.EndHorizontal ();
+        GUILayout.BeginHorizontal ("box");
+        GUILayout.Label ("Spawn Unit");
+        spawnUnitIndex = EditorGUILayout.Popup (spawnUnitIndex, unitNames);
+        Current.UpdateSelectedUnitType (spawnUnitIndex);
+        GUILayout.EndHorizontal ();
 
         // if (GUILayout.Button ("Refresh")) {
         //     Current.RefreshUnitTypes ();
         //     Current.RefreshTileTypes ();
         // }
-        // if (GUILayout.Button ("Fill Board")) {
-        //     Current.FillBoard ();
-        // }
+        if (GUILayout.Button ("Fill Board")) {
+            Current.FillBoard ();
+        }
         // if (GUILayout.Button ("Clear Board")) {
         //     Current.ClearBoard ();
         // }
 
-        // if (GUILayout.Button ("Place Tile: 'P'")) {
-        //     Current.PlaceSelectedTile (Current.MarkerPosition);
-        // }
+        if (GUILayout.Button ("Place Tile: 'P'")) {
+            Current.PlaceSelectedTile (Current.MarkerPosition);
+        }
 
         // if (GUILayout.Button ("Delete Tile: 'L'")) {
         //     Current.DeleteTileAt (Current.MarkerPosition);
         // }
-        // if (GUILayout.Button ("Place Unit: 'O'")) {
-        //     Current.PlaceSelectedUnit (Current.MarkerPosition);
-        // }
+        if (GUILayout.Button ("Place Unit: 'O'")) {
+            Current.PlaceSelectedUnit (Current.MarkerPosition);
+        }
         // if (GUILayout.Button ("Delete Unit: 'K'")) {
         //     Current.DeleteUnitAt (Current.MarkerPosition);
         // }
@@ -79,19 +79,19 @@ public class BoardCreatorInspector : Editor {
         // }
     }
 
-    // private string[] getUnitNames () {
-    //     List<string> names = new List<string> ();
-    //     foreach (UnitType unitType in Current.UnitTypes) {
-    //         names.Add (unitType.ToString ());
-    //     }
-    //     return names.ToArray ();
-    // }
+    private string[] getUnitNames () {
+        List<string> names = new List<string> ();
+        foreach (Unit unit in Current.unitPrefabs) {
+            names.Add (unit.ToString ());
+        }
+        return names.ToArray ();
+    }
 
-    // private string[] getTileNames () {
-    //     List<string> names = new List<string> ();
-    //     foreach (TileType tileType in Current.TileTypes) {
-    //         names.Add (tileType.ToString ());
-    //     }
-    //     return names.ToArray ();
-    // }
+    private string[] getTileNames () {
+        List<string> names = new List<string> ();
+        foreach (Tile tile in Current.tilePrefabs) {
+            names.Add (tile.ToString ());
+        }
+        return names.ToArray ();
+    }
 }

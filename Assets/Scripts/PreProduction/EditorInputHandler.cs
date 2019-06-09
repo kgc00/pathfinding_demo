@@ -14,7 +14,6 @@ public class EditorInputHandler : MonoBehaviour {
     public void HandleInput () {
         if (Input.GetKeyDown (KeyCode.W)) {
             boardCreator.MoveAndUpdateMarker (new Point (0, 1));
-            // onKeyPress();
         } else if (Input.GetKeyDown (KeyCode.A)) {
             boardCreator.MoveAndUpdateMarker (new Point (-1, 0));
         } else if (Input.GetKeyDown (KeyCode.S)) {

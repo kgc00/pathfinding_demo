@@ -7,22 +7,24 @@ public class Board : MonoBehaviour {
     private Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile> ();
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit> ();
 
-    public void CreateTileAt (Point p, Tile t) {
+    public Tile CreateTileAt (Point p, Tile t) {
         if (units.ContainsKey (p))
-            return;
+            return null;
 
         Tile tile = Instantiate (t, new Vector3 (p.x, p.y, 0), Quaternion.identity);
-
+        tile.Initialize (this, p);
         tiles.Add (tile.Position, tile);
+        return tile;
     }
 
-    public void CreateUnitAt (Point p, Unit u) {
+    public Unit CreateUnitAt (Point p, Unit u) {
         if (units.ContainsKey (p))
-            return;
+            return null;
 
-        Unit unit = Instantiate (u, new Vector3 (p.x, p.y, 0), Quaternion.identity);
-
+        Unit unit = Instantiate (u, new Vector3 (p.x, p.y, -2), Quaternion.identity);
+        unit.Initialize (this, p);
         units.Add (unit.Position, unit);
+        return unit;
     }
 
     public Tile TileAt (Point p) {
