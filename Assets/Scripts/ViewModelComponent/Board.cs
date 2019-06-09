@@ -8,19 +8,29 @@ public class Board : MonoBehaviour {
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit> ();
 
     public Tile CreateTileAt (Point p, Tile t) {
-        if (units.ContainsKey (p))
-            return null;
 
-        Tile tile = Instantiate (t, new Vector3 (p.x, p.y, 0), Quaternion.identity);
-        tile.Initialize (this, p);
-        tiles.Add (tile.Position, tile);
-        return tile;
+        if (tiles.ContainsKey (p)) {
+            DeleteTileAt (p);
+            Debug.Log ("starting: " + tiles[p]);
+            Debug.Log ("finished delete further: " + tiles.ContainsKey (p));
+        }
+        if (!tiles.ContainsKey (p)) {
+            Debug.Log ("starting create: " + t);
+            Tile tile = Instantiate (t, new Vector3 (p.x, p.y, 0), Quaternion.identity);
+            tile.Initialize (this, p);
+            tile.gameObject.name = t.ToString ();
+            tiles.Add (tile.Position, tile);
+            return tile;
+        } else {
+            Debug.Log ("null");
+            return null;
+        }
     }
 
     public Unit CreateUnitAt (Point p, Unit u) {
-        if (units.ContainsKey (p))
-            return null;
-
+        if (units.ContainsKey (p)) {
+            DeleteUnitAt (p);
+        }
         Unit unit = Instantiate (u, new Vector3 (p.x, p.y, -2), Quaternion.identity);
         unit.Initialize (this, p);
         units.Add (unit.Position, unit);
@@ -41,13 +51,18 @@ public class Board : MonoBehaviour {
 
     public void DeleteUnitAt (Point p) {
         if (units.ContainsKey (p)) {
-            Destroy (units[p], .25f);
+            Destroy (units[p].gameObject, .25f);
+            units.Remove (p);
         }
     }
 
     public void DeleteTileAt (Point p) {
+        Debug.Log ("starting delete: " + tiles.ContainsKey (p));
         if (tiles.ContainsKey (p)) {
-            Destroy (tiles[p], .25f);
+            Tile tile = tiles[p];
+            tiles.Remove (p);
+            Destroy (tile.gameObject);
+
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
+[System.Serializable]
 public class LevelData : ScriptableObject {
 
     public List<TileSpawnData> tiles;
@@ -11,7 +11,7 @@ public class LevelData : ScriptableObject {
     public List<UnitSpawnData> units;
 }
 
-[Serializable]
+[System.Serializable]
 public struct TileSpawnData {
     public Point location;
     public Tile tile;
@@ -22,7 +22,7 @@ public struct TileSpawnData {
     }
 }
 
-[Serializable]
+[System.Serializable]
 public struct UnitSpawnData {
     public Point location;
     public Unit unit;

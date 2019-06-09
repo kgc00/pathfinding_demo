@@ -61,19 +61,19 @@ public class BoardCreatorInspector : Editor {
             Current.PlaceSelectedTile (Current.MarkerPosition);
         }
 
-        // if (GUILayout.Button ("Delete Tile: 'L'")) {
-        //     Current.DeleteTileAt (Current.MarkerPosition);
-        // }
+        if (GUILayout.Button ("Delete Tile: 'L'")) {
+            Current.DeleteTileAt (Current.MarkerPosition);
+        }
         if (GUILayout.Button ("Place Unit: 'O'")) {
             Current.PlaceSelectedUnit (Current.MarkerPosition);
         }
-        // if (GUILayout.Button ("Delete Unit: 'K'")) {
-        //     Current.DeleteUnitAt (Current.MarkerPosition);
-        // }
-        // if (GUILayout.Button ("Save")) {
-        //     Current.SetFileName (fileName);
-        //     Current.Save ();
-        // }
+        if (GUILayout.Button ("Delete Unit: 'K'")) {
+            Current.DeleteUnitAt (Current.MarkerPosition);
+        }
+        if (GUILayout.Button ("Save")) {
+            Current.SetFileName (fileName);
+            Current.Save ();
+        }
         // if (GUILayout.Button ("Load")) {
         //     Current.Load ();
         // }
