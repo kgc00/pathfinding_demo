@@ -35,6 +35,22 @@ public class BoardCreator : MonoBehaviour {
         InputHandler.Initialize (this);
     }
 
+    public void RefreshUnitTypes () {
+        unitPrefabs.Clear ();
+        UnityEngine.Object[] tmp = Resources.LoadAll ("Prefabs", typeof (Unit));
+        for (int i = 0; i < tmp.Length; ++i) {
+            unitPrefabs.Add ((Unit) tmp[i]);
+        }
+    }
+
+    public void RefreshTileTypes () {
+        tilePrefabs.Clear ();
+        UnityEngine.Object[] tmp = Resources.LoadAll ("Prefabs", typeof (Tile));
+        for (int i = 0; i < tmp.Length; ++i) {
+            tilePrefabs.Add ((Tile) tmp[i]);
+        }
+    }
+
     public void SetFileName (string s) {
         if (s != null && s.Length > 0) {
             fileName = s;
@@ -125,8 +141,8 @@ public class BoardCreator : MonoBehaviour {
         foreach (
             KeyValuePair<Point, Tile> element in tiles) {
             Debug.Log (element.Value.gameObject.name);
-            boardData.tiles.Add (new TileSpawnData (element.Key, element.Value));
-            Debug.Log ("value: " + element.Value);
+            boardData.tiles.Add (new TileSpawnData (element.Key, element.Value.TypeReference));
+            TypeHelper.TypeFromEnum (element.Value.TypeReference);
         }
 
         boardData.units = new List<UnitSpawnData> ();

@@ -11,13 +11,10 @@ public class Board : MonoBehaviour {
 
         if (tiles.ContainsKey (p)) {
             DeleteTileAt (p);
-            Debug.Log ("starting: " + tiles[p]);
-            Debug.Log ("finished delete further: " + tiles.ContainsKey (p));
         }
         if (!tiles.ContainsKey (p)) {
-            Debug.Log ("starting create: " + t);
             Tile tile = Instantiate (t, new Vector3 (p.x, p.y, 0), Quaternion.identity);
-            tile.Initialize (this, p);
+            tile.Initialize (this, p, t.TypeReference);
             tile.gameObject.name = t.ToString ();
             tiles.Add (tile.Position, tile);
             return tile;
@@ -57,7 +54,6 @@ public class Board : MonoBehaviour {
     }
 
     public void DeleteTileAt (Point p) {
-        Debug.Log ("starting delete: " + tiles.ContainsKey (p));
         if (tiles.ContainsKey (p)) {
             Tile tile = tiles[p];
             tiles.Remove (p);

@@ -18,10 +18,10 @@ public class BoardCreatorInspector : Editor {
         }
     }
 
-    // private void OnEnable () {
-    //     Current.RefreshUnitTypes ();
-    //     Current.RefreshTileTypes ();
-    // }
+    private void OnEnable () {
+        Current.RefreshUnitTypes ();
+        Current.RefreshTileTypes ();
+    }
 
     public override void OnInspectorGUI () {
         unitNames = getUnitNames ();
