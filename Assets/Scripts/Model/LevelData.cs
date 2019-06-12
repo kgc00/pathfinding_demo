@@ -25,10 +25,10 @@ public struct TileSpawnData {
 [Serializable]
 public struct UnitSpawnData {
     public Point location;
-    public Unit unit;
+    public UnitTypes unitRef;
 
-    public UnitSpawnData (Point _location, Unit _unit) {
+    public UnitSpawnData (Point _location, UnitTypes _unitRef) {
         this.location = _location;
-        this.unit = _unit;
+        this.unitRef = _unitRef;
     }
 }

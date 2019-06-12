@@ -96,7 +96,7 @@ MonoBehaviour:
   - location:
       x: 2
       y: 0
-    tileRef: 0
+    tileRef: 1
   - location:
       x: 2
       y: 1
@@ -104,11 +104,11 @@ MonoBehaviour:
   - location:
       x: 2
       y: 2
-    tileRef: 0
+    tileRef: 1
   - location:
       x: 2
       y: 3
-    tileRef: 0
+    tileRef: 1
   - location:
       x: 2
       y: 4
@@ -148,7 +148,7 @@ MonoBehaviour:
   - location:
       x: 3
       y: 3
-    tileRef: 0
+    tileRef: 1
   - location:
       x: 3
       y: 4
@@ -413,4 +413,12 @@ MonoBehaviour:
       x: 9
       y: 9
     tileRef: 0
-  units: []
+  units:
+  - location:
+      x: 0
+      y: 0
+    unitRef: 0
+  - location:
+      x: 3
+      y: 2
+    unitRef: 1

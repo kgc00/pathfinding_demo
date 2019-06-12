@@ -35,6 +35,18 @@ public class BoardCreator : MonoBehaviour {
         InputHandler.Initialize (this);
     }
 
+    public void ClearBoard () {
+        List<Point> tilePositions = new List<Point> (tiles.Keys);
+        foreach (Point pos in tilePositions) {
+            DeleteTileAt (pos);
+        }
+
+        List<Point> unitPositions = new List<Point> (units.Keys);
+        foreach (Point pos in unitPositions) {
+            DeleteUnitAt (pos);
+        }
+    }
+
     public void RefreshUnitTypes () {
         unitPrefabs.Clear ();
         UnityEngine.Object[] tmp = Resources.LoadAll ("Prefabs", typeof (Unit));
@@ -71,17 +83,16 @@ public class BoardCreator : MonoBehaviour {
     }
 
     public void PlaceSelectedTile (Point p) {
-        Tile tile = tilePrefabs[currentTileIndex];
-        PlaceTile (p, tile);
+        PlaceTile (p, tilePrefabs[currentTileIndex].TypeReference);
     }
 
-    public void PlaceTile (Point p, Tile t) {
+    public void PlaceTile (Point p, TileTypes type) {
         if (tiles.ContainsKey (p)) {
             tiles.Remove (p);
             Current.DeleteTileAt (p);
         }
 
-        Tile tile = Current.CreateTileAt (p, t);
+        Tile tile = Current.CreateTileAt (p, type);
         tile.transform.parent = gameObject.transform;
 
         // Put tile in the dictionary
@@ -101,15 +112,15 @@ public class BoardCreator : MonoBehaviour {
         }
     }
     public void PlaceSelectedUnit (Point p) {
-        Unit unit = unitPrefabs[currentUnitIndex];
-        PlaceUnit (p, unit);
+        PlaceUnit (p, unitPrefabs[currentUnitIndex].TypeReference);
     }
-    public void PlaceUnit (Point p, Unit u) {
+    public void PlaceUnit (Point p, UnitTypes type) {
         if (units.ContainsKey (p)) {
             Current.DeleteUnitAt (p);
             units.Remove (p);
         }
-        Unit unit = Current.CreateUnitAt (p, u);
+
+        Unit unit = Current.CreateUnitAt (p, type);
         unit.transform.parent = gameObject.transform;
 
         // Put unit in the dictionary
@@ -140,14 +151,12 @@ public class BoardCreator : MonoBehaviour {
         boardData.tiles = new List<TileSpawnData> ();
         foreach (
             KeyValuePair<Point, Tile> element in tiles) {
-            Debug.Log (element.Value.gameObject.name);
             boardData.tiles.Add (new TileSpawnData (element.Key, element.Value.TypeReference));
-            TypeHelper.TypeFromEnum (element.Value.TypeReference);
         }
 
         boardData.units = new List<UnitSpawnData> ();
         foreach (KeyValuePair<Point, Unit> element in units)
-            boardData.units.Add (new UnitSpawnData (element.Key, element.Value.u));
+            boardData.units.Add (new UnitSpawnData (element.Key, element.Value.TypeReference));
 
         string fileURI = string.Format (
             "Assets/Resources/Levels/{1}.asset",
@@ -163,17 +172,17 @@ public class BoardCreator : MonoBehaviour {
             AssetDatabase.CreateFolder ("Assets/Resources", "Levels");
         AssetDatabase.Refresh ();
     }
-    // public void Load () {
-    //     ClearBoard ();
-    //     if (levelData == null)
-    //         return;
+    public void Load () {
+        ClearBoard ();
+        if (levelData == null)
+            return;
 
-    //     foreach (TileSpawnData data in levelData.tiles) {
-    //         PlaceTile (data.location, data.tileType);
-    //     }
+        foreach (TileSpawnData data in levelData.tiles) {
+            PlaceTile (data.location, data.tileRef);
+        }
 
-    //     foreach (UnitSpawnData data in levelData.units) {
-    //         PlaceUnit (data.location, data.unitType);
-    //     }
-    // }
+        foreach (UnitSpawnData data in levelData.units) {
+            PlaceUnit (data.location, data.unitRef);
+        }
+    }
 }

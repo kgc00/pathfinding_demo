@@ -7,29 +7,57 @@ public class Board : MonoBehaviour {
     private Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile> ();
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit> ();
 
-    public Tile CreateTileAt (Point p, Tile t) {
-
+    public Tile CreateTileAt (Point p, TileTypes type) {
         if (tiles.ContainsKey (p)) {
             DeleteTileAt (p);
         }
-        if (!tiles.ContainsKey (p)) {
-            Tile tile = Instantiate (t, new Vector3 (p.x, p.y, 0), Quaternion.identity);
-            tile.Initialize (this, p, t.TypeReference);
-            tile.gameObject.name = t.ToString ();
-            tiles.Add (tile.Position, tile);
-            return tile;
-        } else {
-            Debug.Log ("null");
+
+        Tile tile = null;
+        if (type == TileTypes.DIRT) {
+            Tile instance = Instantiate (Resources.Load ("Prefabs/Dirt", typeof (Tile)),
+                new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
+            tile = instance;
+        } else if (type == TileTypes.WALL) {
+            Tile instance = Instantiate (Resources.Load ("Prefabs/Wall", typeof (Tile)),
+                new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
+            tile = instance;
+        }
+
+        if (tile == null) {
+            Debug.LogError ("tile should not be null and is.");
             return null;
         }
+
+        tile.Initialize (this, p, type);
+        tile.gameObject.name = type.ToString ();
+        tiles.Add (tile.Position, tile);
+        return tile;
+
     }
 
-    public Unit CreateUnitAt (Point p, Unit u) {
+    public Unit CreateUnitAt (Point p, UnitTypes type) {
         if (units.ContainsKey (p)) {
             DeleteUnitAt (p);
         }
-        Unit unit = Instantiate (u, new Vector3 (p.x, p.y, -2), Quaternion.identity);
-        unit.Initialize (this, p);
+
+        Unit unit = null;
+        if (type == UnitTypes.HERO) {
+            Unit instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Unit)),
+                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
+            unit = instance;
+        } else if (type == UnitTypes.MONSTER) {
+            Unit instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Unit)),
+                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
+            unit = instance;
+        }
+
+        if (unit == null) {
+            Debug.LogError ("unit should not be null and is.");
+            return null;
+        }
+
+        unit.GetComponent<Unit> ().Initialize (this, p, type);
+        unit.gameObject.name = type.ToString ();
         units.Add (unit.Position, unit);
         return unit;
     }

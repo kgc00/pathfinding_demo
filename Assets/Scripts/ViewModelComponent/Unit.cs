@@ -4,11 +4,12 @@ using UnityEngine;
 public class Unit : MonoBehaviour {
     public Point Position { get; protected set; }
     public Board Board { get; protected set; }
-    public Unit u;
 
-    public void Initialize (Board board, Point pos) {
+    [SerializeField] public UnitTypes TypeReference;
+
+    public void Initialize (Board board, Point pos, UnitTypes r) {
         Position = pos;
         Board = board;
-        u = this;
+        TypeReference = r;
     }
 }

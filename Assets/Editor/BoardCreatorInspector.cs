@@ -53,10 +53,9 @@ public class BoardCreatorInspector : Editor {
         if (GUILayout.Button ("Fill Board")) {
             Current.FillBoard ();
         }
-        // if (GUILayout.Button ("Clear Board")) {
-        //     Current.ClearBoard ();
-        // }
-
+        if (GUILayout.Button ("Clear Board")) {
+            Current.ClearBoard ();
+        }
         if (GUILayout.Button ("Place Tile: 'P'")) {
             Current.PlaceSelectedTile (Current.MarkerPosition);
         }
@@ -74,9 +73,9 @@ public class BoardCreatorInspector : Editor {
             Current.SetFileName (fileName);
             Current.Save ();
         }
-        // if (GUILayout.Button ("Load")) {
-        //     Current.Load ();
-        // }
+        if (GUILayout.Button ("Load")) {
+            Current.Load ();
+        }
     }
 
     private string[] getUnitNames () {
