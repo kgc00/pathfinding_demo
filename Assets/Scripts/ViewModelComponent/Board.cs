@@ -6,6 +6,13 @@ using UnityEngine;
 public class Board : MonoBehaviour {
     private Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile> ();
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit> ();
+    public LevelData levelData;
+
+    private void Awake () {
+        if (levelData != null) {
+            Load ();
+        }
+    }
 
     public Tile CreateTileAt (Point p, TileTypes type) {
         if (tiles.ContainsKey (p)) {
@@ -91,19 +98,15 @@ public class Board : MonoBehaviour {
     }
 
     public void Load () {
-        // if (Container.levelData == null)
-        //     return;
+        if (levelData == null)
+            return;
 
-        // foreach (TileSpawnData data in Container.levelData.tiles) {
-        //     PlaceTile (data.location, data.tile);
-        // }
+        foreach (TileSpawnData data in levelData.tiles) {
+            CreateTileAt (data.location, data.tileRef);
+        }
 
-        // foreach (UnitSpawnData data in Container.levelData.units) {
-        //     Unit unit = BoardHelper.CreateUnit (
-        //         Container.transform, this,
-        //         data.location, data.unit);
-
-        //     units.Add (unit.Position, unit);
-        // }
+        foreach (UnitSpawnData data in levelData.units) {
+            CreateUnitAt (data.location, data.unitRef);
+        }
     }
 }
