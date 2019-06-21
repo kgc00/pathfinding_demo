@@ -1,11 +1,9 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Unit : MonoBehaviour
+public class Monster : Unit
 {
-    public Point Position { get; protected set; }
-    public Board Board { get; protected set; }
-
+    private Movement movement;
     [SerializeField] public UnitTypes TypeReference;
 
     public void Initialize(Board board, Point pos, UnitTypes r)
@@ -13,5 +11,6 @@ public class Unit : MonoBehaviour
         Position = pos;
         Board = board;
         TypeReference = r;
+        movement = gameObject.AddComponent<Movement>();
     }
 }

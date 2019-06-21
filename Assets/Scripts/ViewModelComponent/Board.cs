@@ -8,6 +8,12 @@ public class Board : MonoBehaviour
     private Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile>();
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit>();
     public LevelData levelData;
+    Point[] dirs = new Point[4] {
+        new Point (0, 1),
+        new Point (0, -1),
+        new Point (1, 0),
+        new Point (-1, 0)
+    };
 
     private void Awake()
     {
@@ -134,5 +140,63 @@ public class Board : MonoBehaviour
         {
             CreateUnitAt(data.location, data.unitRef);
         }
+    }
+
+    public List<Tile> Search(Tile start, Func<ShadowTile, Tile, bool> addTile)
+    {
+        List<ShadowTile> shadows = new List<ShadowTile>();
+        shadows.Add(new ShadowTile(int.MaxValue, start.Position, null, start));
+
+        Queue<ShadowTile> checkNext = new Queue<ShadowTile>();
+        Queue<ShadowTile> checkNow = new Queue<ShadowTile>();
+        shadows[0].distance = 0;
+
+        checkNow.Enqueue(shadows[0]);
+        while (checkNow.Count > 0)
+        {
+            ShadowTile currentShadow = checkNow.Dequeue();
+            for (int i = 0; i < 4; ++i)
+            {
+                Tile nextTile = GetTile(currentShadow.position + dirs[i]);
+                if (nextTile == null)
+                {
+                    continue;
+                }
+
+                ShadowTile oldShadow = shadows.Find(shadow => shadow.tile == nextTile);
+                if (oldShadow != null || oldShadow.distance <= currentShadow.distance + 1)
+                {
+                    continue;
+
+                }
+
+                if (addTile(currentShadow, nextTile))
+                {
+                    ShadowTile checkedShadow = new ShadowTile(currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);
+                    checkNext.Enqueue(checkedShadow);
+                    shadows.Add(checkedShadow);
+                }
+            }
+
+            // black magic
+            if (checkNow.Count == 0)
+                SwapReference(ref checkNow, ref checkNext);
+        }
+
+        List<Tile> retValue = new List<Tile>();
+        shadows.ForEach(shadow => retValue.Add(shadow.tile));
+        return retValue;
+    }
+
+    public Tile GetTile(Point p)
+    {
+        return tiles.ContainsKey(p) ? tiles[p] : null;
+    }
+
+    void SwapReference(ref Queue<ShadowTile> a, ref Queue<ShadowTile> b)
+    {
+        Queue<ShadowTile> temp = a;
+        a = b;
+        b = temp;
     }
 }
