@@ -1,16 +1,54 @@
 using UnityEngine;
+using System.Collections;
+using System;
 
-[System.Serializable]
 public class Monster : Unit
 {
-    private Movement movement;
-    [SerializeField] public UnitTypes TypeReference;
+    [SerializeField] private WalkingMovement movement;
+    [SerializeField] private AIController controller;
+
+    IEnumerator prepState;
 
     public void Initialize(Board board, Point pos, UnitTypes r)
     {
-        Position = pos;
-        Board = board;
-        TypeReference = r;
-        movement = gameObject.AddComponent<Movement>();
+        base.Initialize(board, pos, r);
+
+        movement = gameObject.AddComponent<WalkingMovement>();
+        movement.Initialize(board, this, 3);
+
+        controller = gameObject.AddComponent<AIController>();
+        controller.Initialize(board, this, movement);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            movement.GetTilesInRange(Board);
+        }
+    }
+
+    public override void SetState(UnitStates state)
+    {
+        switch (state)
+        {
+            case UnitStates.IDLE:
+                this.State = UnitStates.IDLE;
+                controller.IdleState();
+                break;
+            case UnitStates.PREPARING:
+                this.State = UnitStates.PREPARING;
+                prepState = controller.PrepState();
+                prepState.MoveNext();
+                break;
+            case UnitStates.ACTING:
+                this.State = UnitStates.ACTING;
+                break;
+            case UnitStates.COOLDOWN:
+                this.State = UnitStates.COOLDOWN;
+                break;
+            default:
+                break;
+        }
     }
 }

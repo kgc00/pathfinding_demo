@@ -5,13 +5,18 @@ public class Unit : MonoBehaviour
 {
     public Point Position { get; protected set; }
     public Board Board { get; protected set; }
-
+    public UnitStates State;
     [SerializeField] public UnitTypes TypeReference;
+    public Directions dir;
 
-    public void Initialize(Board board, Point pos, UnitTypes r)
+    public virtual void Initialize(Board board, Point pos, UnitTypes r)
     {
-        Position = pos;
-        Board = board;
-        TypeReference = r;
+        this.Position = pos;
+        this.Board = board;
+        this.TypeReference = r;
+        this.State = UnitStates.IDLE;
+        transform.localEulerAngles = dir.ToEuler();
     }
+
+    public virtual void SetState(UnitStates state) { }
 }

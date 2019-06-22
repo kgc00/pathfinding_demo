@@ -8,6 +8,7 @@ public class Board : MonoBehaviour
     private Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile>();
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit>();
     public LevelData levelData;
+    BoardVisuals vis;
     Point[] dirs = new Point[4] {
         new Point (0, 1),
         new Point (0, -1),
@@ -17,6 +18,8 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
+        vis = gameObject.AddComponent<BoardVisuals>();
+        vis.Initialize(this);
         if (levelData != null)
         {
             Load();
@@ -72,11 +75,14 @@ public class Board : MonoBehaviour
                 new Vector3(p.x, p.y, -2), Quaternion.identity) as Unit;
             unit = instance;
         }
+
         else if (type == UnitTypes.MONSTER)
         {
-            Unit instance = Instantiate(Resources.Load("Prefabs/Monster", typeof(Unit)),
-                new Vector3(p.x, p.y, -2), Quaternion.identity) as Unit;
-            unit = instance;
+            Monster instance = Instantiate(Resources.Load("Prefabs/Monster", typeof(Monster)),
+                new Vector3(p.x, p.y, -2), Quaternion.identity) as Monster;
+            instance.GetComponent<Monster>().Initialize(this, p, type);
+            unit = instance as Unit;
+
         }
 
         if (unit == null)
@@ -85,7 +91,6 @@ public class Board : MonoBehaviour
             return null;
         }
 
-        unit.GetComponent<Unit>().Initialize(this, p, type);
         unit.gameObject.name = type.ToString();
         unit.transform.parent = gameObject.transform;
         units.Add(unit.Position, unit);
@@ -142,7 +147,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    public List<Tile> Search(Tile start, Func<ShadowTile, Tile, bool> addTile)
+    public List<PathfindingData> Search(Tile start, Func<ShadowTile, Tile, bool> addTile)
     {
         List<ShadowTile> shadows = new List<ShadowTile>();
         shadows.Add(new ShadowTile(int.MaxValue, start.Position, null, start));
@@ -164,10 +169,13 @@ public class Board : MonoBehaviour
                 }
 
                 ShadowTile oldShadow = shadows.Find(shadow => shadow.tile == nextTile);
-                if (oldShadow != null || oldShadow.distance <= currentShadow.distance + 1)
+                if (oldShadow != null)
                 {
+                    if (oldShadow.distance <= currentShadow.distance + 1)
+                    {
+                        continue;
+                    }
                     continue;
-
                 }
 
                 if (addTile(currentShadow, nextTile))
@@ -183,8 +191,11 @@ public class Board : MonoBehaviour
                 SwapReference(ref checkNow, ref checkNext);
         }
 
-        List<Tile> retValue = new List<Tile>();
-        shadows.ForEach(shadow => retValue.Add(shadow.tile));
+        List<PathfindingData> retValue = new List<PathfindingData>();
+        shadows.ForEach(shadow => retValue.Add(
+            new PathfindingData(shadow.tile, shadow)
+            )
+        );
         return retValue;
     }
 

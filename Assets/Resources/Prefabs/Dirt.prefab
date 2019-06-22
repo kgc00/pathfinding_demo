@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5480395486502277453}
   - component: {fileID: 9209219456445023628}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: Dirt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,6 +104,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5264f5cba8735489016ed75f756240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWalkable: 0
-  TypeReference: 
-  test: 1
+  isWalkable: 1
+  TypeReference: 0
