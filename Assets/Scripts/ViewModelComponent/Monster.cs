@@ -5,6 +5,7 @@ using UnityEngine;
 public class Monster : Unit {
     [SerializeField] private WalkingMovement movement;
     [SerializeField] private AIController controller;
+    [SerializeField] private bool isDebug;
 
     IEnumerator prepState;
 
@@ -13,15 +14,17 @@ public class Monster : Unit {
 
         movement = gameObject.AddComponent<WalkingMovement> ();
         movement.Initialize (board, this, 3);
+        movement.isDebug = isDebug;
 
         controller = gameObject.AddComponent<AIController> ();
         controller.Initialize (board, this, movement);
     }
 
-    private void Update () {
+    protected override void Update () {
         if (Input.GetKeyDown (KeyCode.Space)) {
             movement.GetTilesInRange (Board);
         }
+        base.Update ();
     }
 
     public override void SetState (UnitStates state) {

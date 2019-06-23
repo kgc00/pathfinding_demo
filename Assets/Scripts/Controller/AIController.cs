@@ -22,7 +22,7 @@ public class AIController : Controller {
         data.ForEach (element => {
             tiles.Add (element.tile);
         });
-        BoardVisuals.RenderTileHighlights (tiles);
+        // BoardVisuals.AddTileToHighlights (tiles);
         PathfindingData selected = data[Random.Range (0, data.Count)];
         // selected.tile.GetComponent<MeshRenderer> ().enabled = false;
         StartCoroutine (movement.Traverse (data, selected, () => owner.SetState (UnitStates.COOLDOWN)));
@@ -33,6 +33,7 @@ public class AIController : Controller {
     public override void ActingState () { }
 
     public override void CooldownState () {
+        // BoardVisuals.RemoveTileFromHighlights
         StartCoroutine (countdown (Random.Range (0, 4), () => owner.SetState (UnitStates.IDLE)));
     }
 

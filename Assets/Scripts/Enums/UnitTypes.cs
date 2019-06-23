@@ -1,4 +1,5 @@
     public enum UnitTypes {
         HERO,
-        MONSTER
+        MONSTER,
+        DEBUG
     }
