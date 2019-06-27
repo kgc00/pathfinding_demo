@@ -1,26 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BoardVisuals : MonoBehaviour {
+    private static Dictionary<Unit, List<Renderer>> highlightedTilesByUnit;
+    private static List<Renderer> allRenderers;
     Board board;
-    List<Renderer> tilesToHighlight;
     public void Initialize (Board board) {
         this.board = board;
-        tilesToHighlight = new List<Renderer> ();
+        allRenderers = new List<Renderer> ();
+        highlightedTilesByUnit = new Dictionary<Unit, List<Renderer>> ();
     }
 
-    // public static void AddTileToHighlights (List<Tile> tiles) {
-    //     foreach (Tile tile in tiles) {
-    //         if (!tilesToHighlight.Contains (tile.GetComponent<Renderer> ()))
-    //             tilesToHighlight.Add (tile.GetComponent<Renderer> ());
-    //     }
-    // }
+    public static void AddTileToHighlights (Unit unit, List<Tile> tiles) {
+        List<Renderer> temp = new List<Renderer> ();
+        if (highlightedTilesByUnit == null || highlightedTilesByUnit.ContainsKey (unit))
+            return;
+        foreach (Tile tile in tiles) {
+            Renderer rend = tile.GetComponent<Renderer> ();
+            rend.material.color = Color.green;
+            temp.Add (rend);
+            allRenderers.Add (rend);
+        }
+        highlightedTilesByUnit.Add (unit, temp);
+    }
 
-    // public static void RemoveTileFromHighlights (List<Tile> tiles) {
-    //     foreach (Tile tile in tiles) {
-    //         if (!tilesToHighlight.Contains (tile.GetComponent<Renderer> ()))
-    //             tilesToHighlight.Remove (tile.GetComponent<Renderer> ());
-    //     }
-    // }
+    public static void RemoveTileFromHighlights (Unit unit) {
+        if (highlightedTilesByUnit.ContainsKey (unit)) {
+            var duplicates = allRenderers
+                .GroupBy (x => x)
+                .Where (x => x.Count () > 1)
+                .Select (x => x.Key);
+            foreach (Renderer rend in highlightedTilesByUnit[unit]) {
+                if (!duplicates.Contains (rend)) {
+                    rend.material.color = Color.white;
+                }
+                allRenderers.Remove (rend);
+            }
+            highlightedTilesByUnit.Remove (unit);
+        }
+    }
 }

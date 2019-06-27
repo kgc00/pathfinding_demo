@@ -16,24 +16,22 @@ public class AIController : Controller {
         owner.SetState (UnitStates.PREPARING);
     }
 
-    public override IEnumerator PrepState () {
+    public override void PrepState () {
         List<PathfindingData> data = movement.GetTilesInRange (board);
         List<Tile> tiles = new List<Tile> ();
         data.ForEach (element => {
             tiles.Add (element.tile);
         });
-        // BoardVisuals.AddTileToHighlights (tiles);
+        BoardVisuals.AddTileToHighlights (owner, tiles);
         PathfindingData selected = data[Random.Range (0, data.Count)];
-        // selected.tile.GetComponent<MeshRenderer> ().enabled = false;
         StartCoroutine (movement.Traverse (data, selected, () => owner.SetState (UnitStates.COOLDOWN)));
         owner.SetState (UnitStates.ACTING);
-        yield return null;
     }
 
     public override void ActingState () { }
 
     public override void CooldownState () {
-        // BoardVisuals.RemoveTileFromHighlights
+        BoardVisuals.RemoveTileFromHighlights (owner);
         StartCoroutine (countdown (Random.Range (0, 4), () => owner.SetState (UnitStates.IDLE)));
     }
 

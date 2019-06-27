@@ -59,9 +59,10 @@ public class Board : MonoBehaviour {
 
         Unit unit = null;
         if (type == UnitTypes.HERO) {
-            Unit instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Unit)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
-            unit = instance;
+            Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
+                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Hero;
+            instance.GetComponent<Hero> ().Initialize (this, p, type);
+            unit = instance as Unit;
         } else if (type == UnitTypes.MONSTER) {
             Monster instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
@@ -127,7 +128,6 @@ public class Board : MonoBehaviour {
     }
 
     public List<PathfindingData> Search (Tile start, Func<ShadowTile, Tile, bool> addTile) {
-        Debug.Log ("start: " + start.Position);
         List<ShadowTile> shadows = new List<ShadowTile> ();
         shadows.Add (new ShadowTile (int.MaxValue, start.Position, null, start));
 

@@ -418,7 +418,3 @@ MonoBehaviour:
       x: 0
       y: 0
     unitRef: 0
-  - location:
-      x: 3
-      y: 2
-    unitRef: 1

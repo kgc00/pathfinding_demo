@@ -2,11 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Monster : Unit {
+public class Hero : Unit {
     [SerializeField] private WalkingMovement movement;
-    [SerializeField] private AIController controller;
+    [SerializeField] private PlayerController controller;
     [SerializeField] private bool isDebug;
-
     IEnumerator prepState;
 
     public void Initialize (Board board, Point pos, UnitTypes r) {
@@ -16,7 +15,7 @@ public class Monster : Unit {
         movement.Initialize (board, this, 3);
         movement.isDebug = isDebug;
 
-        controller = gameObject.AddComponent<AIController> ();
+        controller = gameObject.AddComponent<PlayerController> ();
         controller.Initialize (board, this, movement);
     }
 

@@ -24,11 +24,6 @@ public class WalkingMovement : Movement {
         List<Tile> targets = new List<Tile> ();
         int safetyCount = 0;
 
-        if (isDebug) {
-            Debug.Log ("d");
-            // path.ForEach (data => Debug.Log ("Tile pos: " + data.tile.Position));
-        }
-
         while (target.shadow != null) {
             if (safetyCount > 1000) {
                 break;
@@ -42,9 +37,6 @@ public class WalkingMovement : Movement {
         for (int i = 1; i < targets.Count; ++i) {
             Tile from = targets[i - 1];
             Tile to = targets[i];
-            if (isDebug) {
-                Debug.Log ("From: " + targets[i - 1].Position + ".  To: " + targets[i].Position);
-            }
             Directions dir = from.GetDirection (to);
             if (owner.dir != dir)
                 yield return StartCoroutine (Turn (dir));
