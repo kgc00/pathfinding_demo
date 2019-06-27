@@ -61,9 +61,13 @@ public class PlayerController : Controller {
             if (Physics.Raycast (ray, out hit, 50, 1 << 10)) {
                 Tile selectedTile = hit.transform.GetComponent<Tile> ();
                 if (selectedTile.isWalkable) {
-                    Debug.Log ("selected tile");
-                    tileToMoveTo = tilesInRange.Find (element => element.tile == selectedTile);
-                    owner.SetState (UnitStates.ACTING);
+                    PathfindingData temp = tilesInRange.Find (element => element.tile == selectedTile);
+                    if (temp.tile != null) {
+                        Debug.Log ("selected tile");
+                        tileToMoveTo = temp;
+                        owner.SetState (UnitStates.ACTING);
+                    }
+
                 }
             }
         }
