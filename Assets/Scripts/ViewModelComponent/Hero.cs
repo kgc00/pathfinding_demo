@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +7,8 @@ public class Hero : Unit {
     [SerializeField] private bool isDebug;
     IEnumerator prepState;
 
+    private UnitState HeroState;
+
     public void Initialize (Board board, Point pos, UnitTypes r) {
         base.Initialize (board, pos, r);
 
@@ -15,31 +16,40 @@ public class Hero : Unit {
         movement.Initialize (board, this, 3);
         movement.isDebug = isDebug;
 
-        controller = gameObject.AddComponent<PlayerController> ();
-        controller.Initialize (board, this, movement);
+        // controller = gameObject.AddComponent<PlayerController> ();
+        // controller.Initialize (board, this, movement);
+
+        HeroState = new IdleState (this, movement);
     }
 
     protected override void Update () {
         base.Update ();
+
+        // if we returned a new state switch to it
+        UnitState state = HeroState.HandleInput ();
+        if (state == null)
+            return;
+
+        HeroState = state;
+        HeroState.Enter ();
     }
 
     public override void SetState (UnitStates state) {
+
+        this.State = state;
+
         switch (state) {
             case UnitStates.IDLE:
-                this.State = UnitStates.IDLE;
-                controller.IdleState ();
+                controller.EnterIdleState ();
                 break;
             case UnitStates.PREPARING:
-                this.State = UnitStates.PREPARING;
-                controller.PrepState ();
+                controller.EnterPrepState ();
                 break;
             case UnitStates.ACTING:
-                this.State = UnitStates.ACTING;
-                controller.ActingState ();
+                controller.EnterActingState ();
                 break;
             case UnitStates.COOLDOWN:
-                this.State = UnitStates.COOLDOWN;
-                controller.CooldownState ();
+                controller.EnterCooldownState ();
                 break;
             default:
                 break;
