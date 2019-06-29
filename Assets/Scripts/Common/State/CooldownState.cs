@@ -11,13 +11,14 @@ public class CooldownState : UnitState {
     public override void Enter () {
         BoardVisuals.RemoveTileFromHighlights (owner);
 
-        // set a timer to transition to the next state
+        // start a timer with a callback to transition to the next state
         CoroutineHelper.Instance.StartCountdown (Random.Range (0, 4),
             () => this.UpdateState ());
     }
 
-    public void UpdateState () { state = new IdleState (owner, movement); }
+    public void UpdateState () { state = new IdleState (owner, movement); HandleInput (); }
 
+    // return null until UpdateState is called;
     public override UnitState HandleInput () { return state; }
 
 }

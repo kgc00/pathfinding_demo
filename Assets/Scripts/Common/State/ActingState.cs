@@ -15,11 +15,13 @@ public class ActingState : UnitState {
     }
 
     public override void Enter () {
+        // start a timer with a callback to transition to the next state
         CoroutineHelper.Instance.CoroutineFromEnumerator (
             movement.Traverse (tilesInRange, tileToMoveTo, () => this.UpdateState ()));
     }
 
-    public void UpdateState () { state = new CooldownState (owner, movement); }
+    public void UpdateState () { state = new CooldownState (owner, movement); HandleInput (); }
 
+    // return null until UpdateState is called;
     public override UnitState HandleInput () { return state; }
 }

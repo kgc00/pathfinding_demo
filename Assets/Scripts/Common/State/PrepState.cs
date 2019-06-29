@@ -11,14 +11,14 @@ public class PrepState : UnitState {
     public override UnitState HandleInput () {
         List<PathfindingData> tilesInRange = movement.GetTilesInRange (owner.Board);
 
-        // convert pathfinding struct to tiles for AddTileToHighlights func
+        // convert pathfinding struct to tiles for AddTileToHighlights func...
         List<Tile> tiles = new List<Tile> ();
         tilesInRange.ForEach (element => {
             tiles.Add (element.tile);
         });
         BoardVisuals.AddTileToHighlights (owner, tiles);
 
-        // handle input
+        // user clicks on a walkable tile in range....
         if (Input.GetMouseButtonDown (1)) {
             Debug.Log ("Clicked");
             Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -30,6 +30,8 @@ public class PrepState : UnitState {
 
                 PathfindingData tileToMoveTo = tilesInRange.Find (element => element.tile == selectedTile);
                 if (tileToMoveTo.tile != null) {
+
+                    // transition to acting state.
                     Debug.Log ("selected tile");
                     return new ActingState (owner, movement, tilesInRange, tileToMoveTo);
                 }
