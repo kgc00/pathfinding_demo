@@ -4,7 +4,7 @@ public class PathFindingDataPool {
     System.Action<object> c = UnityEngine.Debug.Log;
     List<PathfindingData> pool;
     PathfindingData firstAvailable;
-    const int POOL_SIZE = 500; // larger than we need
+    const int POOL_SIZE = 250; // larger than we need
     public PathFindingDataPool () {
         // create a new list, fill it up, and create a linked list using SetNext
         pool = new List<PathfindingData> ();
