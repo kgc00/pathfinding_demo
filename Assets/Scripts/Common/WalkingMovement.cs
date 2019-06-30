@@ -8,7 +8,7 @@ public class WalkingMovement : Movement {
         base.Initialize (board, owner, range);
     }
 
-    public virtual List<PathfindingData> GetTilesInRange (Board board) {
+    public override List<PathfindingData> GetTilesInRange (Board board) {
         List<PathfindingData> retValue = board.Search (board.TileAt (owner.Position), ExpandSearch);
         Filter (retValue);
         return retValue;
@@ -24,7 +24,7 @@ public class WalkingMovement : Movement {
         List<Tile> targets = new List<Tile> ();
         int safetyCount = 0;
 
-        while (target.shadow != null) {
+        while (target != null) {
             if (safetyCount > 1000) {
                 break;
             }
@@ -37,18 +37,38 @@ public class WalkingMovement : Movement {
         for (int i = 1; i < targets.Count; ++i) {
             Tile from = targets[i - 1];
             Tile to = targets[i];
+
+            // some dynamic obstacle like a unit is now
+            // occupying the tile, we end the traversal early
+            if (!to.IsOccupiedBy (owner) && to.OccupiedBy) {
+                break;
+            }
+
             Directions dir = from.GetDirection (to);
             if (owner.dir != dir)
                 yield return StartCoroutine (Turn (dir));
-            yield return StartCoroutine (Walk (to));
+            yield return StartCoroutine (Walk (from, to));
         }
         onComplete ();
         yield return null;
     }
 
-    IEnumerator Walk (Tile target) {
+    IEnumerator Walk (Tile from, Tile target) {
         Tweener tweener = transform.MoveTo (target.center, 0.5f, EasingEquations.Linear);
-        while (tweener != null)
+        bool wasInterrupted = false;
+        while (tweener != null) {
+            if (!target.IsOccupiedBy (owner) && target.OccupiedBy) {
+                wasInterrupted = true;
+                break;
+            }
             yield return null;
+        }
+
+        if (wasInterrupted) {
+            Tweener tweenerFrom = transform.MoveTo (from.center, 0.5f, EasingEquations.Linear);
+            while (tweenerFrom != null) {
+                yield return null;
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ public class Board : MonoBehaviour {
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit> ();
     public LevelData levelData;
     BoardVisuals vis;
+    public static PathFindingDataPool pfdPool;
     Point[] dirs = new Point[4] {
         new Point (0, 1),
         new Point (0, -1),
@@ -16,6 +17,8 @@ public class Board : MonoBehaviour {
     };
 
     private void Awake () {
+        // must initialize the pool before we load units
+        pfdPool = new PathFindingDataPool ();
         vis = gameObject.AddComponent<BoardVisuals> ();
         vis.Initialize (this);
         if (levelData != null) {
@@ -61,17 +64,17 @@ public class Board : MonoBehaviour {
         if (type == UnitTypes.HERO) {
             Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Hero;
-            instance.GetComponent<Hero> ().Initialize (this, p, type);
+            instance.GetComponent<Hero> ().Initialize (this, type);
             unit = instance as Unit;
         } else if (type == UnitTypes.MONSTER) {
             Monster instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            instance.GetComponent<Monster> ().Initialize (this, p, type);
+            instance.GetComponent<Monster> ().Initialize (this, type);
             unit = instance as Unit;
         } else if (type == UnitTypes.DEBUG) {
             Monster instance = Instantiate (Resources.Load ("Prefabs/Debug", typeof (Monster)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            instance.GetComponent<Monster> ().Initialize (this, p, type);
+            instance.GetComponent<Monster> ().Initialize (this, type);
             unit = instance as Unit;
         }
 
@@ -159,15 +162,21 @@ public class Board : MonoBehaviour {
                 }
             }
 
-            // black magic
+            // swap the ref between empty and full queue's to avoid re-allocating
             if (checkNow.Count == 0)
                 SwapReference (ref checkNow, ref checkNext);
         }
 
+        Debug.Log ("Count: " + shadows.Count);
         List<PathfindingData> retValue = new List<PathfindingData> ();
-        shadows.ForEach (shadow => retValue.Add (
-            new PathfindingData (shadow.tile, shadow)
-        ));
+
+        // use a pool of pathfinding data
+        shadows.ForEach (shadow => {
+            var newpfd = pfdPool.RetrieveItem ();
+            newpfd.shadow = shadow;
+            newpfd.tile = shadow.tile;
+            retValue.Add (newpfd);
+        });
         return retValue;
     }
 

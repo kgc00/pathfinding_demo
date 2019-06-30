@@ -9,6 +9,7 @@ public class PrepState : UnitState {
     }
     public override void Enter () { }
     public override UnitState HandleInput () {
+        // get all valid tiles this frame
         List<PathfindingData> tilesInRange = movement.GetTilesInRange (owner.Board);
 
         // convert pathfinding struct to tiles for AddTileToHighlights func...
@@ -17,26 +18,26 @@ public class PrepState : UnitState {
             tiles.Add (element.tile);
         });
         BoardVisuals.AddTileToHighlights (owner, tiles);
+        tiles = null;
 
-        // user clicks on a walkable tile in range....
+        // user clicks on a walkable tile which is in range....
         if (Input.GetMouseButtonDown (1)) {
-            Debug.Log ("Clicked");
-            Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast (ray, out hit, 50, 1 << 10)) {
-                Tile selectedTile = hit.transform.GetComponent<Tile> ();
-                if (!selectedTile.isWalkable)
-                    return null;
+            Point mousePosition = Camera.main.ScreenToWorldPoint (
+                new Vector3 (
+                    Input.mousePosition.x,
+                    Input.mousePosition.y,
+                    Camera.main.nearClipPlane)).ToPoint ();
 
-                PathfindingData tileToMoveTo = tilesInRange.Find (element => element.tile == selectedTile);
-                if (tileToMoveTo.tile != null) {
+            PathfindingData selectedTile = tilesInRange.Find (element => element.tile.Position == mousePosition);
 
-                    // transition to acting state.
-                    Debug.Log ("selected tile");
-                    return new ActingState (owner, movement, tilesInRange, tileToMoveTo);
-                }
+            if (selectedTile != null && selectedTile.tile.isWalkable) {
+                // transition to acting state...
+                return new ActingState (owner, movement, tilesInRange, selectedTile);
             }
         }
+
+        tilesInRange.ForEach (pfd => Board.pfdPool.ReturnItem (pfd));
+        tilesInRange = null;
         return null;
     }
 

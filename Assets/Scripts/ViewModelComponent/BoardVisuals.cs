@@ -6,6 +6,7 @@ using UnityEngine;
 public class BoardVisuals : MonoBehaviour {
     private static Dictionary<Unit, List<Renderer>> highlightedTilesByUnit;
     private static List<Renderer> allRenderers;
+    private static List<Renderer> debugRends;
     Board board;
     public void Initialize (Board board) {
         this.board = board;
@@ -40,5 +41,13 @@ public class BoardVisuals : MonoBehaviour {
             }
             highlightedTilesByUnit.Remove (unit);
         }
+    }
+
+    public static void DebugHighlights (Renderer r) {
+        r.material.color = Color.cyan;
+    }
+
+    public static void RemoveDebugHighlights (Renderer r) {
+        r.material.color = Color.white;
     }
 }

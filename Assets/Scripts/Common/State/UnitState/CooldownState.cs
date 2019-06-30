@@ -16,7 +16,7 @@ public class CooldownState : UnitState {
             () => this.UpdateState ());
     }
 
-    public void UpdateState () { state = new IdleState (owner, movement); HandleInput (); }
+    public void UpdateState () { state = new IdleState (owner, movement); }
 
     // return null until UpdateState is called;
     public override UnitState HandleInput () { return state; }
