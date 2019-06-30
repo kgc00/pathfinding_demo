@@ -4,7 +4,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour {
     public virtual Point Position => new Point ((int) Mathf.Round (transform.position.x), (int) Mathf.Round (transform.position.y));
     public virtual Board Board { get; protected set; }
-    public UnitStates State;
+
     [SerializeField] public UnitTypes TypeReference;
     public Directions dir;
     private OccupationState occupationState;

@@ -9,6 +9,7 @@ public class Board : MonoBehaviour {
     public LevelData levelData;
     BoardVisuals vis;
     public static PathFindingDataPool pfdPool;
+    public static ShadowTilePool stPool;
     Point[] dirs = new Point[4] {
         new Point (0, 1),
         new Point (0, -1),
@@ -19,6 +20,7 @@ public class Board : MonoBehaviour {
     private void Awake () {
         // must initialize the pool before we load units
         pfdPool = new PathFindingDataPool ();
+        stPool = new ShadowTilePool ();
         vis = gameObject.AddComponent<BoardVisuals> ();
         vis.Initialize (this);
         if (levelData != null) {
@@ -132,7 +134,9 @@ public class Board : MonoBehaviour {
 
     public List<PathfindingData> Search (Tile start, Func<ShadowTile, Tile, bool> addTile) {
         List<ShadowTile> shadows = new List<ShadowTile> ();
-        shadows.Add (new ShadowTile (int.MaxValue, start.Position, null, start));
+        var startShadow = stPool.RetrieveItem ();
+        startShadow.AssignValues (int.MaxValue, start.Position, null, start);
+        shadows.Add (startShadow);
 
         Queue<ShadowTile> checkNext = new Queue<ShadowTile> ();
         Queue<ShadowTile> checkNow = new Queue<ShadowTile> ();
@@ -156,7 +160,8 @@ public class Board : MonoBehaviour {
                 }
 
                 if (addTile (currentShadow, nextTile)) {
-                    ShadowTile checkedShadow = new ShadowTile (currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);
+                    ShadowTile checkedShadow = stPool.RetrieveItem ();
+                    checkedShadow.AssignValues (currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);
                     checkNext.Enqueue (checkedShadow);
                     shadows.Add (checkedShadow);
                 }
@@ -167,7 +172,6 @@ public class Board : MonoBehaviour {
                 SwapReference (ref checkNow, ref checkNext);
         }
 
-        Debug.Log ("Count: " + shadows.Count);
         List<PathfindingData> retValue = new List<PathfindingData> ();
 
         // use a pool of pathfinding data
@@ -177,6 +181,7 @@ public class Board : MonoBehaviour {
             newpfd.tile = shadow.tile;
             retValue.Add (newpfd);
         });
+
         return retValue;
     }
 

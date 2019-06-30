@@ -5,7 +5,6 @@ public class Hero : Unit {
     [SerializeField] private WalkingMovement movement;
     [SerializeField] private bool isDebug;
     IEnumerator prepState;
-
     private UnitState HeroState;
 
     public override void Initialize (Board board, UnitTypes r) {

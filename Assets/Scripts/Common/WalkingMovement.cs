@@ -57,7 +57,7 @@ public class WalkingMovement : Movement {
         Tweener tweener = transform.MoveTo (target.center, 0.5f, EasingEquations.Linear);
         bool wasInterrupted = false;
         while (tweener != null) {
-            if (!target.IsOccupiedBy (owner) && target.OccupiedBy) {
+            if (!target.IsOccupiedBy (owner) && target.OccupiedBy != null) {
                 wasInterrupted = true;
                 break;
             }

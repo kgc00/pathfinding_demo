@@ -10,4 +10,9 @@ public class PathfindingData {
     public void SetNext (PathfindingData next) {
         this.nextAvailableInPool = next;
     }
+
+    public void ClearLocalData () {
+        this.shadow = null;
+        this.tile = null;
+    }
 }

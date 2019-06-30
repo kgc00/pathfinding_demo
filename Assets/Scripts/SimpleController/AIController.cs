@@ -35,13 +35,13 @@ public class AIController : Controller {
                 IdleState ();
                 break;
             case UnitStates.PREPARING:
-                IdleState ();
+                PrepState ();
                 break;
             case UnitStates.ACTING:
-                IdleState ();
+                ActingState ();
                 break;
             case UnitStates.COOLDOWN:
-                IdleState ();
+                CooldownState ();
                 break;
         }
     }
@@ -61,7 +61,10 @@ public class AIController : Controller {
         PathfindingData selected = data[Random.Range (0, data.Count)];
         StartCoroutine (movement.Traverse (data, selected, () => {
             SetState (UnitStates.COOLDOWN);
-            data.ForEach (item => Board.pfdPool.ReturnItem (item));
+            data.ForEach (item => {
+                Board.stPool.ReturnItem (item.shadow);
+                Board.pfdPool.ReturnItem (item);
+            });
         }));
         SetState (UnitStates.ACTING);
     }
