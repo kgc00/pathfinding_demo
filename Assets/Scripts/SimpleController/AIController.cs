@@ -59,10 +59,7 @@ public class AIController : Controller {
         BoardVisuals.AddTileToHighlights (owner, tiles);
         tiles = null;
         PathfindingData selected = data[Random.Range (0, data.Count)];
-        StartCoroutine (movement.Traverse (data, selected, () => {
-            SetState (UnitStates.COOLDOWN);
-            data.ForEach (item => Board.pfdPool.ReturnItem (item));
-        }));
+        StartCoroutine (movement.Traverse (data, selected, () => SetState (UnitStates.COOLDOWN)));
         SetState (UnitStates.ACTING);
     }
     public override void PrepState () { }

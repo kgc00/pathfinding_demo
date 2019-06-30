@@ -18,7 +18,6 @@ public class PrepState : UnitState {
             tiles.Add (element.tile);
         });
         BoardVisuals.AddTileToHighlights (owner, tiles);
-        tiles = null;
 
         // user clicks on a walkable tile which is in range....
         if (Input.GetMouseButtonDown (1)) {
@@ -35,9 +34,6 @@ public class PrepState : UnitState {
                 return new ActingState (owner, movement, tilesInRange, selectedTile);
             }
         }
-
-        tilesInRange.ForEach (pfd => Board.pfdPool.ReturnItem (pfd));
-        tilesInRange = null;
         return null;
     }
 

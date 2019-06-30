@@ -8,7 +8,6 @@ public class Board : MonoBehaviour {
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit> ();
     public LevelData levelData;
     BoardVisuals vis;
-    public static PathFindingDataPool pfdPool;
     Point[] dirs = new Point[4] {
         new Point (0, 1),
         new Point (0, -1),
@@ -17,8 +16,6 @@ public class Board : MonoBehaviour {
     };
 
     private void Awake () {
-        // must initialize the pool before we load units
-        pfdPool = new PathFindingDataPool ();
         vis = gameObject.AddComponent<BoardVisuals> ();
         vis.Initialize (this);
         if (levelData != null) {
@@ -167,16 +164,10 @@ public class Board : MonoBehaviour {
                 SwapReference (ref checkNow, ref checkNext);
         }
 
-        Debug.Log ("Count: " + shadows.Count);
         List<PathfindingData> retValue = new List<PathfindingData> ();
-
-        // use a pool of pathfinding data
-        shadows.ForEach (shadow => {
-            var newpfd = pfdPool.RetrieveItem ();
-            newpfd.shadow = shadow;
-            newpfd.tile = shadow.tile;
-            retValue.Add (newpfd);
-        });
+        shadows.ForEach (shadow => retValue.Add (
+            new PathfindingData (shadow.tile, shadow)
+        ));
         return retValue;
     }
 
