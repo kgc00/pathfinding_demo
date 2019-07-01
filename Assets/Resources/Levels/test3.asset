@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5e58f3670aa0d349880b178602da54a, type: 3}
-  m_Name: test2
+  m_Name: test3
   m_EditorClassIdentifier: 
   tiles:
   - location:
@@ -425,32 +425,4 @@ MonoBehaviour:
   - location:
       x: 3
       y: 5
-    unitRef: 1
-  - location:
-      x: 8
-      y: 2
-    unitRef: 1
-  - location:
-      x: 8
-      y: 4
-    unitRef: 1
-  - location:
-      x: 6
-      y: 2
-    unitRef: 1
-  - location:
-      x: 6
-      y: 8
-    unitRef: 1
-  - location:
-      x: 2
-      y: 8
-    unitRef: 1
-  - location:
-      x: 2
-      y: 7
-    unitRef: 1
-  - location:
-      x: 3
-      y: 6
     unitRef: 1

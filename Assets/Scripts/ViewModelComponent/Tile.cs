@@ -19,13 +19,14 @@ public class Tile : MonoBehaviour {
 
     public void SetOccupied (Unit occupier) {
         OccupiedBy = occupier;
-        myRend.material.color = Color.cyan;
     }
     public void SetUnoccupied () {
         OccupiedBy = null;
-        myRend.material.color = Color.white;
     }
 
+    public bool IsOccupied () {
+        return (OccupiedBy != null);
+    }
     public bool IsOccupiedBy (Unit u) {
         return (u == OccupiedBy);
     }

@@ -122,6 +122,7 @@ public class BoardCreator : MonoBehaviour {
 
         Unit unit = Current.CreateUnitAt (p, type);
         unit.transform.parent = gameObject.transform;
+        unit.InLevelEditor ();
 
         // Put unit in the dictionary
         units.Add (unit.Position, unit);

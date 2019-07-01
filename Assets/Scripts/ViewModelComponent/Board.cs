@@ -97,10 +97,21 @@ public class Board : MonoBehaviour {
         return tile;
     }
 
-    public Unit UnitAt (Point p) {
+    // this method uses the point key in the units dictionary to find a unit
+    // therefore it is only for level creation, not runtime usage
+    public Unit UnitAtForBoardCreation (Point p) {
         Unit unit = null;
         units.TryGetValue (p, out unit);
         return unit;
+    }
+
+    public Unit UnitAt (Point p) {
+        foreach (KeyValuePair<Point, Unit> pair in units) {
+            if (pair.Value.Position == p) {
+                return pair.Value;
+            }
+        }
+        return null;
     }
 
     public void DeleteUnitAt (Point p) {
@@ -159,6 +170,7 @@ public class Board : MonoBehaviour {
                     continue;
                 }
 
+                // use strategy pattern to define unique filtering logic for each request
                 if (addTile (currentShadow, nextTile)) {
                     ShadowTile checkedShadow = stPool.RetrieveItem ();
                     checkedShadow.AssignValues (currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);

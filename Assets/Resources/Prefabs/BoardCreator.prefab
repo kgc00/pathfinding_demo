@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3593236074385590018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3593236074385590028}
+  - component: {fileID: 3593236074385590029}
+  m_Layer: 0
+  m_Name: BoardCreator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3593236074385590028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3593236074385590018}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6027746, y: -0.35237008, z: -0.19252692}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3593236074385590029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3593236074385590018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0a2628b81e27e4c8f5d5c68093fa67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileSelectionIndicatorPrefab: {fileID: 137804177371799968, guid: eb7b1df601c8f8447b837535d25d4638,
+    type: 3}
+  tilePrefabs:
+  - {fileID: 9209219456445023628, guid: 2449784e79a9e1c41bc1307620d560df, type: 3}
+  - {fileID: 9209219456445023628, guid: 5bd5bfb66902ac14caf22d2955854292, type: 3}
+  unitPrefabs:
+  - {fileID: 6001365405198312581, guid: ee882284cf906d74b82cf0c0c45c30cc, type: 3}
+  - {fileID: -2083317544935444870, guid: 631f5d7d609f0b4418cb1b14f45b6eb8, type: 3}
+  - {fileID: 6001365405198312581, guid: 40be3018f5d22a749834a36353d35935, type: 3}
+  InputHandler: {fileID: 0}
+  width: 10
+  depth: 10
+  levelData: {fileID: 11400000, guid: b8c504404e4b6b743a234fec617714f1, type: 2}
+  Current: {fileID: 0}

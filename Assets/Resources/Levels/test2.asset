@@ -452,5 +452,13 @@ MonoBehaviour:
     unitRef: 1
   - location:
       x: 3
+      y: 7
+    unitRef: 1
+  - location:
+      x: 4
+      y: 6
+    unitRef: 1
+  - location:
+      x: 3
       y: 6
     unitRef: 1

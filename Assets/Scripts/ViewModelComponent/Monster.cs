@@ -14,4 +14,10 @@ public class Monster : Unit {
         controller = gameObject.AddComponent<AIController> ();
         controller.Initialize (board, this, movement);
     }
+
+    public override void InLevelEditor () {
+        base.InLevelEditor ();
+        Destroy (controller);
+        Destroy (movement);
+    }
 }

@@ -28,4 +28,10 @@ public class Hero : Unit {
         HeroState = state;
         HeroState.Enter ();
     }
+
+    public override void InLevelEditor () {
+        base.InLevelEditor ();
+        HeroState = new EditorState ();
+        Destroy (movement);
+    }
 }
