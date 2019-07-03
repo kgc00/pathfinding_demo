@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5448352546205790426}
   - component: {fileID: 5480395486502277453}
   - component: {fileID: 9209219456445023628}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,5 +104,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5264f5cba8735489016ed75f756240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWalkable: 1
+  isWalkable: 0
   TypeReference: 1

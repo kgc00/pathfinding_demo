@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2451072281874647706}
   - component: {fileID: 3049504034443628928}
   - component: {fileID: 1672595196260052254}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Eye (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 7875153358550737143}
   - component: {fileID: 3090090441955069199}
   - component: {fileID: 3507150712527211399}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,8 +193,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7042867819308101424}
-  - component: {fileID: 3762500287357318023}
-  m_Layer: 0
+  - component: {fileID: -2083317544935444870}
+  - component: {fileID: 7597540261658228992}
+  m_Layer: 11
   m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +217,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3762500287357318023
+--- !u!114 &-2083317544935444870
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,10 +226,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 5986886248936826741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39510aad6410a8846a0afd665adcc7ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a943e918ef442044b4938c545d546c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  u: {fileID: 0}
+  State: 0
+  TypeReference: 0
+  dir: 0
+  movement: {fileID: 0}
+  controller: {fileID: 0}
+  isDebug: 0
+--- !u!135 &7597540261658228992
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5986886248936826741}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8254873262557396884
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +260,7 @@ GameObject:
   - component: {fileID: 2853281370219567601}
   - component: {fileID: 6057209891384078455}
   - component: {fileID: 2428635023617296825}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -4,6 +4,8 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
+Assets/Scripts/Debug
+Assets/Scripts/Debug.meta
 
 # Visual Studio cache directory
 .vs/

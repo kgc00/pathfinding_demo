@@ -193,7 +193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1713618095494168421}
-  - component: {fileID: 163752251962882723}
+  - component: {fileID: 6001365405198312581}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -216,7 +216,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &163752251962882723
+--- !u!114 &6001365405198312581
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,9 +225,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2395506480195146590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39510aad6410a8846a0afd665adcc7ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 9473912250d275342b561a058c163560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TypeReference: 1
   TypeReference: 1
 --- !u!1 &3787983627500860504
 GameObject:
