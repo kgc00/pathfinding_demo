@@ -36,10 +36,8 @@ public class WalkingMovement : Movement {
             Tile from = targets[i - 1];
             Tile to = targets[i];
 
-            if (shouldBreak) {
-                Debug.Log ("breaking: " + shouldBreak);
+            if (shouldBreak)
                 break;
-            }
 
             // some dynamic obstacle like a unit is now
             // occupying the tile, we end the traversal early

@@ -19,10 +19,6 @@ public class ActingState : UnitState {
         CoroutineHelper.Instance.CoroutineFromEnumerator (
             movement.Traverse (tilesInRange, tileToMoveTo, () => {
                 this.UpdateState ();
-                tilesInRange.ForEach (pfd => {
-                    Board.stPool.ReturnItem (pfd.shadow);
-                    Board.pfdPool.ReturnItem (pfd);
-                });
             }));
     }
 

@@ -36,10 +36,6 @@ public class PrepState : UnitState {
             }
         }
 
-        tilesInRange.ForEach (pfd => {
-            Board.stPool.ReturnItem (pfd.shadow);
-            Board.pfdPool.ReturnItem (pfd);
-        });
         tilesInRange = null;
         return null;
     }

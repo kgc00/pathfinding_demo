@@ -8,8 +8,6 @@ public class Board : MonoBehaviour {
     private Dictionary<Point, Unit> units = new Dictionary<Point, Unit> ();
     public LevelData levelData;
     BoardVisuals vis;
-    public static PathFindingDataPool pfdPool;
-    public static ShadowTilePool stPool;
     Point[] dirs = new Point[4] {
         new Point (0, 1),
         new Point (0, -1),
@@ -18,9 +16,6 @@ public class Board : MonoBehaviour {
     };
 
     private void Awake () {
-        // must initialize the pool before we load units
-        pfdPool = new PathFindingDataPool ();
-        stPool = new ShadowTilePool ();
         vis = gameObject.AddComponent<BoardVisuals> ();
         vis.Initialize (this);
         if (levelData != null) {
@@ -145,8 +140,7 @@ public class Board : MonoBehaviour {
 
     public List<PathfindingData> Search (Tile start, Func<ShadowTile, Tile, bool> addTile) {
         List<ShadowTile> shadows = new List<ShadowTile> ();
-        var startShadow = stPool.RetrieveItem ();
-        startShadow.AssignValues (int.MaxValue, start.Position, null, start);
+        var startShadow = new ShadowTile (int.MaxValue, start.Position, null, start);
         shadows.Add (startShadow);
 
         Queue<ShadowTile> checkNext = new Queue<ShadowTile> ();
@@ -172,8 +166,7 @@ public class Board : MonoBehaviour {
 
                 // use strategy pattern to define unique filtering logic for each request
                 if (addTile (currentShadow, nextTile)) {
-                    ShadowTile checkedShadow = stPool.RetrieveItem ();
-                    checkedShadow.AssignValues (currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);
+                    var checkedShadow = new ShadowTile (currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);
                     checkNext.Enqueue (checkedShadow);
                     shadows.Add (checkedShadow);
                 }
@@ -188,10 +181,7 @@ public class Board : MonoBehaviour {
 
         // use a pool of pathfinding data
         shadows.ForEach (shadow => {
-            var newpfd = pfdPool.RetrieveItem ();
-            newpfd.shadow = shadow;
-            newpfd.tile = shadow.tile;
-            retValue.Add (newpfd);
+            retValue.Add (new PathfindingData (shadow.tile, shadow));
         });
 
         return retValue;

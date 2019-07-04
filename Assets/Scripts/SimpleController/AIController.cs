@@ -61,10 +61,6 @@ public class AIController : Controller {
         PathfindingData selected = data[Random.Range (0, data.Count)];
         StartCoroutine (movement.Traverse (data, selected, () => {
             SetState (UnitStates.COOLDOWN);
-            data.ForEach (item => {
-                Board.stPool.ReturnItem (item.shadow);
-                Board.pfdPool.ReturnItem (item);
-            });
         }));
         SetState (UnitStates.ACTING);
     }

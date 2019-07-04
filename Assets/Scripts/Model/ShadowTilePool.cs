@@ -5,6 +5,8 @@ public class ShadowTilePool {
     List<ShadowTile> pool;
     ShadowTile firstAvailable;
     const int POOL_SIZE = 250; // larger than we need
+
+    // not used at the moment
     public ShadowTilePool () {
         // create a new list, fill it up, and create a linked list using SetNext
         pool = new List<ShadowTile> ();
