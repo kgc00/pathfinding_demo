@@ -65,6 +65,7 @@ public class AIController : Controller {
                 Board.stPool.ReturnItem (item.shadow);
                 Board.pfdPool.ReturnItem (item);
             });
+            data = null;
         }));
         SetState (UnitStates.ACTING);
     }

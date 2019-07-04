@@ -11,6 +11,11 @@ public class ShadowTile {
         this.tile = t;
     }
 
+    // ~ShadowTile () {
+    //     UnityEngine.Debug.Log ("Should not see this");
+    //     UnityEngine.Debug.Log ("next: " + nextAvailableInPool);
+    // }
+
     public void SetNext (ShadowTile st) {
         this.nextAvailableInPool = st;
     }

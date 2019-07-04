@@ -6,6 +6,10 @@ public class PathfindingData {
         this.tile = t;
         this.shadow = st;
     }
+    // ~PathfindingData () {
+    //     UnityEngine.Debug.Log ("Should not see this");
+    //     UnityEngine.Debug.Log ("next: " + nextAvailableInPool);
+    // }
 
     public void SetNext (PathfindingData next) {
         this.nextAvailableInPool = next;

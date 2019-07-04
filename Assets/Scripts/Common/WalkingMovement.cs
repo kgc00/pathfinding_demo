@@ -36,10 +36,8 @@ public class WalkingMovement : Movement {
             Tile from = targets[i - 1];
             Tile to = targets[i];
 
-            if (shouldBreak) {
-                Debug.Log ("breaking: " + shouldBreak);
+            if (shouldBreak)
                 break;
-            }
 
             // some dynamic obstacle like a unit is now
             // occupying the tile, we end the traversal early
@@ -48,29 +46,53 @@ public class WalkingMovement : Movement {
             }
 
             // pass in a callback to update our state if our path is blocked during traversal
-            yield return StartCoroutine (Walk (from, to, () => shouldBreak = true));
+            // yield return StartCoroutine (Walk (from, to, () => shouldBreak = true));
+            Directions dir = from.GetDirection (to);
+            if (owner.dir != dir)
+                yield return StartCoroutine (Turn (dir));
+            yield return StartCoroutine (Walk (from, to, () => { shouldBreak = true; }));
         }
         onComplete ();
         yield return null;
     }
 
-    // using the strategy pattern to customize how we travel
     IEnumerator Walk (Tile from, Tile target, System.Action onInterrupted) {
-        float journeyLength = Vector3.Distance (owner.transform.position, target.center);
-        float startTime = Time.time;
-        float speed = 1;
-        while (owner.transform.position != target.center) {
-            bool targetOccupied = target.IsOccupied () && !target.IsOccupiedBy (owner);
-            if (targetOccupied) {
-                target = from;
+        Tweener tweener = transform.MoveTo (target.center, 0.5f, EasingEquations.Linear);
+        bool wasInterrupted = false;
+        while (tweener != null) {
+            if (!target.IsOccupiedBy (owner) && target.OccupiedBy != null) {
+                wasInterrupted = true;
                 onInterrupted ();
+                break;
+            }
+            yield return null;
+        }
+
+        if (wasInterrupted) {
+            Tweener tweenerFrom = transform.MoveTo (from.center, 0.5f, EasingEquations.Linear);
+            while (tweenerFrom != null) {
                 yield return null;
             }
-
-            float distCovered = (Time.time - startTime) * speed;
-            float fracJourney = distCovered / journeyLength;
-            owner.transform.position = Vector3.Lerp (owner.transform.position, target.center, fracJourney);
-            yield return false;
         }
     }
+
+    // using the strategy pattern to customize how we travel
+    // IEnumerator Walk (Tile from, Tile target, System.Action onInterrupted) {
+    //     float journeyLength = Vector3.Distance (owner.transform.position, target.center);
+    //     float startTime = Time.time;
+    //     float speed = 1;
+    //     while (owner.transform.position != target.center) {
+    //         bool targetOccupied = target.IsOccupied () && !target.IsOccupiedBy (owner);
+    //         if (targetOccupied) {
+    //             target = from;
+    //             onInterrupted ();
+    //             yield return null;
+    //         }
+
+    //         float distCovered = (Time.time - startTime) * speed;
+    //         float fracJourney = distCovered / journeyLength;
+    //         owner.transform.position = Vector3.Lerp (owner.transform.position, target.center, fracJourney);
+    //         yield return false;
+    //     }
+    // }
 }
