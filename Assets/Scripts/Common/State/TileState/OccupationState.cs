@@ -1,4 +1,4 @@
-public sealed class OccupationState {
+public class OccupationState {
     Unit Occupier;
     Board Board;
     Tile occupiedTile;
@@ -9,7 +9,7 @@ public sealed class OccupationState {
         this.occupiedTile = null;
     }
 
-    public void Enter () {
+    public virtual void Enter () {
         if (isLevelEditor)
             return;
 
@@ -17,7 +17,7 @@ public sealed class OccupationState {
         occupiedTile.SetOccupied (Occupier);
     }
 
-    public void Update () {
+    public virtual void Update () {
         if (isLevelEditor)
             return;
 
@@ -31,7 +31,7 @@ public sealed class OccupationState {
         EnterNewTile (tile);
     }
 
-    void EnterNewTile (Tile newTile) {
+    protected virtual void EnterNewTile (Tile newTile) {
         // if for some reason we are leaving an occupied tile,
         // make sure to set the occupied reference to the correct unit
         Unit u = Board.UnitAt (occupiedTile.Position);

@@ -18,10 +18,6 @@ public class Unit : MonoBehaviour {
     }
 
     protected virtual void Update () {
-        occupationState.Update ();
-    }
-
-    public virtual void InLevelEditor () {
-        occupationState.isLevelEditor = true;
+        occupationState?.Update ();
     }
 }

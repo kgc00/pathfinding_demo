@@ -21,17 +21,11 @@ public class Hero : Unit {
         base.Update ();
 
         // if we returned a new state switch to it
-        UnitState state = HeroState.HandleInput ();
+        UnitState state = HeroState?.HandleInput ();
         if (state == null)
             return;
 
         HeroState = state;
         HeroState.Enter ();
-    }
-
-    public override void InLevelEditor () {
-        base.InLevelEditor ();
-        HeroState = new EditorState ();
-        Destroy (movement);
     }
 }
