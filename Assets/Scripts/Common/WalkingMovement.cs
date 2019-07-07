@@ -9,7 +9,7 @@ public class WalkingMovement : Movement {
     }
 
     public override List<PathfindingData> GetTilesInRange (Board board) {
-        List<PathfindingData> retValue = board.Search (board.TileAt (owner.Position), ExpandSearch);
+        List<PathfindingData> retValue = board.Pathfinding.Search (board.TileAt (owner.Position), ExpandSearch);
         Filter (retValue);
         return retValue;
     }
