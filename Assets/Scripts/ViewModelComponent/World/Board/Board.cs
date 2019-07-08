@@ -17,14 +17,13 @@ public class Board : MonoBehaviour {
         new Point (-1, 0)
     };
 
-    private void Awake () {
+    public void Initialize (LevelData data) {
+        levelData = data;
         vis = gameObject.AddComponent<BoardVisuals> ();
         bpf = gameObject.AddComponent<BoardPathfinding> ();
         vis.Initialize (this);
         bpf.Initialize (this);
-        if (levelData != null) {
-            Load ();
-        }
+        Load ();
     }
 
     public Tile CreateTileAt (Point p, TileTypes type) {
