@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WalkingMovement : Movement {
-    public bool isDebug;
     public override void Initialize (Board board, Unit owner, int range) {
         base.Initialize (board, owner, range);
     }

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Hero : Unit {
     [SerializeField] private WalkingMovement movement;
-    [SerializeField] private bool isDebug;
     IEnumerator prepState;
     private UnitState HeroState;
 
@@ -12,7 +11,6 @@ public class Hero : Unit {
 
         movement = gameObject.AddComponent<WalkingMovement> ();
         movement.Initialize (board, this, 3);
-        movement.isDebug = isDebug;
 
         HeroState = new IdleState (this, movement);
     }

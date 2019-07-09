@@ -15,4 +15,7 @@ MonoBehaviour:
   Location:
     x: 1
     y: 0
-  LevelData: {fileID: 11400000, guid: 9eab03e34500e184cab540fd184cd396, type: 2}
+  areaStateData:
+    initialLevel: {fileID: 11400000, guid: 9eab03e34500e184cab540fd184cd396, type: 2}
+    currentInstance: {fileID: 0}
+    from: 0

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class Area : MonoBehaviour {
-    private Board board;
+    public Board Board { get; private set; }
     private AreaState state;
     [SerializeField] private LevelData levelData;
     public void Initialize (LevelData ld) {
@@ -10,8 +10,8 @@ public class Area : MonoBehaviour {
         state = new SetupState (this);
         GameObject boardGO = new GameObject ("Board");
         boardGO.transform.parent = transform;
-        board = boardGO.AddComponent<Board> ();
-        board.Initialize (levelData);
+        Board = boardGO.AddComponent<Board> ();
+        Board.Initialize (levelData);
     }
 
     void Update () {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,9 +7,10 @@ public class World : MonoBehaviour {
     [HideInInspector] public World Instance;
     // Load all area data and store it in a list
     [SerializeField] private List<AreaData> data;
-    private Dictionary<Point, LevelData> world = new Dictionary<Point, LevelData> ();
+    private Dictionary<Point, AreaData> world = new Dictionary<Point, AreaData> ();
     [SerializeField] private Point curLoc = new Point (0, 0);
     private GameObject curArea;
+    private AreaStateHandler areaStateHandler;
     private void Awake () {
         if (Instance != this && Instance != null) {
             Destroy (gameObject);
@@ -22,10 +22,10 @@ public class World : MonoBehaviour {
         Initialize ();
     }
 
-    private void LoadCurrentArea () {
+    private void LoadCurrentArea (LevelData transitionTo) {
         GameObject instance = new GameObject ("Area: " + curLoc.ToString ());
         Area area = instance.AddComponent<Area> ();
-        area.Initialize (world[curLoc]);
+        area.Initialize (transitionTo);
         curArea = instance;
     }
 
@@ -54,12 +54,24 @@ public class World : MonoBehaviour {
                 curLoc = p;
                 TransitionToNewArea ();
             }
+        } else if (Input.GetKeyDown (KeyCode.Space)) {
+            var a = curArea.GetComponent<Area> ();
+            areaStateHandler.RemoveUnit (
+                a.Board.Units.First ().Value,
+                curLoc,
+                a);
         }
     }
 
     private void TransitionToNewArea () {
-        Destroy (curArea);
-        LoadCurrentArea ();
+        if (curArea)
+            Destroy (curArea);
+        LevelData destination = world[curLoc].areaStateData.currentInstance;
+        if (destination == null) {
+            world[curLoc].areaStateData.currentInstance = world[curLoc].areaStateData.initialLevel;
+            destination = world[curLoc].areaStateData.currentInstance;
+        }
+        LoadCurrentArea (destination);
     }
 
     private void Initialize () {
@@ -71,11 +83,12 @@ public class World : MonoBehaviour {
             return;
 
         foreach (var area in data) {
-            world.Add (area.Location, area.LevelData);
+            world.Add (area.Location, area);
         }
 
         gameObject.AddComponent<CoroutineHelper> ();
-
-        LoadCurrentArea ();
+        areaStateHandler = gameObject.AddComponent<AreaStateHandler> ();
+        areaStateHandler.Initialize (world);
+        TransitionToNewArea ();
     }
 }
