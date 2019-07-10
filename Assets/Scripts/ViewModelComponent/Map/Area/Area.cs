@@ -5,7 +5,6 @@ public class Area : MonoBehaviour {
     private AreaState state;
     [SerializeField] private LevelData levelData;
     public void Initialize (LevelData ld) {
-        Debug.Log ("initializing");
         levelData = ld;
         state = new SetupState (this);
         GameObject boardGO = new GameObject ("Board");

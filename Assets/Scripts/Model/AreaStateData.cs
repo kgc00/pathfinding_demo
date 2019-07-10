@@ -8,7 +8,7 @@ public struct AreaStateData {
     public Directions from;
     public AreaStateData (LevelData initialLevel) {
         this.initialLevel = initialLevel;
-        this.currentInstance = initialLevel;
+        this.currentInstance = null;
         this.from = Directions.North;
         UnityEngine.Debug.Log (string.Format ("called asd"));
     }

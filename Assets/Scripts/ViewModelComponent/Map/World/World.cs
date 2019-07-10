@@ -11,6 +11,7 @@ public class World : MonoBehaviour {
     [SerializeField] private Point curLoc = new Point (0, 0);
     private GameObject curArea;
     private AreaStateHandler areaStateHandler;
+    private WorldSaveComponent worldSaveComponent;
     private void Awake () {
         if (Instance != this && Instance != null) {
             Destroy (gameObject);
@@ -68,7 +69,7 @@ public class World : MonoBehaviour {
             Destroy (curArea);
         LevelData destination = world[curLoc].areaStateData.currentInstance;
         if (destination == null) {
-            world[curLoc].areaStateData.currentInstance = world[curLoc].areaStateData.initialLevel;
+            world[curLoc].areaStateData.currentInstance = worldSaveComponent.createLevelInstance (world[curLoc].areaStateData.initialLevel);
             destination = world[curLoc].areaStateData.currentInstance;
         }
         LoadCurrentArea (destination);
@@ -83,10 +84,12 @@ public class World : MonoBehaviour {
             return;
 
         foreach (var area in data) {
+            area.areaStateData.currentInstance = null;
             world.Add (area.Location, area);
         }
 
         gameObject.AddComponent<CoroutineHelper> ();
+        worldSaveComponent = gameObject.AddComponent<WorldSaveComponent> ();
         areaStateHandler = gameObject.AddComponent<AreaStateHandler> ();
         areaStateHandler.Initialize (world);
         TransitionToNewArea ();
