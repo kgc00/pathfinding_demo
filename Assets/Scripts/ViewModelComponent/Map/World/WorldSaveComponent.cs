@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -14,16 +15,32 @@ public class WorldSaveComponent : MonoBehaviour {
         if (!Directory.Exists (filePath))
             CreateSaveDirectory ();
 
-        LevelData boardData = ScriptableObject.CreateInstance<LevelData> ();
-        boardData.tiles = initialLevel.tiles;
-        boardData.units = initialLevel.units;
-        string name = initialLevel.name + "-current";
+        string name;
+        LevelData boardData = AssignLevelParameters (initialLevel, out name);
 
         string fileURI = string.Format (
             "Assets/Resources/Levels/Boards/Current/{0}.asset",
             name);
         AssetDatabase.CreateAsset (boardData, fileURI);
         return Resources.Load<LevelData> (string.Format ("Levels/Boards/Current/{0}", name));
+    }
+
+    private LevelData AssignLevelParameters (LevelData initialLevel, out string name) {
+        LevelData boardData = ScriptableObject.CreateInstance<LevelData> ();
+        // cannot directly assign boardData's values to initialLevel
+        // or it will modify initialLevel (because it is assigned by ref?)
+        List<TileSpawnData> tsd = new List<TileSpawnData> ();
+        foreach (TileSpawnData d in initialLevel.tiles) {
+            tsd.Add (d);
+        }
+        List<UnitSpawnData> usd = new List<UnitSpawnData> ();
+        foreach (UnitSpawnData u in initialLevel.units) {
+            usd.Add (u);
+        }
+        boardData.tiles = tsd;
+        boardData.units = usd;
+        name = initialLevel.name + "-current";
+        return boardData;
     }
 
     void CreateSaveDirectory () {
