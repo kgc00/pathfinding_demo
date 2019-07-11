@@ -15,8 +15,8 @@ public class WorldSaveComponent : MonoBehaviour {
         if (!Directory.Exists (filePath))
             CreateSaveDirectory ();
 
-        string name;
-        LevelData boardData = AssignLevelParameters (initialLevel, out name);
+        LevelData boardData = AssignLevelParameters (initialLevel);
+        string name = initialLevel.name + "-current";
 
         string fileURI = string.Format (
             "Assets/Resources/Levels/Boards/Current/{0}.asset",
@@ -25,7 +25,7 @@ public class WorldSaveComponent : MonoBehaviour {
         return Resources.Load<LevelData> (string.Format ("Levels/Boards/Current/{0}", name));
     }
 
-    private LevelData AssignLevelParameters (LevelData initialLevel, out string name) {
+    private LevelData AssignLevelParameters (LevelData initialLevel) {
         LevelData boardData = ScriptableObject.CreateInstance<LevelData> ();
         // cannot directly assign boardData's values to initialLevel
         // or it will modify initialLevel (because it is assigned by ref?)
@@ -39,7 +39,6 @@ public class WorldSaveComponent : MonoBehaviour {
         }
         boardData.tiles = tsd;
         boardData.units = usd;
-        name = initialLevel.name + "-current";
         return boardData;
     }
 

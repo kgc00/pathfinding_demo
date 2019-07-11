@@ -34,26 +34,26 @@ public class World : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.A)) {
             Point p = new Point (curLoc.x - 1, curLoc.y);
             if (world.ContainsKey (p)) {
-                curLoc = p;
-                TransitionToNewArea ();
+
+                TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.D)) {
             Point p = new Point (curLoc.x + 1, curLoc.y);
             if (world.ContainsKey (p)) {
-                curLoc = p;
-                TransitionToNewArea ();
+
+                TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.W)) {
             Point p = new Point (curLoc.x, curLoc.y + 1);
             if (world.ContainsKey (p)) {
-                curLoc = p;
-                TransitionToNewArea ();
+
+                TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.S)) {
             Point p = new Point (curLoc.x, curLoc.y - 1);
             if (world.ContainsKey (p)) {
-                curLoc = p;
-                TransitionToNewArea ();
+
+                TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.Space)) {
             var a = curArea.GetComponent<Area> ();
@@ -64,15 +64,16 @@ public class World : MonoBehaviour {
         }
     }
 
-    private void TransitionToNewArea () {
+    private void TransitionToNewArea (Point newLoc) {
         if (curArea)
             Destroy (curArea);
-        LevelData destination = world[curLoc].areaStateData.currentInstance;
-        if (destination == null) {
-            world[curLoc].areaStateData.currentInstance = worldSaveComponent.createLevelInstance (world[curLoc].areaStateData.initialLevel);
-            destination = world[curLoc].areaStateData.currentInstance;
-        }
-        LoadCurrentArea (destination);
+
+        if (world[newLoc].areaStateData.currentInstance == null)
+            world[newLoc].areaStateData.currentInstance = worldSaveComponent.createLevelInstance (world[newLoc].areaStateData.initialLevel);
+
+        areaStateHandler.SetEnterDirection (out world[newLoc].areaStateData.from, curLoc, newLoc);
+        curLoc = newLoc;
+        LoadCurrentArea (world[newLoc].areaStateData.currentInstance);
     }
 
     private void Initialize () {
@@ -92,6 +93,6 @@ public class World : MonoBehaviour {
         worldSaveComponent = gameObject.AddComponent<WorldSaveComponent> ();
         areaStateHandler = gameObject.AddComponent<AreaStateHandler> ();
         areaStateHandler.Initialize (world);
-        TransitionToNewArea ();
+        TransitionToNewArea (new Point (0, 0));
     }
 }
