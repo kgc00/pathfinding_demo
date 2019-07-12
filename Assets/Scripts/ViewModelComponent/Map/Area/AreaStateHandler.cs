@@ -26,7 +26,6 @@ public class AreaStateHandler : MonoBehaviour {
     }
     public void SetEnterDirection (out Directions from, Point curLoc, Point newLoc) {
         var t = newLoc - curLoc;
-        Debug.Log (string.Format (t.ToString ()));
         switch (t.ToString ()) {
             case "(1,0)":
                 from = Directions.West;
@@ -41,8 +40,7 @@ public class AreaStateHandler : MonoBehaviour {
                 from = Directions.North;
                 break;
             default:
-                Debug.Log (string.Format ("default case"));
-                from = Directions.South;
+                from = Directions.None;
                 break;
         }
     }

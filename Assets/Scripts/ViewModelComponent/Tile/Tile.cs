@@ -17,11 +17,15 @@ public class Tile : MonoBehaviour {
         myRend = this.GetComponent<Renderer> ();
     }
 
-    public void SetOccupied (Unit occupier) {
+    public virtual void SetOccupied (Unit occupier) {
         OccupiedBy = occupier;
     }
     public void SetUnoccupied () {
         OccupiedBy = null;
+    }
+
+    protected virtual void OnOccupied (Unit occupier) {
+
     }
 
     public bool IsOccupied () {

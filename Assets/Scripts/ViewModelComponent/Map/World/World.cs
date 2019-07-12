@@ -23,7 +23,7 @@ public class World : MonoBehaviour {
         Initialize ();
     }
 
-    private void LoadCurrentArea (LevelData transitionTo) {
+    private void LoadCurrentArea (AreaStateData transitionTo) {
         GameObject instance = new GameObject ("Area: " + curLoc.ToString ());
         Area area = instance.AddComponent<Area> ();
         area.Initialize (transitionTo);
@@ -73,7 +73,7 @@ public class World : MonoBehaviour {
 
         areaStateHandler.SetEnterDirection (out world[newLoc].areaStateData.from, curLoc, newLoc);
         curLoc = newLoc;
-        LoadCurrentArea (world[newLoc].areaStateData.currentInstance);
+        LoadCurrentArea (world[newLoc].areaStateData);
     }
 
     private void Initialize () {

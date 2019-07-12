@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5480395486502277453}
   - component: {fileID: 9209219456445023628}
   m_Layer: 10
-  m_Name: Wall
+  m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aa21539e10f98854c908d036d09d419f, type: 2}
+  - {fileID: 2100000, guid: 705c86538df3a6042acd8e253b29bb3f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101,9 +101,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7060274800766113782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25fd3f133c9444042a1cfab5dcdfdf90, type: 3}
+  m_Script: {fileID: 11500000, guid: 64f732dffce5217458df5700dc631130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OccupiedBy: {fileID: 0}
-  isWalkable: 0
-  TypeReference: 1
+  isWalkable: 1
+  TypeReference: 2

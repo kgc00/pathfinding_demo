@@ -10,6 +10,7 @@ public class Board : MonoBehaviour {
     BoardVisuals vis;
     BoardPathfinding bpf;
     public BoardPathfinding Pathfinding => bpf;
+    private Area area;
     public Point[] Dirs => new Point[4] {
         new Point (0, 1),
         new Point (0, -1),
@@ -17,13 +18,18 @@ public class Board : MonoBehaviour {
         new Point (-1, 0)
     };
 
-    public void Initialize (LevelData data) {
+    public void Initialize (LevelData data, Area a) {
+        this.area = a;
         levelData = data;
         vis = gameObject.AddComponent<BoardVisuals> ();
         bpf = gameObject.AddComponent<BoardPathfinding> ();
         vis.Initialize (this);
         bpf.Initialize (this);
         Load ();
+    }
+
+    public void RelayEventToArea (EventInfo<Unit> e) {
+        area.eventQueue.AddEvent (e);
     }
 
     public Tile CreateTileAt (Point p, TileTypes type) {
@@ -34,6 +40,10 @@ public class Board : MonoBehaviour {
         Tile tile = null;
         if (type == TileTypes.DIRT) {
             Tile instance = Instantiate (Resources.Load ("Prefabs/Dirt", typeof (Tile)),
+                new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
+            tile = instance;
+        } else if (type == TileTypes.ENTRANCE) {
+            Tile instance = Instantiate (Resources.Load ("Prefabs/Entrance", typeof (Tile)),
                 new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
             tile = instance;
         } else if (type == TileTypes.WALL) {

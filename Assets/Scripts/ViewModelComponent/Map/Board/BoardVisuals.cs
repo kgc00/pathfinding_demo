@@ -18,7 +18,9 @@ public class BoardVisuals : MonoBehaviour {
         List<Renderer> temp = new List<Renderer> ();
         if (highlightedTilesByUnit == null || highlightedTilesByUnit.ContainsKey (unit))
             return;
-        foreach (Tile tile in tiles) {
+
+        var query = tiles.Where (tile => tile.TypeReference == TileTypes.DIRT);
+        foreach (var tile in query) {
             Renderer rend = tile.GetComponent<Renderer> ();
             rend.material.color = Color.green;
             temp.Add (rend);
