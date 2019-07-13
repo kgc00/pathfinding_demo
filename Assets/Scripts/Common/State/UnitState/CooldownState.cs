@@ -16,7 +16,12 @@ public class CooldownState : UnitState {
             () => this.UpdateState ());
     }
 
-    public void UpdateState () { state = new IdleState (owner, movement); }
+    public void UpdateState () {
+        if (owner is Hero) {
+            EventQueue.AddEvent (new AreaStateChangeEventArgs (owner, null, AreaStateTypes.Active));
+        }
+        state = new IdleState (owner, movement);
+    }
 
     // return null until UpdateState is called;
     public override UnitState HandleInput () { return state; }

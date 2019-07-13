@@ -8,9 +8,11 @@ public class ActiveState : AreaState {
 
     public override void Enter () { }
     public override AreaState HandleUpdate () {
-        var info = area.eventQueue.HandleEvent ();
-        if (info != null && info.sender.ToString () == "ENTRANCE (Entrance)")
-            info.e.Invoke (info.e.Target as Unit);
+        // var info = EventQueue.HandleEvent ();
+        // if (info != null && info.sender.ToString () == "ENTRANCE (Entrance)") {
+        //     info.e.Invoke ();
+        //     // area
+        // }
         return null;
     }
 }

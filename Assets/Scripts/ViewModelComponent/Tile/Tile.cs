@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour {
     private Renderer myRend;
     public Vector3 center { get { return new Vector3 (Position.x, Position.y, -2); } }
 
-    public void Initialize (Board board, Point pos, TileTypes r) {
+    public virtual void Initialize (Board board, Point pos, TileTypes r) {
         Position = pos;
         Board = board;
         TypeReference = r;

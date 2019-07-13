@@ -1,13 +1,14 @@
+using System;
 using UnityEngine;
 
-public class Area : MonoBehaviour {
+public class Area : MonoBehaviour, IEventHandler {
     public Board Board { get; private set; }
     private AreaState state;
+    public AreaState State { get => state; }
+
     [SerializeField] public AreaStateData areaData;
-    public EventQueue<EventInfo<Unit>> eventQueue;
     public void Initialize (AreaStateData ad) {
         areaData = ad;
-        eventQueue = new EventQueue<EventInfo<Unit>> ();
         GameObject boardGO = new GameObject ("Board");
         boardGO.transform.parent = transform;
         Board = boardGO.AddComponent<Board> ();
@@ -23,5 +24,18 @@ public class Area : MonoBehaviour {
 
         this.state = state;
         this.state.Enter ();
+    }
+
+    public void HandleIncomingEvent (InfoEventArgs curEvent) {
+        switch (curEvent.type.eventType) {
+            case EventTypes.StateChangeEvent:
+                if (state is SetupState) {
+                    SetupState curState = (SetupState) state;
+                    curState.AdvanceAreaState ();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

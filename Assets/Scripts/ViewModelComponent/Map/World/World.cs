@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class World : MonoBehaviour {
+public class World : MonoBehaviour, IEventHandler {
     [HideInInspector] public World Instance;
     // Load all area data and store it in a list
     [SerializeField] private List<AreaData> data;
@@ -12,6 +12,7 @@ public class World : MonoBehaviour {
     private GameObject curArea;
     private AreaStateHandler areaStateHandler;
     private WorldSaveComponent worldSaveComponent;
+    public EventManager eventManager;
     private void Awake () {
         if (Instance != this && Instance != null) {
             Destroy (gameObject);
@@ -26,6 +27,7 @@ public class World : MonoBehaviour {
     private void LoadCurrentArea (AreaStateData transitionTo) {
         GameObject instance = new GameObject ("Area: " + curLoc.ToString ());
         Area area = instance.AddComponent<Area> ();
+        eventManager.UpdateArea (area);
         area.Initialize (transitionTo);
         curArea = instance;
     }
@@ -34,25 +36,21 @@ public class World : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.A)) {
             Point p = new Point (curLoc.x - 1, curLoc.y);
             if (world.ContainsKey (p)) {
-
                 TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.D)) {
             Point p = new Point (curLoc.x + 1, curLoc.y);
             if (world.ContainsKey (p)) {
-
                 TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.W)) {
             Point p = new Point (curLoc.x, curLoc.y + 1);
             if (world.ContainsKey (p)) {
-
                 TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.S)) {
             Point p = new Point (curLoc.x, curLoc.y - 1);
             if (world.ContainsKey (p)) {
-
                 TransitionToNewArea (p);
             }
         } else if (Input.GetKeyDown (KeyCode.Space)) {
@@ -61,6 +59,22 @@ public class World : MonoBehaviour {
                 a.Board.Units.First ().Value,
                 curLoc,
                 a);
+        }
+
+        eventManager.HandleUpdate ();
+    }
+
+    // refactor into a handler component
+    public void HandleIncomingEvent (InfoEventArgs curEvent) {
+        switch (curEvent.type.eventType) {
+            case EventTypes.TransitionEvent:
+                if (curArea.GetComponent<Area> ().State is ActiveState) {
+                    TransitionEventArgs transitionEvent = (TransitionEventArgs) curEvent;
+                    TransitionToNewArea ((curLoc - transitionEvent.transitionDirection));
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -90,6 +104,7 @@ public class World : MonoBehaviour {
         }
 
         gameObject.AddComponent<CoroutineHelper> ();
+        eventManager = new EventManager (this, null);
         worldSaveComponent = gameObject.AddComponent<WorldSaveComponent> ();
         areaStateHandler = gameObject.AddComponent<AreaStateHandler> ();
         areaStateHandler.Initialize (world);

@@ -2,11 +2,14 @@ using UnityEngine;
 
 [System.Serializable]
 public class Entrance : Tile {
+    private Directions transitionsToThe;
+
     public override void SetOccupied (Unit occupier) {
         base.SetOccupied (occupier);
-        Board.RelayEventToArea (new EventInfo<Unit> (this, OnOccupied));
+        EventQueue.AddEvent (new TransitionEventArgs (this, null, transitionsToThe.ToPoint ()));
     }
-    protected override void OnOccupied (Unit occupier) {
-        Debug.Log (string.Format ("occupado"));
+
+    public void SetTransitionDirection (Directions dir) {
+        transitionsToThe = dir;
     }
 }

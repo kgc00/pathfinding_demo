@@ -28,10 +28,6 @@ public class Board : MonoBehaviour {
         Load ();
     }
 
-    public void RelayEventToArea (EventInfo<Unit> e) {
-        area.eventQueue.AddEvent (e);
-    }
-
     public Tile CreateTileAt (Point p, TileTypes type) {
         if (tiles.ContainsKey (p)) {
             DeleteTileAt (p);
