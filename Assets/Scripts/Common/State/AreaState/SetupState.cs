@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +16,9 @@ public class SetupState : AreaState {
 
         InitializeResources (tsd, min, max);
         SetPlayerPosition (tsd, min, max);
+
+        // only allow the player to move at board start state
+        area.Board.InitializeUnitAt (area.Board.Units.First (unit => unit.Value.TypeReference == UnitTypes.HERO).Key);
     }
 
     private void SetPlayerPosition (List<TileSpawnData> tsd, Point min, Point max) {

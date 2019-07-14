@@ -6,7 +6,8 @@ public class Entrance : Tile {
 
     public override void SetOccupied (Unit occupier) {
         base.SetOccupied (occupier);
-        EventQueue.AddEvent (new TransitionEventArgs (this, null, transitionsToThe.ToPoint ()));
+        if (occupier is Hero)
+            EventQueue.AddEvent (new TransitionEventArgs (this, null, transitionsToThe.ToPoint ()));
     }
 
     public void SetTransitionDirection (Directions dir) {

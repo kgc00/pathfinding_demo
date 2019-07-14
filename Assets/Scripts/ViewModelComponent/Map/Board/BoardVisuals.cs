@@ -16,40 +16,51 @@ public class BoardVisuals : MonoBehaviour {
 
     public static void AddTileToHighlights (Unit unit, List<Tile> tiles) {
         List<Renderer> temp = new List<Renderer> ();
-        if (highlightedTilesByUnit == null || highlightedTilesByUnit.ContainsKey (unit))
+        if (highlightedTilesByUnit == null)
             return;
 
         var query = tiles.Where (tile => tile.TypeReference == TileTypes.DIRT);
         foreach (var tile in query) {
             Renderer rend = tile.GetComponent<Renderer> ();
-            rend.material.color = Color.green;
+            if (unit is Monster && rend.material.color != Color.green) {
+                rend.material.color = Color.red;
+            } else if (unit is Hero) {
+                rend.material.color = Color.green;
+            }
             temp.Add (rend);
-            allRenderers.Add (rend);
         }
-        highlightedTilesByUnit.Add (unit, temp);
+        if (!highlightedTilesByUnit.ContainsKey (unit))
+            highlightedTilesByUnit.Add (unit, temp);
+        else
+            highlightedTilesByUnit[unit] = temp;
+
     }
 
     public static void RemoveTileFromHighlights (Unit unit) {
-        if (highlightedTilesByUnit.ContainsKey (unit)) {
-            var duplicates = allRenderers
-                .GroupBy (x => x)
-                .Where (x => x.Count () > 1)
-                .Select (x => x.Key);
-            foreach (Renderer rend in highlightedTilesByUnit[unit]) {
-                if (!duplicates.Contains (rend)) {
-                    rend.material.color = Color.white;
-                }
-                allRenderers.Remove (rend);
+        var duplicates = allRenderers
+            .GroupBy (x => x)
+            .Where (x => x.Count () > 1)
+            .Select (x => x.Key);
+        foreach (Renderer rend in highlightedTilesByUnit[unit]) {
+            if (!duplicates.Contains (rend)) {
+                rend.material.color = Color.white;
             }
-            highlightedTilesByUnit.Remove (unit);
+            allRenderers.Remove (rend);
         }
+        highlightedTilesByUnit[unit].Clear ();
     }
 
-    public static void DebugHighlights (Renderer r) {
-        r.material.color = Color.cyan;
-    }
+    void Update () {
+        // update all renderers list
+        allRenderers = highlightedTilesByUnit.SelectMany (x => x.Value).ToList ();
 
-    public static void RemoveDebugHighlights (Renderer r) {
-        r.material.color = Color.white;
+        // keep all tiles associated with user's unit(s) green
+        var heroHighlights = highlightedTilesByUnit.FirstOrDefault (item => item.Key.TypeReference == UnitTypes.HERO).Value;
+        if (heroHighlights != null) {
+            Debug.Log (string.Format ("entry to skip is not null and has {0} entries", heroHighlights.Count));
+            foreach (var rend in allRenderers.Except (heroHighlights)) {
+                rend.material.color = Color.red;
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ public class PrepState : UnitState {
         tiles = null;
 
         // user clicks on a walkable tile which is in range....
-        if (Input.GetMouseButtonDown (1)) {
+        if (Input.GetMouseButtonDown (0) || Input.GetMouseButtonDown (1)) {
             Point mousePosition = Camera.main.ScreenToWorldPoint (
                 new Vector3 (
                     Input.mousePosition.x,

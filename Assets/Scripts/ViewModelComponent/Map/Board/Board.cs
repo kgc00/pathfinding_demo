@@ -70,17 +70,14 @@ public class Board : MonoBehaviour {
         if (type == UnitTypes.HERO) {
             Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Hero;
-            instance.GetComponent<Hero> ().Initialize (this, type);
             unit = instance as Unit;
         } else if (type == UnitTypes.MONSTER) {
             Monster instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            instance.GetComponent<Monster> ().Initialize (this, type);
             unit = instance as Unit;
         } else if (type == UnitTypes.DEBUG) {
             Monster instance = Instantiate (Resources.Load ("Prefabs/Debug", typeof (Monster)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            instance.GetComponent<Monster> ().Initialize (this, type);
             unit = instance as Unit;
         }
 
@@ -93,6 +90,26 @@ public class Board : MonoBehaviour {
         unit.transform.parent = gameObject.transform;
         units.Add (unit.Position, unit);
         return unit;
+    }
+
+    public void InitializeUnitAt (Point p) {
+        Unit unit = UnitAtForBoardCreation (p);
+        var name = "";
+        if (unit.TypeReference == UnitTypes.HERO) {
+            unit.GetComponent<Hero> ().Initialize (this, UnitTypes.HERO);
+            name = UnitTypes.HERO.ToString ();
+        } else if (unit.TypeReference == UnitTypes.MONSTER) {
+            unit.GetComponent<Monster> ().Initialize (this, UnitTypes.MONSTER);
+            name = UnitTypes.MONSTER.ToString ();
+        }
+
+        if (unit == null) {
+            Debug.LogError ("unit should not be null and is.");
+            return;
+        }
+
+        unit.gameObject.name = name;
+        unit.transform.parent = gameObject.transform;
     }
 
     public Unit LevelEditorCreateUnitAt (Point p, UnitTypes type) {

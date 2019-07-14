@@ -1,18 +1,16 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 public class ActiveState : AreaState {
     private Area area;
     public ActiveState (Area area) { this.area = area; }
 
-    public override void Enter () { }
+    public override void Enter () {
+        // hero is initialized on the setup state, we initialize every other type here
+        foreach (var unit in area.Board.Units.Where (unit => unit.Value.TypeReference != UnitTypes.HERO)) {
+            area.Board.InitializeUnitAt (unit.Key);
+        }
+    }
     public override AreaState HandleUpdate () {
-        // var info = EventQueue.HandleEvent ();
-        // if (info != null && info.sender.ToString () == "ENTRANCE (Entrance)") {
-        //     info.e.Invoke ();
-        //     // area
-        // }
         return null;
     }
 }
