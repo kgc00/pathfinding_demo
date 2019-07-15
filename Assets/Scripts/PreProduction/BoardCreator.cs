@@ -114,7 +114,7 @@ public class BoardCreator : MonoBehaviour {
 
     public void PlaceUnit (Point p, UnitTypes type) {
         if (units.ContainsKey (p)) {
-            Current.DeleteUnitAt (p);
+            Current.DeleteUnitAtViaRef (p);
             units.Remove (p);
         }
 
@@ -126,7 +126,7 @@ public class BoardCreator : MonoBehaviour {
     }
     public void DeleteUnitAt (Point p) {
         if (units.ContainsKey (p)) {
-            Current.DeleteUnitAt (p);
+            Current.DeleteUnitAtViaRef (p);
             units.Remove (p);
         }
     }

@@ -2,8 +2,6 @@ using System.Collections;
 using UnityEngine;
 
 public class Hero : Unit {
-    [SerializeField] private WalkingMovement movement;
-    IEnumerator prepState;
     private UnitState HeroState;
 
     public override void Initialize (Board board, UnitTypes r) {
@@ -12,7 +10,7 @@ public class Hero : Unit {
         movement = gameObject.AddComponent<WalkingMovement> ();
         movement.Initialize (board, this, 3);
 
-        HeroState = new IdleState (this, movement);
+        HeroState = new IdleState (this, (WalkingMovement) movement);
     }
 
     protected override void Update () {

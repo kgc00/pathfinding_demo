@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -5,24 +6,24 @@ using UnityEngine;
 public class WorldSaveComponent : MonoBehaviour {
     void OnApplicationQuit () {
         // works outside of destructor
-        FileUtil.DeleteFileOrDirectory ("Assets/Resources/Levels/Boards/Current");
-        FileUtil.DeleteFileOrDirectory ("Assets/Resources/Levels/Boards/Current.meta");
+        FileUtil.DeleteFileOrDirectory ("Assets/Resources/Current");
+        FileUtil.DeleteFileOrDirectory ("Assets/Resources/Current.meta");
         UnityEditor.AssetDatabase.Refresh ();
     }
 
     internal LevelData createLevelInstance (LevelData initialLevel) {
-        string filePath = Application.dataPath + "/Resources/Levels/Boards/Current";
+        string filePath = Application.dataPath + "/Current/Levels/Boards";
         if (!Directory.Exists (filePath))
-            CreateSaveDirectory ();
+            CreateLevelSaveDirectory ();
 
         LevelData boardData = AssignLevelParameters (initialLevel);
         string name = initialLevel.name + "-current";
 
         string fileURI = string.Format (
-            "Assets/Resources/Levels/Boards/Current/{0}.asset",
+            "Assets/Resources/Current/Levels/Boards/{0}.asset",
             name);
         AssetDatabase.CreateAsset (boardData, fileURI);
-        return Resources.Load<LevelData> (string.Format ("Levels/Boards/Current/{0}", name));
+        return Resources.Load<LevelData> (string.Format ("Current/Levels/Boards/{0}", name));
     }
 
     private LevelData AssignLevelParameters (LevelData initialLevel) {
@@ -42,19 +43,67 @@ public class WorldSaveComponent : MonoBehaviour {
         return boardData;
     }
 
-    void CreateSaveDirectory () {
+    void CreateLevelSaveDirectory () {
         string filePath = Application.dataPath + "/Resources";
         if (!Directory.Exists (filePath))
             AssetDatabase.CreateFolder ("Assets", "Resources");
-        filePath += "/Levels";
-        if (!Directory.Exists (filePath))
-            AssetDatabase.CreateFolder ("Assets/Resources", "Levels");
-        filePath += "/Boards";
-        if (!Directory.Exists (filePath))
-            AssetDatabase.CreateFolder ("Assets/Resources/Levels", "Boards");
         filePath += "/Current";
         if (!Directory.Exists (filePath))
-            AssetDatabase.CreateFolder ("Assets/Resources/Levels/Boards", "Current");
+            AssetDatabase.CreateFolder ("Assets/Resources", "Current");
+        filePath += "/Levels";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets/Resources/Current", "Levels");
+        filePath += "/Boards";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets/Resources/Current/Levels", "Boards");
         AssetDatabase.Refresh ();
     }
+
+    void CreateUnitSaveDirectory () {
+        string filePath = Application.dataPath + "/Resources";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets", "Resources");
+        filePath += "/Current";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets/Resources", "Current");
+        filePath += "/Units";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets/Resources/Current", "Units");
+        AssetDatabase.Refresh ();
+    }
+
+    void CreateInstanceDirectory () {
+        string filePath = Application.dataPath + "/Resources/Current";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets", "Resources");
+        filePath += "/Current";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets/Resources", "Current");
+        filePath += "/Units";
+        if (!Directory.Exists (filePath))
+            AssetDatabase.CreateFolder ("Assets/Resources/Current", "Units");
+        AssetDatabase.Refresh ();
+    }
+
+    internal void InitializePlayerStats () {
+        string filePath = Application.dataPath + "/Current/Units";
+        if (!Directory.Exists (filePath)) {
+            CreateUnitSaveDirectory ();
+
+            UnitData playerData = ScriptableObject.CreateInstance<UnitData> ();
+            UnitData refData = Resources.Load<UnitData> (string.Format ("Beastiary/HeroStats"));
+            playerData.Assign (refData);
+            string name = "HeroStats-current";
+            string fileURI = string.Format (
+                "Assets/Resources/Current/Units/{0}.asset",
+                name);
+            AssetDatabase.CreateAsset (playerData, fileURI);
+            AssetDatabase.Refresh ();
+        }
+    }
+
+    public static UnitData GetPlayerStats () {
+        return Resources.Load<UnitData> ("Current/Units/HeroStats-current");
+    }
+
 }

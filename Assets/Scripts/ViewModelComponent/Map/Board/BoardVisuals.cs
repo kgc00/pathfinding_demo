@@ -57,7 +57,6 @@ public class BoardVisuals : MonoBehaviour {
         // keep all tiles associated with user's unit(s) green
         var heroHighlights = highlightedTilesByUnit.FirstOrDefault (item => item.Key.TypeReference == UnitTypes.HERO).Value;
         if (heroHighlights != null) {
-            Debug.Log (string.Format ("entry to skip is not null and has {0} entries", heroHighlights.Count));
             foreach (var rend in allRenderers.Except (heroHighlights)) {
                 rend.material.color = Color.red;
             }

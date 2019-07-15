@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Board : MonoBehaviour {
@@ -63,7 +64,7 @@ public class Board : MonoBehaviour {
 
     public Unit CreateUnitAt (Point p, UnitTypes type) {
         if (units.ContainsKey (p)) {
-            DeleteUnitAt (p);
+            DeleteUnitAtViaRef (p);
         }
 
         Unit unit = null;
@@ -114,7 +115,7 @@ public class Board : MonoBehaviour {
 
     public Unit LevelEditorCreateUnitAt (Point p, UnitTypes type) {
         if (units.ContainsKey (p)) {
-            DeleteUnitAt (p);
+            DeleteUnitAtViaRef (p);
         }
 
         Unit unit = null;
@@ -166,10 +167,19 @@ public class Board : MonoBehaviour {
         return null;
     }
 
-    public void DeleteUnitAt (Point p) {
+    public void DeleteUnitAtViaRef (Point p) {
         if (units.ContainsKey (p)) {
             Destroy (units[p].gameObject, .25f);
             units.Remove (p);
+        }
+    }
+
+    public void DeleteUnitAtViaPoint (Point p) {
+        Unit unit = UnitAt (p);
+        Point key = units.First (u => u.Value == unit).Key;
+        if (units.ContainsKey (key)) {
+            Destroy (units[key].gameObject, .25f);
+            units.Remove (key);
         }
     }
 

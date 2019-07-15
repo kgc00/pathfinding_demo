@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 public class World : MonoBehaviour, IEventHandler {
-    [HideInInspector] public World Instance;
+    [HideInInspector] public static World Instance;
     // Load all area data and store it in a list
     [SerializeField] private List<AreaData> data;
     private Dictionary<Point, AreaData> world = new Dictionary<Point, AreaData> ();
@@ -106,6 +106,7 @@ public class World : MonoBehaviour, IEventHandler {
         gameObject.AddComponent<CoroutineHelper> ();
         eventManager = new EventManager (this, null);
         worldSaveComponent = gameObject.AddComponent<WorldSaveComponent> ();
+        worldSaveComponent.InitializePlayerStats ();
         areaStateHandler = gameObject.AddComponent<AreaStateHandler> ();
         areaStateHandler.Initialize (world);
         TransitionToNewArea (new Point (0, 0));
