@@ -21,7 +21,7 @@ public class AreaStateHandler : MonoBehaviour {
         if (sd.location.x != -99) {
             Debug.Log (string.Format ("deleting item"));
             world[curLoc].areaStateData.currentInstance.units.Remove (sd);
-            area.Board.DeleteUnitAtViaRef (sd.location);
+            area.Board.DeleteUnitAt (sd.location);
         }
     }
     public void SetEnterDirection (out Directions from, Point curLoc, Point newLoc) {

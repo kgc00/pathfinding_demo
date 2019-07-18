@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bc07601c4b74f4d4c9497037d3c121f2, type: 2}
+  - {fileID: 2100000, guid: 2f4c80028dd734c438493895afe5eb67, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 1713618095494168421}
   - component: {fileID: 6001365405198312581}
   m_Layer: 0
-  m_Name: Debug
+  m_Name: SimpleMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,15 +225,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2395506480195146590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9473912250d275342b561a058c163560, type: 3}
+  m_Script: {fileID: 11500000, guid: 7efdb4309f5bdde4399fb0ef1a2e7f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  State: 0
+  movement: {fileID: 0}
   TypeReference: 2
   dir: 0
-  movement: {fileID: 0}
-  controller: {fileID: 0}
-  isDebug: 1
+  HealthComponent: {fileID: 0}
+  driver: {fileID: 0}
 --- !u!1 &3787983627500860504
 GameObject:
   m_ObjectHideFlags: 0

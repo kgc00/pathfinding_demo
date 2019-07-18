@@ -21,19 +21,19 @@ public class WalkingMovement : Movement {
         return (from.distance + 1) <= range;
     }
 
-    public override IEnumerator Traverse (List<PathfindingData> path, PathfindingData target, System.Action onComplete) {
-        List<Tile> targets = new List<Tile> ();
+    public override IEnumerator Traverse (List<PathfindingData> tilesInRange, PathfindingData target, System.Action onComplete) {
+        List<Tile> path = new List<Tile> ();
 
         while (target != null) {
-            targets.Insert (0, target.tile);
-            target = path.Find (data => data.shadow == target.shadow.previous);
+            path.Insert (0, target.tile);
+            target = tilesInRange.Find (data => data.shadow == target.shadow.previous);
         }
 
         // Move to each waypoint in succession
         bool shouldBreak = false;
-        for (int i = 1; i < targets.Count; ++i) {
-            Tile from = targets[i - 1];
-            Tile to = targets[i];
+        for (int i = 1; i < path.Count; ++i) {
+            Tile from = path[i - 1];
+            Tile to = path[i];
 
             if (shouldBreak)
                 break;

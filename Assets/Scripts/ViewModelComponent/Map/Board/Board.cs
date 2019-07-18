@@ -26,7 +26,12 @@ public class Board : MonoBehaviour {
         bpf = gameObject.AddComponent<BoardPathfinding> ();
         vis.Initialize (this);
         bpf.Initialize (this);
+        Unit.onUnitDeath += DeleteUnit;
         Load ();
+    }
+
+    ~Board () {
+        Unit.onUnitDeath -= DeleteUnit;
     }
 
     public Tile CreateTileAt (Point p, TileTypes type) {
@@ -64,9 +69,18 @@ public class Board : MonoBehaviour {
 
     public Unit CreateUnitAt (Point p, UnitTypes type) {
         if (units.ContainsKey (p)) {
-            DeleteUnitAtViaRef (p);
+            DeleteUnitAt (p);
         }
 
+        Unit unit = UnitFromType (p, type);
+
+        unit.gameObject.name = type.ToString ();
+        unit.transform.parent = gameObject.transform;
+        units.Add (unit.Position, unit);
+        return unit;
+    }
+
+    private static Unit UnitFromType (Point p, UnitTypes type) {
         Unit unit = null;
         if (type == UnitTypes.HERO) {
             Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
@@ -76,21 +90,16 @@ public class Board : MonoBehaviour {
             Monster instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
                 new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
             unit = instance as Unit;
-        } else if (type == UnitTypes.DEBUG) {
-            Monster instance = Instantiate (Resources.Load ("Prefabs/Debug", typeof (Monster)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
+        } else if (type == UnitTypes.SIMPLE_MONSTER) {
+            SimpleMonster instance = Instantiate (Resources.Load ("Prefabs/SimpleMonster", typeof (SimpleMonster)),
+                new Vector3 (p.x, p.y, -2), Quaternion.identity) as SimpleMonster;
             unit = instance as Unit;
         }
-
         if (unit == null) {
             Debug.LogError ("unit should not be null and is.");
             return null;
-        }
-
-        unit.gameObject.name = type.ToString ();
-        unit.transform.parent = gameObject.transform;
-        units.Add (unit.Position, unit);
-        return unit;
+        } else
+            return unit;
     }
 
     public void InitializeUnitAt (Point p) {
@@ -111,37 +120,6 @@ public class Board : MonoBehaviour {
 
         unit.gameObject.name = name;
         unit.transform.parent = gameObject.transform;
-    }
-
-    public Unit LevelEditorCreateUnitAt (Point p, UnitTypes type) {
-        if (units.ContainsKey (p)) {
-            DeleteUnitAtViaRef (p);
-        }
-
-        Unit unit = null;
-        if (type == UnitTypes.HERO) {
-            Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Hero;
-            unit = instance as Unit;
-        } else if (type == UnitTypes.MONSTER) {
-            Monster instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            unit = instance as Unit;
-        } else if (type == UnitTypes.DEBUG) {
-            Monster instance = Instantiate (Resources.Load ("Prefabs/Debug", typeof (Monster)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            unit = instance as Unit;
-        }
-
-        if (unit == null) {
-            Debug.LogError ("unit should not be null and is.");
-            return null;
-        }
-
-        unit.gameObject.name = type.ToString ();
-        unit.transform.parent = gameObject.transform;
-        units.Add (unit.Position, unit);
-        return unit;
     }
 
     public Tile TileAt (Point p) {
@@ -167,20 +145,22 @@ public class Board : MonoBehaviour {
         return null;
     }
 
-    public void DeleteUnitAtViaRef (Point p) {
+    // called by onUnitDeath action
+    // useful when we don't know the unit's original dictionary key
+    private void DeleteUnit (Unit u) {
+        Point p = KeyFromUnit (u);
+        DeleteUnitAt (p);
+    }
+
+    public void DeleteUnitAt (Point p) {
         if (units.ContainsKey (p)) {
             Destroy (units[p].gameObject, .25f);
             units.Remove (p);
         }
     }
 
-    public void DeleteUnitAtViaPoint (Point p) {
-        Unit unit = UnitAt (p);
-        Point key = units.First (u => u.Value == unit).Key;
-        if (units.ContainsKey (key)) {
-            Destroy (units[key].gameObject, .25f);
-            units.Remove (key);
-        }
+    public Point KeyFromUnit (Unit unit) {
+        return units.FirstOrDefault (u => u.Value == unit).Key;
     }
 
     public void DeleteTileAt (Point p) {

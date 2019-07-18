@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class Controller : MonoBehaviour {
+public abstract class SimpleDriver : MonoBehaviour {
     [SerializeField] protected Board board;
-    [SerializeField] protected Monster owner;
-    [SerializeField] protected WalkingMovement movement;
+    [SerializeField] protected Unit owner;
+    [SerializeField] protected Movement movement;
 
-    public virtual void Initialize (Board board, Monster owner, WalkingMovement movement) {
+    public virtual void Initialize (Board board, Unit owner, Movement movement) {
         this.board = board;
         this.owner = owner;
         this.movement = movement;

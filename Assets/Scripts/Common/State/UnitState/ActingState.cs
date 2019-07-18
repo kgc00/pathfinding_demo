@@ -1,29 +1,25 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ActingState : UnitState {
-    public Unit owner;
-    public WalkingMovement movement;
-    private List<PathfindingData> tilesInRange;
-    private PathfindingData tileToMoveTo;
-    private UnitState state;
-    public ActingState (Unit owner, WalkingMovement movement, List<PathfindingData> tilesInRange, PathfindingData tileToMoveTo) {
-        this.owner = owner;
-        this.movement = movement;
+    List<PathfindingData> tilesInRange;
+    PathfindingData targetTile;
+    UnitState state;
+    AbilityComponent abilityComponent;
+    public ActingState (Unit Owner,
+        List<PathfindingData> tilesInRange, PathfindingData targetTile) : base (Owner) {
         this.tilesInRange = tilesInRange;
-        this.tileToMoveTo = tileToMoveTo;
+        this.targetTile = targetTile;
+        this.abilityComponent = Owner.AbilityComponent;
     }
 
     public override void Enter () {
-        // start a timer with a callback to transition to the next state
-        CoroutineHelper.Instance.CoroutineFromEnumerator (
-            movement.Traverse (tilesInRange, tileToMoveTo, () => {
-                this.UpdateState ();
-            }));
+        // call the ability's start method
+        abilityComponent.ActivateWithCallback ((cooldownDuration) => this.UpdateState (cooldownDuration));
     }
 
-    public void UpdateState () { state = new CooldownState (owner, movement); }
+    // return ActingState until updatestate is called;
+    public override UnitState HandleInput (Controller controller) { return state; }
 
-    // return null until UpdateState is called;
-    public override UnitState HandleInput () { return state; }
+    // transition to cooldown state
+    public void UpdateState (float cooldownDuration) { state = new CooldownState (Owner, cooldownDuration); }
 }

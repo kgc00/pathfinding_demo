@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIController : Controller {
+public class SimpleAIDriver : SimpleDriver {
     public UnitStates State;
-    public override void Initialize (Board board, Monster owner, WalkingMovement movement) {
-        base.Initialize (board, owner, movement);
+    public override void Initialize (Board board, Unit owner, Movement movement) {
+        base.Initialize (board, (Monster) owner, (WalkingMovement) movement);
         SetState (UnitStates.IDLE);
     }
 
@@ -70,7 +70,7 @@ public class AIController : Controller {
     public override void ActingState () { }
 
     public override void EnterCooldown () {
-        BoardVisuals.RemoveTileFromHighlights (owner);
+        BoardVisuals.RemoveTilesFromHighlightsByUnit (owner);
         StartCoroutine (countdown (Random.Range (0, 4), () => SetState (UnitStates.IDLE)));
     }
     public override void CooldownState () { }

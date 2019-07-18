@@ -114,11 +114,11 @@ public class BoardCreator : MonoBehaviour {
 
     public void PlaceUnit (Point p, UnitTypes type) {
         if (units.ContainsKey (p)) {
-            Current.DeleteUnitAtViaRef (p);
+            Current.DeleteUnitAt (p);
             units.Remove (p);
         }
 
-        Unit unit = Current.LevelEditorCreateUnitAt (p, type);
+        Unit unit = Current.CreateUnitAt (p, type);
         unit.transform.parent = gameObject.transform;
 
         // Put unit in the dictionary
@@ -126,7 +126,7 @@ public class BoardCreator : MonoBehaviour {
     }
     public void DeleteUnitAt (Point p) {
         if (units.ContainsKey (p)) {
-            Current.DeleteUnitAtViaRef (p);
+            Current.DeleteUnitAt (p);
             units.Remove (p);
         }
     }

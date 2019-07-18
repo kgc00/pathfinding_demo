@@ -1,44 +1,29 @@
 using UnityEngine;
 
 public class IdleState : UnitState {
-    public Unit owner;
-    public WalkingMovement movement;
-
-    public IdleState (Unit owner, WalkingMovement movement) {
-        this.owner = owner;
-        this.movement = movement;
+    AbilityComponent abilityComponent;
+    public IdleState (Unit Owner) : base (Owner) {
+        abilityComponent = Owner.AbilityComponent;
     }
 
-    public override void Enter () {
-        // 1-
-        // get abilities from manager
-        // handle input here
+    public override UnitState HandleInput (Controller controller) {
+        // define our list of acceptable input for this frame and state
+        bool[] pressed = new bool[] {
+            controller.DetectInputFor (ControlTypes.ABILITY_ONE),
+            controller.DetectInputFor (ControlTypes.ABILITY_TWO),
+            controller.DetectInputFor (ControlTypes.ABILITY_THREE),
+        };
 
-        // 2-
-        // send input somewhere
-        // do not know what abilities are assigned
-        // get back true or false
+        // loop through them and see if any have been pressed...
+        for (int i = 0; i < pressed.Length; i++) {
+            if (!pressed[i])
+                return null;
 
-        // a-
-        // send info to unit
-
-        // b-
-        // send info to abilmanager
-    }
-    public override UnitState HandleInput () {
-        // if user clicks left mouse down...
-        if (Input.GetMouseButtonDown (0)) {
-            Point mousePosition = Camera.main.ScreenToWorldPoint (
-                new Vector3 (
-                    Input.mousePosition.x,
-                    Input.mousePosition.y,
-                    Camera.main.nearClipPlane)).ToPoint ();
-
-            // on this unit... transition to prep state...
-            if (owner.Position == mousePosition) {
-                return new PrepState (owner, movement);
-            }
+            // transition to the next state with that data
+            if (abilityComponent.SetCurrentAbility (i))
+                return new PrepState (Owner);
         }
+
         return null;
     }
 }

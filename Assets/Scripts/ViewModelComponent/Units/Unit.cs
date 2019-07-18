@@ -4,19 +4,21 @@ using UnityEngine;
 public abstract class Unit : MonoBehaviour {
     public virtual Point Position => new Point ((int) Mathf.Round (transform.position.x), (int) Mathf.Round (transform.position.y));
     public virtual Board Board { get; protected set; }
+    public static event System.Action<Unit> onUnitDeath = delegate { };
+    [SerializeField] public Movement Movement { get; protected set; }
 
-    [SerializeField] protected Movement movement;
     [SerializeField] public UnitTypes TypeReference;
     public Directions dir;
-    private OccupationState occupationState;
-    private AbilityComponent abilityComponent;
+    protected OccupationState occupationState;
+    public AbilityComponent AbilityComponent { get; protected set; }
     public HealthComponent HealthComponent;
+    protected Controller controller;
 
     public virtual void Initialize (Board board, UnitTypes r) {
         this.Board = board;
         this.TypeReference = r;
         HealthComponent = gameObject.AddComponent<HealthComponent> ();
-        abilityComponent = gameObject.AddComponent<AbilityComponent> ();
+        AbilityComponent = gameObject.AddComponent<AbilityComponent> ();
         transform.localEulerAngles = dir.ToEuler ();
         occupationState = new OccupationState (this, Board);
         occupationState.Enter ();
@@ -26,13 +28,11 @@ public abstract class Unit : MonoBehaviour {
         occupationState?.Update ();
     }
     public virtual void LoadUnitState (UnitData data) {
-        if (abilityComponent && data) {
-            abilityComponent.equippedAbilities = data.equippedAbilities;
-        }
+        AbilityComponent.Initialize (data, this);
         HealthComponent.Initialize (data, this);
     }
     public virtual void UnitDeath () {
         this.GetComponentInChildren<Renderer> ().enabled = false;
-        Board.DeleteUnitAtViaPoint (Position);
+        onUnitDeath (this);
     }
 }

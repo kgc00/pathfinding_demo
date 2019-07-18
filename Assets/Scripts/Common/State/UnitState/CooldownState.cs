@@ -1,29 +1,35 @@
 using UnityEngine;
 
 public class CooldownState : UnitState {
-    public Unit owner;
-    public WalkingMovement movement;
     private UnitState state;
-    public CooldownState (Unit owner, WalkingMovement movement) {
-        this.owner = owner;
-        this.movement = movement;
+    float cooldownDuration;
+    public CooldownState (Unit Owner, float cooldownDuration) : base (Owner) {
+        this.cooldownDuration = cooldownDuration;
     }
     public override void Enter () {
-        BoardVisuals.RemoveTileFromHighlights (owner);
-
+        BoardVisuals.RemoveTilesFromHighlightsByUnit (Owner);
+        Color baseColor = TempChangeColor ();
         // start a timer with a callback to transition to the next state
-        CoroutineHelper.Instance.StartCountdown (Random.Range (0, 4),
-            () => this.UpdateState ());
+        CoroutineHelper.Instance.StartCountdown (cooldownDuration,
+            () => this.UpdateState (baseColor));
     }
 
-    public void UpdateState () {
-        if (owner is Hero) {
-            EventQueue.AddEvent (new AreaStateChangeEventArgs (owner, null, AreaStateTypes.Active));
+    public void UpdateState (Color c) {
+        // should probably only fire when area is in setupstate
+        if (Owner is Hero) {
+            EventQueue.AddEvent (new AreaStateChangeEventArgs (Owner, null, AreaStateTypes.Active));
         }
-        state = new IdleState (owner, movement);
+        Owner.gameObject.GetComponentInChildren<Renderer> ().material.color = c;
+        state = new IdleState (Owner);
     }
 
     // return null until UpdateState is called;
-    public override UnitState HandleInput () { return state; }
+    public override UnitState HandleInput (Controller controller) { return state; }
 
+    private Color TempChangeColor () {
+        Renderer rend = Owner.gameObject.GetComponentInChildren<Renderer> ();
+        Color baseColor = rend.material.color;
+        rend.material.color = Color.black;
+        return baseColor;
+    }
 }

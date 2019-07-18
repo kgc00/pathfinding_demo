@@ -1,5 +1,17 @@
-public abstract class Ability : UnityEngine.ScriptableObject {
-    public abstract void OnCalled ();
-    public abstract void OnCommited ();
-    public abstract void OnFinished ();
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class Ability : ScriptableObject {
+    // set in inspector
+    public int Range;
+    public float CooldownDuration;
+    public RangeComponentType RangeComponentType;
+
+    // fields populated at runtime
+    [HideInInspector] public List<PathfindingData> TilesInRange;
+    [HideInInspector] public PathfindingData Target;
+    [HideInInspector] public System.Action<float> OnFinished;
+    [HideInInspector] public Movement Movement;
+
+    public virtual void Activate () { }
 }

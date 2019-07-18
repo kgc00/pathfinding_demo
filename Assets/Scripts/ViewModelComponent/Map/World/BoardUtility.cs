@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public static class BoardUtility {
     public static Point SetMinV2Int (LevelData ld) {
         int minX = 99;
@@ -27,5 +29,13 @@ public static class BoardUtility {
             }
         }
         return new Point (maxX, maxY);
+    }
+
+    public static Point mousePosFromScreenPoint () {
+        return Camera.main.ScreenToWorldPoint (
+            new Vector3 (
+                Input.mousePosition.x,
+                Input.mousePosition.y,
+                Camera.main.nearClipPlane)).ToPoint ();
     }
 }

@@ -36,7 +36,7 @@ public class BoardVisuals : MonoBehaviour {
 
     }
 
-    public static void RemoveTileFromHighlights (Unit unit) {
+    public static void RemoveTilesFromHighlightsByUnit (Unit unit) {
         var duplicates = allRenderers
             .GroupBy (x => x)
             .Where (x => x.Count () > 1)
