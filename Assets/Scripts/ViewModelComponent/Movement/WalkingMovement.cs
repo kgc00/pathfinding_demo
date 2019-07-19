@@ -2,23 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WalkingMovement : Movement {
-    public override void Initialize (Board board, Unit owner, int range) {
-        base.Initialize (board, owner, range);
-    }
-
-    public override List<PathfindingData> GetTilesInRange (Board board) {
-        List<PathfindingData> retValue = board.Pathfinding.Search (board.TileAt (owner.Position), ExpandSearch);
-        Filter (retValue);
-        return retValue;
-    }
-
-    // using the strategy pattern to re-use how we search
-    protected override bool ExpandSearch (ShadowTile from, Tile to) {
-        if (!to.isWalkable) {
-            return false;
-        }
-        return (from.distance + 1) <= range;
+public class WalkingMovement : MovementComponent {
+    public override void Initialize (Board board, Unit owner) {
+        base.Initialize (board, owner);
     }
 
     public override IEnumerator Traverse (List<PathfindingData> tilesInRange, PathfindingData target, System.Action onComplete) {

@@ -5,7 +5,7 @@ public abstract class Unit : MonoBehaviour {
     public virtual Point Position => new Point ((int) Mathf.Round (transform.position.x), (int) Mathf.Round (transform.position.y));
     public virtual Board Board { get; protected set; }
     public static event System.Action<Unit> onUnitDeath = delegate { };
-    [SerializeField] public Movement Movement { get; protected set; }
+    [SerializeField] public MovementComponent Movement { get; protected set; }
 
     [SerializeField] public UnitTypes TypeReference;
     public Directions dir;

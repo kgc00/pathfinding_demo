@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30deec0ca6fcf5e41845845d4e2ee181, type: 3}
   m_Name: Run
   m_EditorClassIdentifier: 
+  Range: 3
+  CooldownDuration: 1
+  RangeComponentType: 0
+  Movement: {fileID: 0}

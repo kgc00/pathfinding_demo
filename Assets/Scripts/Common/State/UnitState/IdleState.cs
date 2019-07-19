@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class IdleState : UnitState {
     AbilityComponent abilityComponent;
     public IdleState (Unit Owner) : base (Owner) {

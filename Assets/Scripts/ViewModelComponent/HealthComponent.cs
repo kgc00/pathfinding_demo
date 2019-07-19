@@ -8,8 +8,8 @@ public class HealthComponent : MonoBehaviour {
     }
 
     public void AdjustHealth (int amount) {
-        Mathf.Clamp (data.currentHP += amount, 0, data.maxHP);
-        if (data.currentHP == 0) {
+        Mathf.Clamp (data.CurrentHP += amount, 0, data.MaxHP);
+        if (data.CurrentHP == 0) {
             owner.UnitDeath ();
         }
     }

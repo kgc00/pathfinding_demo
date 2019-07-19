@@ -11,7 +11,7 @@ public abstract class Ability : ScriptableObject {
     [HideInInspector] public List<PathfindingData> TilesInRange;
     [HideInInspector] public PathfindingData Target;
     [HideInInspector] public System.Action<float> OnFinished;
-    [HideInInspector] public Movement Movement;
+    [HideInInspector] public MovementComponent Movement;
 
     public virtual void Activate () { }
 }

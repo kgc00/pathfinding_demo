@@ -2,24 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Movement : MonoBehaviour {
+public abstract class MovementComponent : MonoBehaviour {
     protected Board board;
     protected Unit owner;
-    [SerializeField] protected int range;
 
     public abstract IEnumerator Traverse (List<PathfindingData> path, PathfindingData target, System.Action onComplete);
-    public virtual void Initialize (Board board, Unit owner, int range) {
+    public virtual void Initialize (Board board, Unit owner) {
         this.board = board;
         this.owner = owner;
-        this.range = range;
-    }
-    public virtual List<PathfindingData> GetTilesInRange (Board board) {
-        List<PathfindingData> retValue = board.Pathfinding.Search (board.TileAt (owner.Position), ExpandSearch);
-        Filter (retValue);
-        return retValue;
-    }
-    protected virtual bool ExpandSearch (ShadowTile from, Tile to) {
-        return (from.distance + 1) <= range;
     }
 
     protected virtual void Filter (List<PathfindingData> tiles) {

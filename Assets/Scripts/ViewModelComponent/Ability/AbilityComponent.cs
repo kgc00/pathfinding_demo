@@ -4,16 +4,19 @@ using UnityEngine;
 
 [RequireComponent (typeof (Unit))]
 public class AbilityComponent : MonoBehaviour {
-    [SerializeField] public List<Ability> equippedAbilities;
+    [SerializeField] public List<Ability> EquippedAbilities;
     Unit owner;
     public Ability CurrentAbility { get; private set; }
     RangeComponent rangeComponent;
-    Movement movement;
+    MovementComponent movement;
 
     public void Initialize (UnitData data, Unit owner) {
         this.owner = owner;
-        this.movement = owner.Movement;
-        equippedAbilities = data.equippedAbilities;
+        // call into a util to dynamically generate the kind of component we should be using
+        this.movement = UnitUtility.AddMovementComponentFromType (data.MovementType, owner.gameObject);
+        this.movement.Initialize (owner.Board, owner);
+
+        this.EquippedAbilities = data.EquippedAbilities;
     }
 
     internal void ActivateWithCallback (System.Action<float> OnFinished) {
@@ -26,8 +29,8 @@ public class AbilityComponent : MonoBehaviour {
     // called from unit's idle state when the user selects an ability via keypress
     // will set current ability and provide range component
     public bool SetCurrentAbility (int i) {
-        if (i <= equippedAbilities.Count) {
-            CurrentAbility = equippedAbilities[i];
+        if (i <= EquippedAbilities.Count) {
+            CurrentAbility = EquippedAbilities[i];
             return SetRangeComponent ();
         } else {
             Debug.LogError (string.Format ("tried to set ability to an out of bounds index"));
@@ -59,7 +62,7 @@ public class AbilityComponent : MonoBehaviour {
         }
         CurrentAbility.TilesInRange = tilesInRange;
         CurrentAbility.Target = selectedTile;
-        CurrentAbility.Movement = owner.Movement;
+        CurrentAbility.Movement = movement;
         return true;
     }
 

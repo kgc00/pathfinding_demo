@@ -3,9 +3,9 @@
 public abstract class SimpleDriver : MonoBehaviour {
     [SerializeField] protected Board board;
     [SerializeField] protected Unit owner;
-    [SerializeField] protected Movement movement;
+    [SerializeField] protected MovementComponent movement;
 
-    public virtual void Initialize (Board board, Unit owner, Movement movement) {
+    public virtual void Initialize (Board board, Unit owner, MovementComponent movement) {
         this.board = board;
         this.owner = owner;
         this.movement = movement;

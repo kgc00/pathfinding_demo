@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SimpleAIDriver : SimpleDriver {
     public UnitStates State;
-    public override void Initialize (Board board, Unit owner, Movement movement) {
+    public override void Initialize (Board board, Unit owner, MovementComponent movement) {
         base.Initialize (board, (Monster) owner, (WalkingMovement) movement);
         SetState (UnitStates.IDLE);
     }
@@ -51,18 +51,18 @@ public class SimpleAIDriver : SimpleDriver {
     public override void IdleState () { }
 
     public override void EnterPrep () {
-        List<PathfindingData> data = movement.GetTilesInRange (board);
-        List<Tile> tiles = new List<Tile> ();
-        data.ForEach (element => {
-            tiles.Add (element.tile);
-        });
-        BoardVisuals.AddTileToHighlights (owner, tiles);
-        tiles = null;
-        PathfindingData selected = data[Random.Range (0, data.Count)];
-        StartCoroutine (movement.Traverse (data, selected, () => {
-            SetState (UnitStates.COOLDOWN);
-        }));
-        SetState (UnitStates.ACTING);
+        // List<PathfindingData> data = movement.GetTilesInRange (board);
+        // List<Tile> tiles = new List<Tile> ();
+        // data.ForEach (element => {
+        //     tiles.Add (element.tile);
+        // });
+        // BoardVisuals.AddTileToHighlights (owner, tiles);
+        // tiles = null;
+        // PathfindingData selected = data[Random.Range (0, data.Count)];
+        // StartCoroutine (movement.Traverse (data, selected, () => {
+        //     SetState (UnitStates.COOLDOWN);
+        // }));
+        // SetState (UnitStates.ACTING);
     }
     public override void PrepState () { }
 
