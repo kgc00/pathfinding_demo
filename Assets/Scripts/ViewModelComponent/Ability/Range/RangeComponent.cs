@@ -11,4 +11,8 @@ public abstract class RangeComponent {
         this.range = ability.Range;
     }
     public abstract List<PathfindingData> GetTilesInRange ();
+
+    // in a more robust implementation we would use a strategy pattern here
+    // to mix and match filter with range on a per ability basis
+    protected abstract void Filter (List<PathfindingData> tiles);
 }

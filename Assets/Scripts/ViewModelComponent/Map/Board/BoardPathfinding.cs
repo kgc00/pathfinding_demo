@@ -8,6 +8,8 @@ public class BoardPathfinding : MonoBehaviour {
     public void Initialize (Board board) {
         this.board = board;
     }
+
+    // general pathfinding used by abilities and player.  lightweight, simple
     public List<PathfindingData> Search (Tile start, Func<ShadowTile, Tile, bool> addTile) {
         List<ShadowTile> shadows = new List<ShadowTile> ();
         var startShadow = new ShadowTile (int.MaxValue, start.Position, null, start);
@@ -54,6 +56,20 @@ public class BoardPathfinding : MonoBehaviour {
         });
 
         return retValue;
+    }
+
+    // This helper function returns an approximation of the distance to use for pathfinding heuristics
+    public int GetDistance (Tile TileA, Tile TileB) {
+        int distanceX = Mathf.Abs (TileA.Position.x - TileB.Position.x);
+        int distanceY = Mathf.Abs (TileA.Position.y - TileB.Position.y);
+
+        // Each tile away is a distance of one, if the tile is diagonal, we return a 
+        // distance of 2 to simulate square grid movement.
+        if (distanceX > distanceY) {
+            return (2 * distanceY) + (distanceX - distanceY);
+        } else {
+            return (2 * distanceX) + (distanceY - distanceX);
+        }
     }
 
     public Tile GetTile (Point p) {

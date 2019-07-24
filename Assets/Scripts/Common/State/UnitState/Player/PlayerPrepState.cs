@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-public class PrepState : UnitState {
+public class PlayerPrepState : UnitState {
     AbilityComponent abilityComponent;
-    public PrepState (Unit Owner) : base (Owner) {
+    public PlayerPrepState (Unit Owner) : base (Owner) {
         this.abilityComponent = Owner.AbilityComponent;
     }
 
@@ -10,7 +10,7 @@ public class PrepState : UnitState {
         // handle cancel
         if (controller.DetectInputFor (ControlTypes.CANCEL)) {
             BoardVisuals.RemoveTilesFromHighlightsByUnit (Owner);
-            return new IdleState (Owner);
+            return new PlayerIdleState (Owner);
         }
 
         // generate valid moves this frame
@@ -29,7 +29,7 @@ public class PrepState : UnitState {
             // and we successfully prep our ability for use
             if (selectedTile != null && selectedTile.tile.isWalkable &&
                 abilityComponent.PrepAbility (tilesInRange, selectedTile))
-                return new ActingState (Owner, tilesInRange, selectedTile);
+                return new PlayerActingState (Owner, tilesInRange, selectedTile);
         }
 
         return null;

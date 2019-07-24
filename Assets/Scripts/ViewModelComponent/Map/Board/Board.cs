@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,6 +11,29 @@ public class Board : MonoBehaviour {
     public LevelData levelData;
     BoardVisuals vis;
     BoardPathfinding bpf;
+
+    internal void ActivateUnitAt (Point p) {
+        Unit instance = null;
+        Unit unit = UnitAtForBoardCreation (p);
+        var name = "";
+        if (unit.TypeReference == UnitTypes.HERO) {
+            instance = unit.GetComponent<Hero> ();
+            instance.Initialize (this, UnitTypes.HERO);
+            name = UnitTypes.HERO.ToString ();
+            instance.LoadUnitState (Resources.Load<UnitData> ("Beastiary/HeroStats"));
+        } else if (unit.TypeReference == UnitTypes.MONSTER) {
+            instance = unit.GetComponent<Monster> ();
+            instance.Initialize (this, UnitTypes.MONSTER);
+            name = UnitTypes.MONSTER.ToString ();
+            instance.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Monster"));
+        }
+
+        if (instance == null) {
+            Debug.LogError ("unit should not be null and is.");
+            return;
+        }
+    }
+
     public BoardPathfinding Pathfinding => bpf;
     private Area area;
     public Point[] Dirs => new Point[4] {
@@ -72,7 +96,7 @@ public class Board : MonoBehaviour {
             DeleteUnitAt (p);
         }
 
-        Unit unit = UnitFromType (p, type);
+        Unit unit = CreateUnitFromType (p, type);
 
         unit.gameObject.name = type.ToString ();
         unit.transform.parent = gameObject.transform;
@@ -80,7 +104,7 @@ public class Board : MonoBehaviour {
         return unit;
     }
 
-    private static Unit UnitFromType (Point p, UnitTypes type) {
+    private static Unit CreateUnitFromType (Point p, UnitTypes type) {
         Unit unit = null;
         if (type == UnitTypes.HERO) {
             Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),

@@ -44,4 +44,8 @@ public class OccupationState {
         occupiedTile = newTile;
         occupiedTile.SetOccupied (Occupier);
     }
+
+    public virtual void ExitTileUponDeath () {
+        occupiedTile?.SetUnoccupied ();
+    }
 }

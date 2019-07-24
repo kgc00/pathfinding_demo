@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-public abstract class Ability : ScriptableObject {
-    // set in inspector
+public abstract class Ability : MonoBehaviour {
+    // populated from ability data
     public int Range;
     public float CooldownDuration;
     public RangeComponentType RangeComponentType;
@@ -12,6 +12,6 @@ public abstract class Ability : ScriptableObject {
     [HideInInspector] public PathfindingData Target;
     [HideInInspector] public System.Action<float> OnFinished;
     [HideInInspector] public MovementComponent Movement;
-
-    public virtual void Activate () { }
+    public abstract void Activate (AbilityData data);
+    public abstract void Assign (AbilityData data);
 }

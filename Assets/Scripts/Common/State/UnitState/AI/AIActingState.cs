@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
-public class ActingState : UnitState {
+public class AIActingState : UnitState {
     List<PathfindingData> tilesInRange;
     PathfindingData targetTile;
     UnitState state;
     AbilityComponent abilityComponent;
-    public ActingState (Unit Owner,
+    public AIActingState (Unit Owner,
         List<PathfindingData> tilesInRange, PathfindingData targetTile) : base (Owner) {
         this.tilesInRange = tilesInRange;
         this.targetTile = targetTile;
@@ -21,5 +21,5 @@ public class ActingState : UnitState {
     public override UnitState HandleInput (Controller controller) { return state; }
 
     // transition to cooldown state
-    public void UpdateState (float cooldownDuration) { state = new CooldownState (Owner, cooldownDuration); }
+    public void UpdateState (float cooldownDuration) { state = new AICooldownState (Owner, cooldownDuration); }
 }

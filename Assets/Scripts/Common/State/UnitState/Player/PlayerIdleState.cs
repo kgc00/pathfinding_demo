@@ -1,6 +1,6 @@
-public class IdleState : UnitState {
+public class PlayerIdleState : UnitState {
     AbilityComponent abilityComponent;
-    public IdleState (Unit Owner) : base (Owner) {
+    public PlayerIdleState (Unit Owner) : base (Owner) {
         abilityComponent = Owner.AbilityComponent;
     }
 
@@ -19,7 +19,7 @@ public class IdleState : UnitState {
 
             // transition to the next state with that data
             if (abilityComponent.SetCurrentAbility (i))
-                return new PrepState (Owner);
+                return new PlayerPrepState (Owner);
         }
 
         return null;

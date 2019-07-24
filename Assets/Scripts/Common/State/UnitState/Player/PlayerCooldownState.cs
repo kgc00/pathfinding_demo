@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class CooldownState : UnitState {
+public class PlayerCooldownState : UnitState {
     private UnitState state;
     float cooldownDuration;
-    public CooldownState (Unit Owner, float cooldownDuration) : base (Owner) {
+    public PlayerCooldownState (Unit Owner, float cooldownDuration) : base (Owner) {
         this.cooldownDuration = cooldownDuration;
     }
     public override void Enter () {
@@ -20,7 +20,7 @@ public class CooldownState : UnitState {
             EventQueue.AddEvent (new AreaStateChangeEventArgs (Owner, null, AreaStateTypes.Active));
         }
         Owner.gameObject.GetComponentInChildren<Renderer> ().material.color = c;
-        state = new IdleState (Owner);
+        state = new PlayerIdleState (Owner);
     }
 
     // return null until UpdateState is called;
