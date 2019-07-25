@@ -47,7 +47,7 @@ public class AIPrepState : UnitState {
         var firstChoice = equiped.Where (abil => abil is AttackAbility).ToList ();
 
         // if all attack moves cannot reach we are out of range
-        Debug.Log (string.Format ("distance to unit is {0}, attacks number {1}", distance, firstChoice.Count));
+        // Debug.Log (string.Format ("distance to unit is {0}, attacks number {1}", distance, firstChoice.Count));
         bool isOutOfAttackRange = firstChoice.All (abil => distance > abil.Range);
 
         if (isOutOfAttackRange)

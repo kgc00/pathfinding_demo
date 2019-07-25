@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BiteAbility : AttackAbility {
+public class ShootAbility : AttackAbility {
     public override void Activate () {
         var targetUnit = Target.tile.OccupiedBy;
         if (targetUnit != null)

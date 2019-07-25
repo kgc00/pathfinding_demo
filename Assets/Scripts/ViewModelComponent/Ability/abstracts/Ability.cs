@@ -12,6 +12,6 @@ public abstract class Ability : MonoBehaviour {
     [HideInInspector] public PathfindingData Target;
     [HideInInspector] public System.Action<float> OnFinished;
     [HideInInspector] public MovementComponent Movement;
-    public abstract void Activate (AbilityData data);
+    public abstract void Activate ();
     public abstract void Assign (AbilityData data);
 }

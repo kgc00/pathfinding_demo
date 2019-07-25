@@ -15,8 +15,8 @@ public class LinearRange : RangeComponent {
     }
 
     bool ExpandSearch (ShadowTile from, Tile to) {
-        return (from.position.y == to.Position.y ||
-                from.position.x == to.Position.x) &&
+        return (owner.Position.y == to.Position.y ||
+                owner.Position.x == to.Position.x) &&
             (from.distance + 1) <= range;
     }
 }

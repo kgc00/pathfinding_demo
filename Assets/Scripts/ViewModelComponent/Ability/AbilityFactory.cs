@@ -17,6 +17,11 @@ public class AbilityFactory : MonoBehaviour {
                     instance.Assign (ability);
                     retVal.Add (instance);
                     break;
+                case Abilities.SHOOT_ABILITY:
+                    instance = owner.gameObject.AddComponent<ShootAbility> ();
+                    instance.Assign (ability);
+                    retVal.Add (instance);
+                    break;
                 default:
                     break;
             }

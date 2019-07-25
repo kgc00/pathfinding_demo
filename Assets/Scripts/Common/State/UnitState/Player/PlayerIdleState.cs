@@ -15,7 +15,7 @@ public class PlayerIdleState : UnitState {
         // loop through them and see if any have been pressed...
         for (int i = 0; i < pressed.Length; i++) {
             if (!pressed[i])
-                return null;
+                continue;
 
             // transition to the next state with that data
             if (abilityComponent.SetCurrentAbility (i))

@@ -25,7 +25,7 @@ public class AbilityComponent : MonoBehaviour {
         // set callback so we can use it to advance the owner's state on finished
         CurrentAbility.OnFinished = OnFinished;
 
-        CurrentAbility.Activate (null);
+        CurrentAbility.Activate ();
     }
 
     // called from unit's idle state when the user selects an ability via keypress

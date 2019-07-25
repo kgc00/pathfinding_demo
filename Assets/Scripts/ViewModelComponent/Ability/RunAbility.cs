@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class RunAbility : MovementAbility {
-    public override void Activate (AbilityData data) {
+    public override void Activate () {
         // start a timer with a callback to transition to the next state
         CoroutineHelper.Instance.CoroutineFromEnumerator (
             Movement.Traverse (TilesInRange, Target, () => {
