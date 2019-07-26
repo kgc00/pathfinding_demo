@@ -8,4 +8,12 @@ public class Hero : Unit {
         UnitState = new PlayerIdleState (this);
         UnitState.Enter ();
     }
+
+    public override void LoadUnitState (UnitData data) {
+        base.LoadUnitState (data);
+
+        HealthComponent.Initialize (data, this, false);
+        UnitState = new PlayerIdleState (this);
+        UnitState.Enter ();
+    }
 }

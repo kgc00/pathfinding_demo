@@ -8,16 +8,19 @@ public class UnitData : ScriptableObject {
     public int MaxHP;
     public UnitTypes UnitType;
     public MovementType MovementType;
-    public void Assign (List<AbilityData> a, int chp, int mhp, UnitTypes t) {
+
+    public UnitData Assign (List<AbilityData> a, int chp, int mhp, UnitTypes t) {
         this.EquippedAbilities = a;
         this.CurrentHP = chp;
         this.MaxHP = mhp;
         this.UnitType = t;
+        return this;
     }
-    public void Assign (UnitData data) {
+    public UnitData Assign (UnitData data) {
         this.EquippedAbilities = data.EquippedAbilities;
         this.CurrentHP = data.CurrentHP;
         this.MaxHP = data.MaxHP;
         this.UnitType = data.UnitType;
+        return this;
     }
 }

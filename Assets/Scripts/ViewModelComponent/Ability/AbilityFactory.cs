@@ -9,17 +9,17 @@ public class AbilityFactory : MonoBehaviour {
             switch (ability.AbilityType) {
                 case Abilities.RUN_ABILITY:
                     instance = owner.gameObject.AddComponent<RunAbility> ();
-                    instance.Assign (ability);
+                    instance.Assign (ability, owner);
                     retVal.Add (instance);
                     break;
                 case Abilities.BITE_ABILITY:
                     instance = owner.gameObject.AddComponent<BiteAbility> ();
-                    instance.Assign (ability);
+                    instance.Assign (ability, owner);
                     retVal.Add (instance);
                     break;
                 case Abilities.SHOOT_ABILITY:
                     instance = owner.gameObject.AddComponent<ShootAbility> ();
-                    instance.Assign (ability);
+                    instance.Assign (ability, owner);
                     retVal.Add (instance);
                     break;
                 default:

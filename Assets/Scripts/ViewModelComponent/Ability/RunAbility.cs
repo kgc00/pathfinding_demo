@@ -14,9 +14,10 @@ public class RunAbility : MovementAbility {
         OnFinished (CooldownDuration);
     }
 
-    public override void Assign (AbilityData data) {
+    public override void Assign (AbilityData data, Unit owner) {
         this.Range = data.Range;
         this.CooldownDuration = data.CooldownDuration;
         this.RangeComponentType = data.RangeComponentType;
+        this.owner = owner;
     }
 }

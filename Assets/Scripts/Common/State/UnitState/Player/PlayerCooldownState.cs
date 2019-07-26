@@ -16,6 +16,10 @@ public class PlayerCooldownState : UnitState {
 
     public void UpdateState (Color c) {
         // should probably only fire when area is in setupstate
+        if (!Owner) {
+            return;
+        }
+
         if (Owner is Hero) {
             EventQueue.AddEvent (new AreaStateChangeEventArgs (Owner, null, AreaStateTypes.Active));
         }

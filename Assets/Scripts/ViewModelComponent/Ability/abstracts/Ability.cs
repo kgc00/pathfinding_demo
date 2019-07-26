@@ -6,6 +6,7 @@ public abstract class Ability : MonoBehaviour {
     public int Range;
     public float CooldownDuration;
     public RangeComponentType RangeComponentType;
+    public Unit owner;
 
     // fields populated at runtime
     [HideInInspector] public List<PathfindingData> TilesInRange;
@@ -13,5 +14,5 @@ public abstract class Ability : MonoBehaviour {
     [HideInInspector] public System.Action<float> OnFinished;
     [HideInInspector] public MovementComponent Movement;
     public abstract void Activate ();
-    public abstract void Assign (AbilityData data);
+    public abstract void Assign (AbilityData data, Unit owner);
 }

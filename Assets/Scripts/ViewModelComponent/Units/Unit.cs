@@ -38,7 +38,6 @@ public abstract class Unit : MonoBehaviour {
 
     public virtual void LoadUnitState (UnitData data) {
         AbilityComponent.Initialize (data, this);
-        HealthComponent.Initialize (data, this);
     }
 
     public virtual void UnitDeath () {
