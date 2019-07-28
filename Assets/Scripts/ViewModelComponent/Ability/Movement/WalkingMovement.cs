@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WalkingMovement : MovementComponent {
@@ -9,6 +10,13 @@ public class WalkingMovement : MovementComponent {
 
     public override IEnumerator Traverse (List<PathfindingData> tilesInRange, PathfindingData target, System.Action onComplete) {
         List<Tile> path = new List<Tile> ();
+        PathfindingData startdata = AddStartingData (tilesInRange);
+
+        foreach (var data in tilesInRange) {
+            if (data.shadow.distance == 1) {
+                data.shadow.previous = startdata.shadow;
+            }
+        }
 
         while (target != null) {
             path.Insert (0, target.tile);
@@ -35,6 +43,14 @@ public class WalkingMovement : MovementComponent {
         }
         onComplete ();
         yield return null;
+    }
+
+    // in general we don't want players to click on the start tile, so we remove it in the ability filter method
+    // and add it back into the list here, so the unit still traverses it.
+    private PathfindingData AddStartingData (List<PathfindingData> tilesInRange) {
+        var startdata = new PathfindingData (owner.Board.TileAt (owner.Position), new ShadowTile (0, owner.Position, null, owner.Board.TileAt (owner.Position)));
+        tilesInRange.Add (startdata);
+        return startdata;
     }
 
     // using the strategy pattern to customize how we travel

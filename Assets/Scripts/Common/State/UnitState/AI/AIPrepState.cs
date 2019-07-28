@@ -11,7 +11,7 @@ public class AIPrepState : UnitState {
 
     public AIPrepState (Unit Owner) : base (Owner) {
         this.abilityComponent = Owner.AbilityComponent;
-        this.randomDelay = Random.Range (0, 2);
+        this.randomDelay = Random.Range (1, 3);
     }
 
     public override void Enter () {
@@ -65,6 +65,7 @@ public class AIPrepState : UnitState {
 
         if (distance > abilityComponent.CurrentAbility.Range)
             target = tilesInRange[Random.Range (0, tilesInRange.Count)];
+
         else {
             // does not work... Linq loses linked list data?!
             // target = tilesInRange.Find (data => data.tile = targetTile);
@@ -78,6 +79,7 @@ public class AIPrepState : UnitState {
             // Debug.Log (string.Format ("target prev {0}", target.shadow.previous));
         }
 
+        BoardVisuals.AddIndicator (Owner, new List<Tile> { target.tile });
     }
 
     private void HandleAttackLogic (Tile targetTile, List<Ability> firstChoice) {
@@ -98,6 +100,7 @@ public class AIPrepState : UnitState {
         var tile = tilesInRange.Find (data => data.tile == targetTile);
         if (tile != null) {
             target = tile;
+            BoardVisuals.AddIndicator (Owner, new List<Tile> { target.tile });
             return true;
         }
         return false;

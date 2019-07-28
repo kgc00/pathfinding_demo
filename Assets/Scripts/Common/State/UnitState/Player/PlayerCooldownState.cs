@@ -8,6 +8,7 @@ public class PlayerCooldownState : UnitState {
     }
     public override void Enter () {
         BoardVisuals.RemoveTilesFromHighlightsByUnit (Owner);
+        BoardVisuals.RemoveIndicator (Owner);
         Color baseColor = TempChangeColor ();
         // start a timer with a callback to transition to the next state
         CoroutineHelper.Instance.StartCountdown (cooldownDuration,

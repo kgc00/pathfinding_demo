@@ -13,7 +13,7 @@ public class ConstantRange : RangeComponent {
     // to mix and match filter with range on a per ability basis
     protected override void Filter (List<PathfindingData> tiles) {
         for (int i = tiles.Count - 1; i >= 0; --i)
-            if (!tiles[i].tile.isWalkable)
+            if (!tiles[i].tile.isWalkable || tiles[i].tile.OccupiedBy == owner)
                 tiles.RemoveAt (i);
     }
 
