@@ -24,12 +24,22 @@ public class World : MonoBehaviour, IEventHandler {
         Initialize ();
     }
 
+    ~World () {
+        Unit.onUnitDeath -= RemoveUnitFromAreaInstance;
+    }
+
     private void LoadCurrentArea (AreaStateData transitionTo) {
         GameObject instance = new GameObject ("Area: " + curLoc.ToString ());
         Area area = instance.AddComponent<Area> ();
         eventManager.UpdateArea (area);
         area.Initialize (transitionTo);
         curArea = instance;
+    }
+
+    void RemoveUnitFromAreaInstance (Unit unit) {
+        var data = world[curLoc].areaStateData.currentInstance;
+        var toRemove = data.units.Find (item => item.location == unit.SpawnLocation);
+        data.units.Remove (toRemove);
     }
 
     private void Update () {
@@ -109,6 +119,7 @@ public class World : MonoBehaviour, IEventHandler {
         worldSaveComponent.InitializePlayerStats ();
         areaStateHandler = gameObject.AddComponent<AreaStateHandler> ();
         areaStateHandler.Initialize (world);
+        Unit.onUnitDeath += RemoveUnitFromAreaInstance;
         TransitionToNewArea (new Point (0, 0));
     }
 }

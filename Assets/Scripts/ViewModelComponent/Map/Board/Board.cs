@@ -18,12 +18,12 @@ public class Board : MonoBehaviour {
         var name = "";
         if (unit.TypeReference == UnitTypes.HERO) {
             instance = unit.GetComponent<Hero> ();
-            instance.Initialize (this, UnitTypes.HERO);
+            instance.Initialize (this, UnitTypes.HERO, p);
             name = UnitTypes.HERO.ToString ();
             instance.LoadUnitState (Resources.Load<UnitData> ("Beastiary/HeroStats"));
         } else if (unit.TypeReference == UnitTypes.MONSTER) {
             instance = unit.GetComponent<Monster> ();
-            instance.Initialize (this, UnitTypes.MONSTER);
+            instance.Initialize (this, UnitTypes.MONSTER, p);
             name = UnitTypes.MONSTER.ToString ();
             instance.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Monster"));
         }
@@ -130,10 +130,10 @@ public class Board : MonoBehaviour {
         Unit unit = UnitAtForBoardCreation (p);
         var name = "";
         if (unit.TypeReference == UnitTypes.HERO) {
-            unit.GetComponent<Hero> ().Initialize (this, UnitTypes.HERO);
+            unit.GetComponent<Hero> ().Initialize (this, UnitTypes.HERO, p);
             name = UnitTypes.HERO.ToString ();
         } else if (unit.TypeReference == UnitTypes.MONSTER) {
-            unit.GetComponent<Monster> ().Initialize (this, UnitTypes.MONSTER);
+            unit.GetComponent<Monster> ().Initialize (this, UnitTypes.MONSTER, p);
             name = UnitTypes.MONSTER.ToString ();
         }
 

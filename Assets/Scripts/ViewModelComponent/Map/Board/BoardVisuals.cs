@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// should refactor some of the if/color based expressions to a more stable form
+
+// static helper class to allow change coloring of itles to display information
+
 public class BoardVisuals : MonoBehaviour {
     private static Dictionary<Unit, List<Renderer>> highlightedTilesByUnit;
     private static List<Renderer> allRangeRenderers;
@@ -16,6 +20,11 @@ public class BoardVisuals : MonoBehaviour {
         indicatorRendererByUnit = new Dictionary<Unit, List<Renderer>> ();
         Unit.onUnitDeath += RemoveIndicator;
         Unit.onUnitDeath += RemoveTilesFromHighlightsByUnit;
+    }
+
+    ~BoardVisuals () {
+        Unit.onUnitDeath -= RemoveIndicator;
+        Unit.onUnitDeath -= RemoveTilesFromHighlightsByUnit;
     }
 
     public static void AddIndicator (Unit unit, List<Tile> tiles) {

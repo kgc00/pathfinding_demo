@@ -36,19 +36,21 @@ public class PlayerPrepState : UnitState {
         return null;
     }
 
-    private void CleanIndicator () {
-        BoardVisuals.RemoveIndicator (Owner);
-        indicatorList.Clear ();
+    private void HighlightTiles (List<PathfindingData> tilesInRange, Point mousePosition) {
+        HandleRange (tilesInRange);
+        HandleIndicator (tilesInRange, mousePosition);
     }
 
-    private void HighlightTiles (List<PathfindingData> tilesInRange, Point mousePosition) {
+    private void HandleRange (List<PathfindingData> tilesInRange) {
         // convert pathfinding struct to tiles for AddTileToHighlights func...
         List<Tile> tiles = new List<Tile> ();
         tilesInRange.ForEach (element => {
             tiles.Add (element.tile);
         });
         BoardVisuals.AddTileToHighlights (Owner, tiles);
+    }
 
+    private void HandleIndicator (List<PathfindingData> tilesInRange, Point mousePosition) {
         var selectedTile = Owner.Board.TileAt (mousePosition);
         var isValid = tilesInRange.Exists (data => data.tile == selectedTile);
         // highlight the players pointer location
@@ -57,5 +59,10 @@ public class PlayerPrepState : UnitState {
             indicatorList.Add (selectedTile);
             BoardVisuals.AddIndicator (Owner, indicatorList);
         }
+    }
+
+    private void CleanIndicator () {
+        BoardVisuals.RemoveIndicator (Owner);
+        indicatorList.Clear ();
     }
 }

@@ -13,10 +13,12 @@ public abstract class Unit : MonoBehaviour {
     public HealthComponent HealthComponent;
     protected Controller controller;
     public UnitState UnitState { get; protected set; }
+    public Point SpawnLocation { get; private set; }
 
-    public virtual void Initialize (Board board, UnitTypes r) {
+    public virtual void Initialize (Board board, UnitTypes r, Point spawnLocation) {
         this.Board = board;
         this.TypeReference = r;
+        this.SpawnLocation = spawnLocation;
         HealthComponent = gameObject.AddComponent<HealthComponent> ();
         AbilityComponent = gameObject.AddComponent<AbilityComponent> ();
         transform.localEulerAngles = dir.ToEuler ();
