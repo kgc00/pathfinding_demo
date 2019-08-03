@@ -4,8 +4,8 @@ public class ShadowTile {
     public ShadowTile previous;
     public Tile tile;
     public ShadowTile nextAvailableInPool { get; private set; }
-    public ShadowTile (int d, Point p, ShadowTile prev, Tile t) {
-        this.distance = d;
+    public ShadowTile (int dist, Point p, ShadowTile prev, Tile t) {
+        this.distance = dist;
         this.position = p;
         this.previous = prev;
         this.tile = t;

@@ -13,6 +13,9 @@ public struct Point : System.IEquatable<Point> {
     public static Point operator - (Point p1, Point p2) {
         return new Point (p1.x - p2.x, p1.y - p2.y);
     }
+    public static Point operator * (Point p1, float multiplier) {
+        return new Point ((int) (p1.x * multiplier), (int) (p1.y * multiplier));
+    }
     public static bool operator == (Point a, Point b) {
         return a.x == b.x && a.y == b.y;
     }

@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -121,7 +118,7 @@ public class BoardCreator : MonoBehaviour {
             units.Remove (p);
         }
 
-        Unit unit = Current.LevelEditorCreateUnitAt (p, type);
+        Unit unit = Current.CreateUnitAt (p, type);
         unit.transform.parent = gameObject.transform;
 
         // Put unit in the dictionary

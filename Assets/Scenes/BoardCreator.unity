@@ -272,9 +272,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3593236074385590029, guid: 6a5f6162a99f32143a03001908900d82,
         type: 3}
+      propertyPath: tilePrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3593236074385590029, guid: 6a5f6162a99f32143a03001908900d82,
+        type: 3}
       propertyPath: levelData
       value: 
-      objectReference: {fileID: 11400000, guid: 3131c9edc366b7042bf7523fae6635ac,
+      objectReference: {fileID: 11400000, guid: 56bfdb8d2eebcb0498dc6ebc66e92299,
         type: 2}
+    - target: {fileID: 3593236074385590029, guid: 6a5f6162a99f32143a03001908900d82,
+        type: 3}
+      propertyPath: tilePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 9209219456445023628, guid: 8787708b9dad7684fba547a77c2f10f0,
+        type: 3}
+    - target: {fileID: 3593236074385590029, guid: 6a5f6162a99f32143a03001908900d82,
+        type: 3}
+      propertyPath: tilePrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 9209219456445023628, guid: 5bd5bfb66902ac14caf22d2955854292,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a5f6162a99f32143a03001908900d82, type: 3}

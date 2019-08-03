@@ -226,15 +226,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5986886248936826741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a943e918ef442044b4938c545d546c9, type: 3}
+  m_Script: {fileID: 11500000, guid: f7167e77efaf55f4abffccc862f12a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  State: 0
   TypeReference: 0
   dir: 0
-  movement: {fileID: 0}
-  controller: {fileID: 0}
-  isDebug: 0
+  HealthComponent: {fileID: 0}
 --- !u!135 &7597540261658228992
 SphereCollider:
   m_ObjectHideFlags: 0
