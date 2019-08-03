@@ -29,12 +29,12 @@ public class WalkingMovement : MovementComponent {
             Tile from = path[i - 1];
             Tile to = path[i];
 
-            if (shouldBreak)
+            if (shouldBreak || !path.Contains (startdata.tile))
                 break;
 
             // some dynamic obstacle like a unit is now
             // occupying the tile, we end the traversal early
-            if (to.IsOccupied ()) {
+            if (to.IsOccupied () || !to.isWalkable) {
                 break;
             }
 

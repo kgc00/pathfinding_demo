@@ -41,8 +41,9 @@ public class BoardVisuals : MonoBehaviour {
             return;
 
         indicatorRendererByUnit[unit].ForEach (rend => {
-            // should refactor... resets entrance color to normal
+            // resets entrance color to normal
             if (rend.GetComponent<Entrance> ())
+                // should refactor to some const/variable... 
                 rend.material.color = new Color (0.04748131f, 0.9150943f, 0.8268626f);
             else
                 rend.material.color = Color.white;

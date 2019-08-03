@@ -53,12 +53,13 @@ public class PlayerPrepState : UnitState {
     private void HandleIndicator (List<PathfindingData> tilesInRange, Point mousePosition) {
         var selectedTile = Owner.Board.TileAt (mousePosition);
         var isValid = tilesInRange.Exists (data => data.tile == selectedTile);
+        // tile is not valid or already is highlighted, return 
+        if (indicatorList.Contains (selectedTile) || !isValid) return;
+
         // highlight the players pointer location
-        if (!indicatorList.Contains (selectedTile) && isValid) {
-            CleanIndicator ();
-            indicatorList.Add (selectedTile);
-            BoardVisuals.AddIndicator (Owner, indicatorList);
-        }
+        CleanIndicator ();
+        indicatorList.Add (selectedTile);
+        BoardVisuals.AddIndicator (Owner, indicatorList);
     }
 
     private void CleanIndicator () {
