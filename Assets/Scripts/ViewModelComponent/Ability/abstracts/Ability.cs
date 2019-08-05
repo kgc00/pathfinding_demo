@@ -6,7 +6,8 @@ public abstract class Ability : MonoBehaviour {
     public int Range;
     public float CooldownDuration;
     public RangeComponentType RangeComponentType;
-    public Unit owner;
+    public Unit Owner;
+    public string DisplayName;
 
     // fields populated at runtime
     [HideInInspector] public List<PathfindingData> TilesInRange;

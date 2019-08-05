@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShootAbility : AttackAbility {
     public override void Activate () {
-        var ownerPos = owner.Position;
+        var ownerPos = Owner.Position;
         Point dir = new Point ((Mathf.Clamp (Target.tile.Position.x -
             ownerPos.x, -1, 1)), (Mathf.Clamp (Target.tile.Position.y -
             ownerPos.y, -1, 1)));
@@ -22,10 +22,11 @@ public class ShootAbility : AttackAbility {
     }
 
     public override void Assign (AbilityData data, Unit owner) {
+        this.DisplayName = data.DisplayName;
         this.Range = data.Range;
         this.CooldownDuration = data.CooldownDuration;
         this.RangeComponentType = data.RangeComponentType;
         this.Damage = data.Damage;
-        this.owner = owner;
+        this.Owner = owner;
     }
 }

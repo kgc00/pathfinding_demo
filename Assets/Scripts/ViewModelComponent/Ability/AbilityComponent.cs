@@ -31,13 +31,16 @@ public class AbilityComponent : MonoBehaviour {
     // called from unit's idle state when the user selects an ability via keypress
     // will set current ability and provide range component
     public bool SetCurrentAbility (int i) {
-        if (i <= EquippedAbilities.Count) {
-            CurrentAbility = EquippedAbilities[i];
-            return SetRangeComponent ();
-        } else {
-            Debug.LogError (string.Format ("tried to set ability to an out of bounds index"));
-            return false;
-        }
+        var val = SetCurrentAbility (EquippedAbilities[i]);
+        return val;
+    }
+
+    public int IndexOfCurrentAbility () {
+        for (int i = 0; i < EquippedAbilities.Count; i++)
+            if (CurrentAbility == EquippedAbilities[i])
+                return i;
+
+        return -1;
     }
 
     public bool SetCurrentAbility (Ability ability) {

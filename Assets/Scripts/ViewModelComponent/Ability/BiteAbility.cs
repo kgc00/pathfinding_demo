@@ -14,10 +14,11 @@ public class BiteAbility : AttackAbility {
     }
 
     public override void Assign (AbilityData data, Unit owner) {
+        this.DisplayName = data.DisplayName;
         this.Range = data.Range;
         this.CooldownDuration = data.CooldownDuration;
         this.RangeComponentType = data.RangeComponentType;
         this.Damage = data.Damage;
-        this.owner = owner;
+        this.Owner = owner;
     }
 }

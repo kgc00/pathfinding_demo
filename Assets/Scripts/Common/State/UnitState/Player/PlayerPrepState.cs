@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 public class PlayerPrepState : UnitState {
+    public static System.Action<Unit, int> onAbilityCommited = delegate { };
     AbilityComponent abilityComponent;
     List<Tile> indicatorList;
     public PlayerPrepState (Unit Owner) : base (Owner) {
@@ -30,8 +31,10 @@ public class PlayerPrepState : UnitState {
             // transition to acting state if it's a valid selection
             // and we successfully prep our ability for use
             if (selectedTile != null && selectedTile.tile.isWalkable &&
-                abilityComponent.PrepAbility (tilesInRange, selectedTile))
+                abilityComponent.PrepAbility (tilesInRange, selectedTile)) {
+                onAbilityCommited (Owner, abilityComponent.IndexOfCurrentAbility ());
                 return new PlayerActingState (Owner, tilesInRange, selectedTile);
+            }
         }
         return null;
     }

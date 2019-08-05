@@ -3,6 +3,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 public class WorldSaveComponent : MonoBehaviour {
+    public bool HasLoaded { get; private set; } = false;
     void OnApplicationQuit () {
         // works outside of destructor
         FileUtil.DeleteFileOrDirectory ("Assets/Resources/Current");
@@ -71,19 +72,6 @@ public class WorldSaveComponent : MonoBehaviour {
         AssetDatabase.Refresh ();
     }
 
-    void CreateInstanceDirectory () {
-        string filePath = Application.dataPath + "/Resources/Current";
-        if (!Directory.Exists (filePath))
-            AssetDatabase.CreateFolder ("Assets", "Resources");
-        filePath += "/Current";
-        if (!Directory.Exists (filePath))
-            AssetDatabase.CreateFolder ("Assets/Resources", "Current");
-        filePath += "/Units";
-        if (!Directory.Exists (filePath))
-            AssetDatabase.CreateFolder ("Assets/Resources/Current", "Units");
-        AssetDatabase.Refresh ();
-    }
-
     internal void InitializePlayerStats () {
         string filePath = Application.dataPath + "/Current/Units";
         if (!Directory.Exists (filePath)) {
@@ -101,6 +89,13 @@ public class WorldSaveComponent : MonoBehaviour {
         }
     }
 
+    public void SetAbilitiesLoaded () {
+        HasLoaded = true;
+    }
+
+    public void ResetAbilitiesLoaded () {
+        HasLoaded = false;
+    }
     public static UnitData GetPlayerStats () {
         return Resources.Load<UnitData> ("Current/Units/HeroStats-current");
     }

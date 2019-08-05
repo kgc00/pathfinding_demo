@@ -83,6 +83,12 @@ public class World : MonoBehaviour, IEventHandler {
                     TransitionToNewArea ((curLoc - transitionEvent.transitionDirection));
                 }
                 break;
+            case EventTypes.PlayerLoaded:
+                if (!worldSaveComponent.HasLoaded) {
+                    curEvent.e.Invoke ();
+                    worldSaveComponent.SetAbilitiesLoaded ();
+                }
+                break;
             default:
                 break;
         }
