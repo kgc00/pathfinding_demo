@@ -33,62 +33,60 @@ public class AIPrepState : UnitState {
         // in case where player is dead, end early with some dummy values
         // otherwise we run into null exceptions when searching for player position
         if (targetUnit == null) {
-            HandleMovementLogic (equiped, null, int.MaxValue);
+            HandleMovementLogic (equiped, null);
             return;
         }
 
         Tile targetTile = board.TileAt (targetUnit.Position);
 
-        // use a simple algorithm to estimate the distance so we can narrow down our options a bit.
-        int distance = distance = board.Pathfinding.GetDistance (board.TileAt (Owner.Position), targetTile);
-
         // first check attack abilities, if we are in range use the first one
         // ...since this is just a demo we don't assign priority/weight
         var firstChoice = equiped.Where (abil => abil is AttackAbility).ToList ();
 
-        // if all attack moves cannot reach we are out of range
-        // Debug.Log (string.Format ("distance to unit is {0}, attacks number {1}", distance, firstChoice.Count));
-        bool isOutOfAttackRange = firstChoice.All (abil => distance > abil.Range);
-
-        if (isOutOfAttackRange)
-            HandleMovementLogic (equiped, targetTile, distance);
-        else
-            HandleAttackLogic (targetTile, firstChoice);
-
+        if (!HandleAttackLogic (targetTile, firstChoice))
+            HandleMovementLogic (equiped, targetTile);
     }
 
-    private void HandleMovementLogic (List<Ability> equiped, Tile targetTile, int distance) {
+    private void HandleMovementLogic (List<Ability> equiped, Tile targetTile) {
         // select a movement ability to get in range
         var movAbil = equiped.Find (ability => ability is MovementAbility);
         abilityComponent.SetCurrentAbility (movAbil);
         tilesInRange = abilityComponent.GetTilesInRange ();
 
-        if (distance > abilityComponent.CurrentAbility.Range)
+        if (!FindMovementTarget (targetTile))
             target = tilesInRange[Random.Range (0, tilesInRange.Count)];
 
-        else {
-            // does not work... Linq loses linked list data?!
-            // target = tilesInRange.Find (data => data.tile = targetTile);
+        // does not work... Linq loses linked list data?!
+        // target = tilesInRange.Find (data => data.tile = targetTile);
 
-            // works
-            foreach (var item in tilesInRange) {
-                if (item.tile == targetTile) {
-                    target = item;
-                }
-            }
-            // Debug.Log (string.Format ("target prev {0}", target.shadow.previous));
-        }
+        // works
+        // FindMovementTarget(targetTile)
 
         BoardVisuals.AddIndicator (Owner, new List<Tile> { target.tile });
     }
 
-    private void HandleAttackLogic (Tile targetTile, List<Ability> firstChoice) {
+    private bool FindMovementTarget (Tile targetTile) {
+        var targetFound = false;
+        foreach (var item in tilesInRange) {
+            if (item.tile == targetTile) {
+                targetFound = true;
+                target = item;
+            }
+        }
+        return targetFound;
+    }
+
+    private bool HandleAttackLogic (Tile targetTile, List<Ability> firstChoice) {
+        bool selectedAbil = false;
         // select an attack which will reach
         foreach (var ability in firstChoice) {
             // if find and set works we've got a valid move and we break
-            if (FindAndSetTarget (targetTile, ability))
+            if (FindAndSetTarget (targetTile, ability)) {
+                selectedAbil = true;
                 break;
+            }
         }
+        return selectedAbil;
     }
 
     // sets ability component's current ability and returns whether 

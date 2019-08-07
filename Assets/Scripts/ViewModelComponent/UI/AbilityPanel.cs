@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +7,8 @@ class AbilityPanel : MonoBehaviour {
     private AnimationClip[] clips;
     void Awake () {
         Hero.onUnitCreated += PopulateAbilityPanel;
+        SetupState.onAreaLoaded += StopAnimations;
+        PlayerIdleState.onEntered += StopAnimations;
         PlayerIdleState.onAbilitySet += AnimateAbilityPrepped;
         PlayerPrepState.onAbilityCommited += AnimateAbilityCommited;
         clips = new AnimationClip[2];
@@ -15,9 +17,19 @@ class AbilityPanel : MonoBehaviour {
 
     }
 
+    private void StopAnimations () {
+        if (images != null)
+            foreach (var item in images) {
+                item.GetComponent<Animation> ().Stop ();
+                item.color = Color.white;
+                item.transform.localScale = new Vector3 (1, 1, 1);
+            }
+    }
+
     ~AbilityPanel () {
         Hero.onUnitCreated -= PopulateAbilityPanel;
         PlayerIdleState.onAbilitySet -= AnimateAbilityPrepped;
+        PlayerIdleState.onEntered -= StopAnimations;
     }
 
     void PopulateAbilityPanel (Unit unit) {

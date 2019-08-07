@@ -1,5 +1,6 @@
 public class PlayerIdleState : UnitState {
     public static System.Action<Unit, int> onAbilitySet = delegate { };
+    public static System.Action onEntered = delegate { };
     AbilityComponent abilityComponent;
     public PlayerIdleState (Unit Owner) : base (Owner) {
         abilityComponent = Owner.AbilityComponent;
@@ -26,5 +27,9 @@ public class PlayerIdleState : UnitState {
         }
 
         return null;
+    }
+
+    public override void Enter () {
+        onEntered ();
     }
 }

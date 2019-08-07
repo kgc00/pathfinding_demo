@@ -5,6 +5,7 @@ using System.Linq;
 public class SetupState : AreaState {
     private Area area;
     private bool shouldAdvanceState = false;
+    public static Action onAreaLoaded = delegate { };
     public SetupState (Area area) { this.area = area; }
 
     public override void Enter () {
@@ -18,6 +19,7 @@ public class SetupState : AreaState {
         InitializeResources (tsd, min, max);
         SetPlayerPosition (tsd, min, max);
         SetPlayerData ();
+        onAreaLoaded ();
     }
 
     private void SetPlayerData () {
