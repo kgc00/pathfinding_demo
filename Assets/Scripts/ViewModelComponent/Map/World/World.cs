@@ -80,7 +80,7 @@ public class World : MonoBehaviour, IEventHandler {
             case EventTypes.TransitionEvent:
                 if (curArea.GetComponent<Area> ().State is ActiveState) {
                     TransitionEventArgs transitionEvent = (TransitionEventArgs) curEvent;
-                    TransitionToNewArea ((curLoc - transitionEvent.transitionDirection));
+                    TransitionToNewArea (curLoc + transitionEvent.transitionDirection);
                 }
                 break;
             case EventTypes.PlayerLoaded:
