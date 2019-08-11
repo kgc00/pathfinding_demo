@@ -107,12 +107,9 @@ public class World : MonoBehaviour, IEventHandler {
     }
 
     private void Initialize () {
-        if (Directory.Exists ("Assets/Resources/Levels/Areas")) {
-            data = Resources.LoadAll ("Levels/Areas", typeof (AreaData)).Cast<AreaData> ().ToList ();
-        }
+        data = Resources.LoadAll ("Levels/Areas", typeof (AreaData)).Cast<AreaData> ().ToList ();
 
-        if (data == null)
-            return;
+        if (data == null) throw new System.Exception ("Unable to load level data- world.cs 112");
 
         foreach (var area in data) {
             area.areaStateData.currentInstance = null;

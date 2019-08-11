@@ -32,6 +32,7 @@ public class Area : MonoBehaviour, IEventHandler {
                 if (state is SetupState) {
                     SetupState curState = (SetupState) state;
                     curState.AdvanceAreaState ();
+                    Debug.Log (string.Format ("area state advanced"));
                 }
                 break;
             default:

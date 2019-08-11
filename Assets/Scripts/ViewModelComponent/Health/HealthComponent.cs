@@ -3,6 +3,7 @@ public class HealthComponent : MonoBehaviour {
     public static System.Action<Unit, int> onHealthChanged = delegate { };
     public UnitData data;
     public Unit owner;
+    public bool isAlive => data.CurrentHP > 0;
     public void Initialize (UnitData data, Unit owner, bool shouldMakeInstance) {
         this.data = shouldMakeInstance ?
             ScriptableObject.CreateInstance<UnitData> ().Assign (data) :
