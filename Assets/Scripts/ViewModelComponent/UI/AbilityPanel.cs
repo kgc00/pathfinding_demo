@@ -10,6 +10,7 @@ class AbilityPanel : MonoBehaviour {
         SetupState.onAreaLoaded += StopAnimations;
         PlayerIdleState.onEntered += StopAnimations;
         PlayerIdleState.onAbilitySet += AnimateAbilityPrepped;
+        PlayerPrepState.onAbilitySet += AnimateAbilityPrepped;
         PlayerPrepState.onAbilityCommited += AnimateAbilityCommited;
         clips = new AnimationClip[2];
         clips[0] = (AnimationClip) Resources.Load ("Animations/ScaleImage", typeof (AnimationClip));
@@ -117,11 +118,12 @@ class AbilityPanel : MonoBehaviour {
     }
 
     void AnimateAbilityPrepped (Unit unit, int slot) {
+        StopAnimations ();
         images[slot].GetComponent<Animation> ().Play ("color");
     }
     void AnimateAbilityCommited (Unit unit, int slot) {
         var animation = images[slot].GetComponent<Animation> ();
-        animation.Stop ("color");
+        animation.Stop ();
         images[slot].color = Color.white;
         animation.Play ("scale");
     }
