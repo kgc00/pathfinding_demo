@@ -10,6 +10,7 @@ public class Monster : Unit {
         base.LoadUnitState (data);
 
         HealthComponent.Initialize (data, this, true);
+        EnergyComponent.Initialize (data, this, true);
         UnitState = new AIIdleState (this);
         UnitState.Enter ();
     }

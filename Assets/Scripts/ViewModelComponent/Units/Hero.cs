@@ -14,6 +14,7 @@ public class Hero : Unit {
     public override void LoadUnitState (UnitData data) {
         base.LoadUnitState (data);
         HealthComponent.Initialize (data, this, false);
+        EnergyComponent.Initialize (data, this, false);
         EventQueue.AddEvent (new PlayerLoadedEventArgs (this, () => onUnitCreated (this)));
         UnitState = new PlayerIdleState (this);
         UnitState.Enter ();

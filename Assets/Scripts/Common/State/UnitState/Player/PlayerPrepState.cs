@@ -50,16 +50,17 @@ public class PlayerPrepState : UnitState {
 
         // user clicks on a walkable tile which is in range....
         if (controller.DetectInputFor (ControlTypes.CONFIRM)) {
-            PathfindingData selectedTile = tilesInRange.Find (
+            PathfindingData selectedTarget = tilesInRange.Find (
                 element => element.tile.Position == mousePosition
             );
 
             // transition to acting state if it's a valid selection
             // and we successfully prep our ability for use
-            if (selectedTile != null && selectedTile.tile.isWalkable &&
-                abilityComponent.PrepAbility (tilesInRange, selectedTile)) {
+            bool targetIsValid = selectedTarget != null && selectedTarget.tile.isWalkable;
+            if (targetIsValid && Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost) &&
+                abilityComponent.PrepAbility (tilesInRange, selectedTarget)) {
                 onAbilityCommited (Owner, abilityComponent.IndexOfCurrentAbility ());
-                return new PlayerActingState (Owner, tilesInRange, selectedTile);
+                return new PlayerActingState (Owner, tilesInRange, selectedTarget);
             }
         }
         return null;
