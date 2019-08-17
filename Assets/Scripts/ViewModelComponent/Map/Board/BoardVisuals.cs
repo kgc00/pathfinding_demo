@@ -30,8 +30,6 @@ public class BoardVisuals : MonoBehaviour {
     public static void AddIndicator (Unit unit, List<Tile> tiles) {
         if (!unit.HealthComponent.isAlive) return;
 
-        if (unit is Monster)
-            Debug.Log (string.Format ("add indicator called"));
         List<Renderer> temp = tiles.ConvertAll (item => item.GetComponent<Renderer> ()).ToList ();
 
         if (!indicatorRendererByUnit.ContainsKey (unit)) indicatorRendererByUnit.Add (unit, temp);
@@ -39,8 +37,6 @@ public class BoardVisuals : MonoBehaviour {
     }
 
     public static void RemoveIndicator (Unit unit) {
-        if (unit is Monster)
-            Debug.Log (string.Format ("remove indicator called"));
         if (!indicatorRendererByUnit.ContainsKey (unit))
             return;
 
@@ -57,8 +53,6 @@ public class BoardVisuals : MonoBehaviour {
 
     public static void AddTileToHighlights (Unit unit, List<Tile> tiles) {
         if (!unit.HealthComponent.isAlive) return;
-        if (unit is Monster)
-            Debug.Log (string.Format ("add tile to highlights called"));
         List<Renderer> temp = new List<Renderer> ();
         if (highlightedTilesByUnit == null)
             return;
@@ -81,8 +75,6 @@ public class BoardVisuals : MonoBehaviour {
     }
 
     public static void RemoveTilesFromHighlightsByUnit (Unit unit) {
-        if (unit is Monster)
-            Debug.Log (string.Format ("remove tile from highlights called"));
         var duplicates = allRangeRenderers
             .GroupBy (x => x)
             .Where (x => x.Count () > 1)

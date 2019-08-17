@@ -17,9 +17,14 @@ public class ProjectileComponent : MonoBehaviour {
     }
 
     void Update () {
-        MoveGameObject ();
-        Point p = AssignPosIfInBounds ();
-        CollisionLogic (p);
+        if (board) {
+            MoveGameObject ();
+            Point p = AssignPosIfInBounds ();
+            CollisionLogic (p);
+        } else {
+            // destroy object when we switch rooms
+            Destroy (gameObject);
+        }
     }
 
     private void MoveGameObject () {
