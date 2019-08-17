@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 
 public class PlayerPrepState : UnitState {
+    public static System.Action<Unit, int> onAbilitySet = delegate { };
+    public static System.Action<Unit, int> onAbilityCommited = delegate { };
     AbilityComponent abilityComponent;
     List<Tile> indicatorList;
     public PlayerPrepState (Unit Owner) : base (Owner) {
@@ -8,12 +10,37 @@ public class PlayerPrepState : UnitState {
         indicatorList = new List<Tile> ();
     }
 
+    UnitState SwapActiveAbility (Controller controller) {
+        bool[] pressed = new bool[] {
+            controller.DetectInputFor (ControlTypes.ABILITY_ONE),
+            controller.DetectInputFor (ControlTypes.ABILITY_TWO),
+            controller.DetectInputFor (ControlTypes.ABILITY_THREE),
+        };
+
+        // loop through them and see if any have been pressed...
+        for (int i = 0; i < pressed.Length; i++) {
+            if (!pressed[i])
+                continue;
+
+            // transition to the next state with that data
+            if (abilityComponent.SetCurrentAbility (i)) {
+                onAbilitySet (Owner, i);
+                return new PlayerPrepState (Owner);
+            }
+        }
+
+        if (controller.DetectInputFor (ControlTypes.CANCEL))
+            return new PlayerIdleState (Owner);
+
+        return null;
+    }
+
     public override UnitState HandleInput (Controller controller) {
-        // handle cancel
-        if (controller.DetectInputFor (ControlTypes.CANCEL)) {
+        var didSwap = SwapActiveAbility (controller);
+        if (didSwap != null) {
             BoardVisuals.RemoveTilesFromHighlightsByUnit (Owner);
             CleanIndicator ();
-            return new PlayerIdleState (Owner);
+            return didSwap;
         }
 
         // generate valid moves this frame
@@ -30,8 +57,10 @@ public class PlayerPrepState : UnitState {
             // transition to acting state if it's a valid selection
             // and we successfully prep our ability for use
             if (selectedTile != null && selectedTile.tile.isWalkable &&
-                abilityComponent.PrepAbility (tilesInRange, selectedTile))
+                abilityComponent.PrepAbility (tilesInRange, selectedTile)) {
+                onAbilityCommited (Owner, abilityComponent.IndexOfCurrentAbility ());
                 return new PlayerActingState (Owner, tilesInRange, selectedTile);
+            }
         }
         return null;
     }

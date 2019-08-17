@@ -188,7 +188,7 @@ MonoBehaviour:
   - location:
       x: 4
       y: 3
-    tileRef: 0
+    tileRef: 1
   - location:
       x: 4
       y: 4

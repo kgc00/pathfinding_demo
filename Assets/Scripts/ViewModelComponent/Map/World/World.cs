@@ -80,7 +80,13 @@ public class World : MonoBehaviour, IEventHandler {
             case EventTypes.TransitionEvent:
                 if (curArea.GetComponent<Area> ().State is ActiveState) {
                     TransitionEventArgs transitionEvent = (TransitionEventArgs) curEvent;
-                    TransitionToNewArea ((curLoc - transitionEvent.transitionDirection));
+                    TransitionToNewArea (curLoc + transitionEvent.transitionDirection);
+                }
+                break;
+            case EventTypes.PlayerLoaded:
+                if (!worldSaveComponent.HasLoaded) {
+                    curEvent.e.Invoke ();
+                    worldSaveComponent.SetAbilitiesLoaded ();
                 }
                 break;
             default:
@@ -101,12 +107,9 @@ public class World : MonoBehaviour, IEventHandler {
     }
 
     private void Initialize () {
-        if (Directory.Exists ("Assets/Resources/Levels/Areas")) {
-            data = Resources.LoadAll ("Levels/Areas", typeof (AreaData)).Cast<AreaData> ().ToList ();
-        }
+        data = Resources.LoadAll ("Levels/Areas", typeof (AreaData)).Cast<AreaData> ().ToList ();
 
-        if (data == null)
-            return;
+        if (data == null) throw new System.Exception ("Unable to load level data- world.cs 112");
 
         foreach (var area in data) {
             area.areaStateData.currentInstance = null;

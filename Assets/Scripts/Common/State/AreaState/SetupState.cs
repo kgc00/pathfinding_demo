@@ -5,6 +5,7 @@ using System.Linq;
 public class SetupState : AreaState {
     private Area area;
     private bool shouldAdvanceState = false;
+    public static Action onAreaLoaded = delegate { };
     public SetupState (Area area) { this.area = area; }
 
     public override void Enter () {
@@ -18,6 +19,7 @@ public class SetupState : AreaState {
         InitializeResources (tsd, min, max);
         SetPlayerPosition (tsd, min, max);
         SetPlayerData ();
+        onAreaLoaded ();
     }
 
     private void SetPlayerData () {
@@ -44,17 +46,19 @@ public class SetupState : AreaState {
         tsd.ForEach (tile => {
             Entrance t = area.Board.TileAt (tile.location) as Entrance;
             if (t.Position.x == min.x)
-                t.SetTransitionDirection (Directions.West);
-            else if (t.Position.y == min.y)
-                t.SetTransitionDirection (Directions.North);
-            else if (t.Position.x == max.x)
                 t.SetTransitionDirection (Directions.East);
+            else if (t.Position.y == min.y)
+                t.SetTransitionDirection (Directions.South);
+            else if (t.Position.x == max.x)
+                t.SetTransitionDirection (Directions.West);
             else if (t.Position.y == max.y)
                 t.SetTransitionDirection (Directions.North);
+
         });
     }
 
     private Tile SelectCorrectEntrance (List<TileSpawnData> tsd, Point min, Point max) {
+        // UnityEngine.Debug.Log (string.Format ("selecting entrance for {0}", area.areaData.from.ToPoint ().ToString ()));
         // if there's only 1 return that
         if (tsd.Count () == 1)
             return area.Board.TileAt (tsd[0].location);
@@ -65,11 +69,11 @@ public class SetupState : AreaState {
             case "(1,0)":
                 return area.Board.TileAt (tsd.Find (tile => tile.location.x == min.x).location);
             case "(0,1)":
-                return area.Board.TileAt (tsd.Find (tile => tile.location.y == min.y).location);
+                return area.Board.TileAt (tsd.Find (tile => tile.location.y == max.y).location);
             case "(-1,0)":
                 return area.Board.TileAt (tsd.Find (tile => tile.location.x == max.x).location);
             case "(0,-1)":
-                return area.Board.TileAt (tsd.Find (tile => tile.location.y == max.y).location);
+                return area.Board.TileAt (tsd.Find (tile => tile.location.y == min.y).location);
             default:
                 return area.Board.TileAt (new Point ((max.x / 2), (max.y / 2)));
         }

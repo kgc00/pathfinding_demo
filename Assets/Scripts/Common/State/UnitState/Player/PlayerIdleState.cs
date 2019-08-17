@@ -1,4 +1,6 @@
 public class PlayerIdleState : UnitState {
+    public static System.Action<Unit, int> onAbilitySet = delegate { };
+    public static System.Action onEntered = delegate { };
     AbilityComponent abilityComponent;
     public PlayerIdleState (Unit Owner) : base (Owner) {
         abilityComponent = Owner.AbilityComponent;
@@ -18,10 +20,16 @@ public class PlayerIdleState : UnitState {
                 continue;
 
             // transition to the next state with that data
-            if (abilityComponent.SetCurrentAbility (i))
+            if (abilityComponent.SetCurrentAbility (i)) {
+                onAbilitySet (Owner, i);
                 return new PlayerPrepState (Owner);
+            }
         }
 
         return null;
+    }
+
+    public override void Enter () {
+        onEntered ();
     }
 }
