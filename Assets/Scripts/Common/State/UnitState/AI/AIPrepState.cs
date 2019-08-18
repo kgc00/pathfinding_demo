@@ -7,19 +7,29 @@ public class AIPrepState : UnitState {
     AbilityComponent abilityComponent;
     List<PathfindingData> tilesInRange;
     PathfindingData target;
+    private bool proceeed = false;
 
     public AIPrepState (Unit Owner) : base (Owner) {
         this.abilityComponent = Owner.AbilityComponent;
     }
 
     public override void Enter () {
-        // logic was moved to handleinput method
-        // can be here if we like by using callbacks/coroutines
-        // if (!DetermineAbilityToUse ()) {
-        //     CoroutineHelper.Instance.CoroutineFromEnumerator (WaitAndRetry ());
-        //     return;
-        // }
-        // HighlightTiles (tilesInRange);
+        if (DetermineAbilityToUse ()) {
+            if (Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost)) {
+                if (abilityComponent.PrepAbility (tilesInRange, target)) {
+                    HighlightTiles (tilesInRange);
+                    proceeed = true;
+                }
+            }
+        }
+
+        CoroutineHelper.Instance.CoroutineFromEnumerator (WaitAndRetry ());
+    }
+
+    public override UnitState HandleInput (Controller controller) {
+        if (!proceeed) return null;
+
+        return new AIActingState (Owner, tilesInRange, target);
     }
 
     // loop through options in a simple manner and select one
@@ -108,25 +118,6 @@ public class AIPrepState : UnitState {
             return true;
         }
         return false;
-    }
-
-    public override UnitState HandleInput (Controller controller) {
-        if (!DetermineAbilityToUse ()) return null;
-        if (!abilityComponent.CurrentAbility) return null;
-        HighlightTiles (tilesInRange);
-
-        if (!Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost)) {
-            float randomDelay = UnityEngine.Random.Range (1, 3);
-            while (randomDelay > 0) {
-                randomDelay -= Time.deltaTime;
-            }
-            return null;
-        }
-
-        if (!abilityComponent.PrepAbility (tilesInRange, target)) return null;
-
-        Debug.Log (string.Format ("entering acting state with tiles in range: {0}", tilesInRange));
-        return new AIActingState (Owner, tilesInRange, target);
     }
 
     private void HighlightTiles (List<PathfindingData> tilesInRange) {
