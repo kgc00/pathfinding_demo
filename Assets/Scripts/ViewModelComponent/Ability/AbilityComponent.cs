@@ -77,9 +77,12 @@ public class AbilityComponent : MonoBehaviour {
 
     internal bool PrepAbility (List<PathfindingData> tilesInRange, PathfindingData selectedTile) {
         if (CurrentAbility == null) {
-            Debug.LogError (string.Format ("Should never be null"));
+            Debug.LogError (string.Format ("Need to set a current ability before we prep it."));
             return false;
         }
+
+        if (tilesInRange == null) { Debug.Log (string.Format ("tiles in range was never set")); return false; }
+        if (selectedTile == null) { Debug.Log (string.Format ("selectedTile was never set")); return false; }
         CurrentAbility.TilesInRange = tilesInRange;
         CurrentAbility.Target = selectedTile;
         CurrentAbility.Movement = movement;

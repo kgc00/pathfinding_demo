@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,23 +7,23 @@ public class AIPrepState : UnitState {
     AbilityComponent abilityComponent;
     List<PathfindingData> tilesInRange;
     PathfindingData target;
-    float randomDelay;
-    float timeLeft;
 
     public AIPrepState (Unit Owner) : base (Owner) {
         this.abilityComponent = Owner.AbilityComponent;
-        this.randomDelay = Random.Range (1, 3);
     }
 
     public override void Enter () {
-        DetermineAbilityToUse ();
-        HighlightTiles (tilesInRange);
-        timeLeft = randomDelay;
-        timeLeft = randomDelay;
+        // logic was moved to handleinput method
+        // can be here if we like by using callbacks/coroutines
+        // if (!DetermineAbilityToUse ()) {
+        //     CoroutineHelper.Instance.CoroutineFromEnumerator (WaitAndRetry ());
+        //     return;
+        // }
+        // HighlightTiles (tilesInRange);
     }
 
     // loop through options in a simple manner and select one
-    private void DetermineAbilityToUse () {
+    private bool DetermineAbilityToUse () {
         // destructure to shorten lines
         var equiped = abilityComponent.EquippedAbilities;
         var board = Owner.Board;
@@ -33,8 +34,8 @@ public class AIPrepState : UnitState {
         // in case where player is dead, end early with some dummy values
         // otherwise we run into null exceptions when searching for player position
         if (targetUnit == null) {
-            HandleMovementLogic (equiped, null);
-            return;
+            if (HandleMovementLogic (equiped, null)) return true;
+            else return false;
         }
 
         Tile targetTile = board.TileAt (targetUnit.Position);
@@ -43,18 +44,20 @@ public class AIPrepState : UnitState {
         // ...since this is just a demo we don't assign priority/weight
         var firstChoice = equiped.Where (abil => abil is AttackAbility).ToList ();
 
-        if (!HandleAttackLogic (targetTile, firstChoice))
-            HandleMovementLogic (equiped, targetTile);
+        if (HandleAttackLogic (targetTile, firstChoice)) return true;
+        if (HandleMovementLogic (equiped, targetTile)) return true;
+
+        return false;
     }
 
-    private void HandleMovementLogic (List<Ability> equiped, Tile targetTile) {
+    private bool HandleMovementLogic (List<Ability> equiped, Tile targetTile) {
         // select a movement ability to get in range
         var movAbil = equiped.Find (ability => ability is MovementAbility);
-        abilityComponent.SetCurrentAbility (movAbil);
+        if (!abilityComponent.SetCurrentAbility (movAbil)) return false;
         tilesInRange = abilityComponent.GetTilesInRange ();
 
         if (!FindMovementTarget (targetTile))
-            target = tilesInRange[Random.Range (0, tilesInRange.Count)];
+            target = tilesInRange[UnityEngine.Random.Range (0, tilesInRange.Count)];
 
         // does not work... Linq loses linked list data?!
         // target = tilesInRange.Find (data => data.tile = targetTile);
@@ -63,6 +66,7 @@ public class AIPrepState : UnitState {
         // FindMovementTarget(targetTile)
 
         BoardVisuals.AddIndicator (Owner, new List<Tile> { target.tile });
+        return true;
     }
 
     private bool FindMovementTarget (Tile targetTile) {
@@ -93,7 +97,9 @@ public class AIPrepState : UnitState {
     // that skill will reach the target... none of this has astar /
     // obstacle pathfinding support
     private bool FindAndSetTarget (Tile targetTile, Ability ability) {
-        abilityComponent.SetCurrentAbility (ability);
+        // if we don't have enough energy to act
+        if (!abilityComponent.SetCurrentAbility (ability)) return false;
+
         tilesInRange = abilityComponent.GetTilesInRange ();
         var tile = tilesInRange.Find (data => data.tile == targetTile);
         if (tile != null) {
@@ -105,11 +111,22 @@ public class AIPrepState : UnitState {
     }
 
     public override UnitState HandleInput (Controller controller) {
-        timeLeft -= Time.deltaTime;
-        if (timeLeft <= 0 && abilityComponent.PrepAbility (tilesInRange, target)) {
-            return new AIActingState (Owner, tilesInRange, target);
+        if (!DetermineAbilityToUse ()) return null;
+        if (!abilityComponent.CurrentAbility) return null;
+        HighlightTiles (tilesInRange);
+
+        if (!Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost)) {
+            float randomDelay = UnityEngine.Random.Range (1, 3);
+            while (randomDelay > 0) {
+                randomDelay -= Time.deltaTime;
+            }
+            return null;
         }
-        return null;
+
+        if (!abilityComponent.PrepAbility (tilesInRange, target)) return null;
+
+        Debug.Log (string.Format ("entering acting state with tiles in range: {0}", tilesInRange));
+        return new AIActingState (Owner, tilesInRange, target);
     }
 
     private void HighlightTiles (List<PathfindingData> tilesInRange) {
@@ -119,5 +136,14 @@ public class AIPrepState : UnitState {
             tiles.Add (element.tile);
         });
         BoardVisuals.AddTileToHighlights (Owner, tiles);
+    }
+
+    System.Collections.IEnumerator WaitAndRetry () {
+        float randomDelay = UnityEngine.Random.Range (1, 3);
+        while (randomDelay > 0) {
+            randomDelay -= Time.deltaTime;
+            yield return null;
+        }
+        Enter ();
     }
 }

@@ -9,13 +9,15 @@ public class AICooldownState : UnitState {
     public override void Enter () {
         BoardVisuals.RemoveTilesFromHighlightsByUnit (Owner);
         BoardVisuals.RemoveIndicator (Owner);
-        Color baseColor = TempChangeColor ();
-        // start a timer with a callback to transition to the next state
-        CoroutineHelper.Instance.StartCountdown (cooldownDuration,
-            () => this.UpdateState (baseColor));
+        this.UpdateState ();
+
+        // Color baseColor = TempChangeColor ();
+        // // start a timer with a callback to transition to the next state
+        // CoroutineHelper.Instance.StartCountdown (cooldownDuration,
+        //     () => this.UpdateState (baseColor));
     }
 
-    public void UpdateState (Color c) {
+    public void UpdateState () {
         if (!Owner)
             return;
 
@@ -23,7 +25,7 @@ public class AICooldownState : UnitState {
         if (Owner is Hero) {
             EventQueue.AddEvent (new AreaStateChangeEventArgs (Owner, null, AreaStateTypes.Active));
         }
-        Owner.gameObject.GetComponentInChildren<Renderer> ().material.color = c;
+        // Owner.gameObject.GetComponentInChildren<Renderer> ().material.color = c;
         state = new AIIdleState (Owner);
     }
 
