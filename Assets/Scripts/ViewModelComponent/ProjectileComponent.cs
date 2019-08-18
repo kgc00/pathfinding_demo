@@ -48,5 +48,6 @@ public class ProjectileComponent : MonoBehaviour {
             OnConnected (unit);
             Destroy (gameObject);
         }
+        if (!board.TileAt (p).isWalkable) Destroy (gameObject);
     }
 }

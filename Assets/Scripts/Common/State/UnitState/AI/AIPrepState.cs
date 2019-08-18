@@ -116,16 +116,11 @@ public class AIPrepState : UnitState {
         HighlightTiles (tilesInRange);
 
         if (!Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost)) {
-            float randomDelay = UnityEngine.Random.Range (1, 3);
-            while (randomDelay > 0) {
-                randomDelay -= Time.deltaTime;
-            }
             return null;
         }
 
         if (!abilityComponent.PrepAbility (tilesInRange, target)) return null;
 
-        Debug.Log (string.Format ("entering acting state with tiles in range: {0}", tilesInRange));
         return new AIActingState (Owner, tilesInRange, target);
     }
 
@@ -138,12 +133,12 @@ public class AIPrepState : UnitState {
         BoardVisuals.AddTileToHighlights (Owner, tiles);
     }
 
-    System.Collections.IEnumerator WaitAndRetry () {
-        float randomDelay = UnityEngine.Random.Range (1, 3);
-        while (randomDelay > 0) {
-            randomDelay -= Time.deltaTime;
-            yield return null;
-        }
-        Enter ();
-    }
+    // System.Collections.IEnumerator WaitAndRetry () {
+    //     float randomDelay = UnityEngine.Random.Range (1, 3);
+    //     while (randomDelay > 0) {
+    //         randomDelay -= Time.deltaTime;
+    //         yield return null;
+    //     }
+    //     Enter ();
+    // }
 }
