@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Bite
   Range: 1
-  CooldownDuration: 1
+  EnergyCost: 2
   Damage: 2
   RangeComponentType: 2
   AbilityType: 1

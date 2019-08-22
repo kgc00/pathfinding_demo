@@ -5,7 +5,7 @@ public class AbilityData : ScriptableObject {
     // set in inspector
     public string DisplayName;
     public int Range;
-    public float CooldownDuration;
+    public float EnergyCost;
     public int Damage;
     public RangeComponentType RangeComponentType;
     public Abilities AbilityType;

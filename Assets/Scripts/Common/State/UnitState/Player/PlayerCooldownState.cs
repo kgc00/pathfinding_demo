@@ -9,22 +9,24 @@ public class PlayerCooldownState : UnitState {
     public override void Enter () {
         BoardVisuals.RemoveTilesFromHighlightsByUnit (Owner);
         BoardVisuals.RemoveIndicator (Owner);
-        Color baseColor = TempChangeColor ();
-        // start a timer with a callback to transition to the next state
-        CoroutineHelper.Instance.StartCountdown (cooldownDuration,
-            () => this.UpdateState (baseColor));
+        this.UpdateState ();
+
+        // can add some small delay to prevent acting constantly 
+
+        // Color baseColor = TempChangeColor ();
+        // // start a timer with a callback to transition to the next state
+        // CoroutineHelper.Instance.StartCountdown (cooldownDuration,
+        //     () => this.UpdateState (baseColor));
     }
 
-    public void UpdateState (Color c) {
+    public void UpdateState () {
         // should probably only fire when area is in setupstate
-        if (!Owner) {
-            return;
-        }
+        if (!Owner) return;
 
         if (Owner is Hero) {
             EventQueue.AddEvent (new AreaStateChangeEventArgs (Owner, null, AreaStateTypes.Active));
         }
-        Owner.gameObject.GetComponentInChildren<Renderer> ().material.color = c;
+
         state = new PlayerIdleState (Owner);
     }
 

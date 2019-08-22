@@ -14,7 +14,7 @@ public class ShootAbility : AttackAbility {
 
         instance.AddComponent<ProjectileComponent> ().Initialize (dir, OnAbilityConnected);
 
-        OnFinished (CooldownDuration);
+        OnFinished (EnergyCost);
     }
 
     public override void OnAbilityConnected (Unit targetedUnit) {
@@ -24,7 +24,7 @@ public class ShootAbility : AttackAbility {
     public override void Assign (AbilityData data, Unit owner) {
         this.DisplayName = data.DisplayName;
         this.Range = data.Range;
-        this.CooldownDuration = data.CooldownDuration;
+        this.EnergyCost = data.EnergyCost;
         this.RangeComponentType = data.RangeComponentType;
         this.Damage = data.Damage;
         this.Owner = owner;

@@ -31,6 +31,8 @@ public class AbilityComponent : MonoBehaviour {
     // called from unit's idle state when the user selects an ability via keypress
     // will set current ability and provide range component
     public bool SetCurrentAbility (int i) {
+        if (i >= EquippedAbilities.Count) return false;
+
         var val = SetCurrentAbility (EquippedAbilities[i]);
         return val;
     }
@@ -45,25 +47,29 @@ public class AbilityComponent : MonoBehaviour {
 
     public bool SetCurrentAbility (Ability ability) {
         var toEquip = EquippedAbilities.Find (abil => ability == abil);
-        if (toEquip) {
-            CurrentAbility = toEquip;
-            return SetRangeComponent ();
-        } else {
+        if (!toEquip) {
             Debug.LogError (string.Format ("tried to set ability to an out of bounds index"));
             return false;
         }
+        if (toEquip.EnergyCost > owner.EnergyComponent.CurrentEnergy) return false;
+
+        if (!SetRangeComponent (toEquip)) return false;
+
+        CurrentAbility = toEquip;
+        return true;
     }
 
-    private bool SetRangeComponent () {
-        switch (CurrentAbility.RangeComponentType) {
+    // refactor to initialize once at start of game and reuse references
+    private bool SetRangeComponent (Ability ability) {
+        switch (ability.RangeComponentType) {
             case RangeComponentType.CONSTANT:
-                rangeComponent = new ConstantRange (owner, CurrentAbility);
+                rangeComponent = new ConstantRange (owner, ability);
                 break;
             case RangeComponentType.LINE:
-                rangeComponent = new LinearRange (owner, CurrentAbility);
+                rangeComponent = new LinearRange (owner, ability);
                 break;
             case RangeComponentType.SELF:
-                rangeComponent = new SelfRange (owner, CurrentAbility);
+                rangeComponent = new SelfRange (owner, ability);
                 break;
             default:
                 return false;
@@ -73,9 +79,12 @@ public class AbilityComponent : MonoBehaviour {
 
     internal bool PrepAbility (List<PathfindingData> tilesInRange, PathfindingData selectedTile) {
         if (CurrentAbility == null) {
-            Debug.LogError (string.Format ("Should never be null"));
+            Debug.LogError (string.Format ("Need to set a current ability before we prep it."));
             return false;
         }
+
+        if (tilesInRange == null) { Debug.Log (string.Format ("tiles in range was never set")); return false; }
+        if (selectedTile == null) { Debug.Log (string.Format ("selectedTile was never set")); return false; }
         CurrentAbility.TilesInRange = tilesInRange;
         CurrentAbility.Target = selectedTile;
         CurrentAbility.Movement = movement;

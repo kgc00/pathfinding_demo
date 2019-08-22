@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Run
   Range: 3
-  CooldownDuration: 1
+  EnergyCost: 2
   Damage: 0
   RangeComponentType: 0
   AbilityType: 0

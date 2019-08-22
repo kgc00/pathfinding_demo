@@ -11,6 +11,7 @@ public abstract class Unit : MonoBehaviour {
     protected OccupationState occupationState;
     public AbilityComponent AbilityComponent { get; protected set; }
     public HealthComponent HealthComponent;
+    public EnergyComponent EnergyComponent;
     protected Controller controller;
     public UnitState UnitState { get; protected set; }
     public Point SpawnLocation { get; private set; }
@@ -20,6 +21,7 @@ public abstract class Unit : MonoBehaviour {
         this.TypeReference = r;
         this.SpawnLocation = spawnLocation;
         HealthComponent = gameObject.AddComponent<HealthComponent> ();
+        EnergyComponent = gameObject.AddComponent<EnergyComponent> ();
         AbilityComponent = gameObject.AddComponent<AbilityComponent> ();
         transform.localEulerAngles = dir.ToEuler ();
         occupationState = new OccupationState (this, Board);

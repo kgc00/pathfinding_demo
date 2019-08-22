@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthUI : MonoBehaviour {
+public class PlayerHealthUI : MonoBehaviour {
     private struct CoroutineInfo {
         public HealthFillInfo healthFillInfo;
         public Coroutine coroutine;
@@ -23,10 +22,9 @@ public class HealthUI : MonoBehaviour {
             unit = _unit;
         }
     }
-    public float animationDuration = 0.5f;
+    public float animationDuration = 0.25f;
     private Dictionary<Unit, CoroutineInfo> currentCoroutines;
 
-    // Use this for initialization
     void Awake () {
         currentCoroutines = new Dictionary<Unit, CoroutineInfo> ();
         HealthComponent.onHealthChanged += PrepAnimation;
@@ -37,7 +35,6 @@ public class HealthUI : MonoBehaviour {
     }
 
     private void PrepAnimation (Unit unit, int prevAmount) {
-        if (unit is Monster) return;
         if (currentCoroutines.ContainsKey (unit)) {
             StopCoroutine (currentCoroutines[unit].coroutine);
             currentCoroutines.Remove (unit);

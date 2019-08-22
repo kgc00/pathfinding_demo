@@ -49,6 +49,7 @@ public class WalkingMovement : MovementComponent {
     // and add it back into the list here, so the unit still traverses it.
     private PathfindingData AddStartingData (List<PathfindingData> tilesInRange) {
         var startdata = new PathfindingData (owner.Board.TileAt (owner.Position), new ShadowTile (0, owner.Position, null, owner.Board.TileAt (owner.Position)));
+        // Debug.Log (string.Format ("tiles in range: {0}, startData: {1}", tilesInRange, startdata));
         tilesInRange.Add (startdata);
         return startdata;
     }
