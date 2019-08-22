@@ -37,8 +37,7 @@ public class ProjectileComponent : MonoBehaviour {
 
     private Point AssignPosIfInBounds () {
         Point p = transform.position.ToPoint ();
-        if (!board.TileAt (p))
-            Destroy (gameObject);
+        if (!board.TileAt (p) || !board.TileAt (p).isWalkable) Destroy (gameObject);
         return p;
     }
 
@@ -48,6 +47,5 @@ public class ProjectileComponent : MonoBehaviour {
             OnConnected (unit);
             Destroy (gameObject);
         }
-        if (!board.TileAt (p).isWalkable) Destroy (gameObject);
     }
 }

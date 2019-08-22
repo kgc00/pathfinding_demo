@@ -31,6 +31,8 @@ public class AbilityComponent : MonoBehaviour {
     // called from unit's idle state when the user selects an ability via keypress
     // will set current ability and provide range component
     public bool SetCurrentAbility (int i) {
+        if (i >= EquippedAbilities.Count) return false;
+
         var val = SetCurrentAbility (EquippedAbilities[i]);
         return val;
     }
