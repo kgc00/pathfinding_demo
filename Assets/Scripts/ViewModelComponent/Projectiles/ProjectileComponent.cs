@@ -3,12 +3,12 @@ using UnityEngine;
 public class ProjectileComponent : MonoBehaviour {
     Point start;
     Board board;
-    System.Action<Unit> OnConnected;
+    System.Action<GameObject> OnConnected;
     float speed = 1.5f;
     public Point Direction;
 
     //optional param for setting projectile speed
-    public void Initialize (Point dir, System.Action<Unit> callback, float speed = 1.5f) {
+    public void Initialize (Point dir, System.Action<GameObject> callback, float speed = 1.5f) {
         start = transform.position.ToPoint ();
         this.Direction = dir;
         this.OnConnected = callback;
@@ -44,7 +44,7 @@ public class ProjectileComponent : MonoBehaviour {
     private void CollisionLogic (Point p) {
         var unit = board.UnitAt (p);
         if (unit) {
-            OnConnected (unit);
+            OnConnected (unit.gameObject);
             Destroy (gameObject);
         }
     }

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using UnityEngine;
 public class LinearRange : RangeComponent {
-    public LinearRange (Unit owner, Ability ability) : base (owner, ability) { }
+    public LinearRange (GameObject owner, Board board, Ability ability) : base (owner, board, ability) { }
 
     public override List<PathfindingData> GetTilesInRange () {
-        var retValue = pathfinding.Search (board.TileAt (owner.Position), ExpandSearch);
+        var retValue = pathfinding.Search (board.TileAt (owner.transform.position.ToPoint ()), ExpandSearch);
         Filter (retValue);
         return retValue;
     }
@@ -15,8 +16,10 @@ public class LinearRange : RangeComponent {
     }
 
     bool ExpandSearch (ShadowTile from, Tile to) {
-        return (owner.Position.y == to.Position.y ||
-                owner.Position.x == to.Position.x) &&
+        var ownerPos = owner.transform.position.ToPoint ();
+
+        return (ownerPos.y == to.Position.y ||
+                ownerPos.x == to.Position.x) &&
             (from.distance + 1) <= range;
     }
 }

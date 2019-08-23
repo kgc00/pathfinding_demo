@@ -22,6 +22,11 @@ public class AbilityFactory : MonoBehaviour {
                     instance.Assign (ability, owner);
                     retVal.Add (instance);
                     break;
+                case Abilities.BOMB_ABILITY:
+                    instance = owner.gameObject.AddComponent<BombAbility> ();
+                    instance.Assign (ability, owner);
+                    retVal.Add (instance);
+                    break;
                 default:
                     break;
             }

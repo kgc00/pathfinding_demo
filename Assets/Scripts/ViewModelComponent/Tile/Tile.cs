@@ -29,6 +29,7 @@ public class Tile : MonoBehaviour {
     }
 
     public bool IsOccupied () {
+        // Debug.Log (string.Format ("tiles occupied is {0}", OccupiedBy.ToString ()));
         return (OccupiedBy != null);
     }
     public bool IsOccupiedBy (Unit u) {

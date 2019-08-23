@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour {
     // populated from ability data
     public int Range;
+    public int AreaOfEffect;
     public float EnergyCost;
     public RangeComponentType RangeComponentType;
     public Unit Owner;

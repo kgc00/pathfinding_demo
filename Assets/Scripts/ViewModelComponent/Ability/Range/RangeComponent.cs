@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using UnityEngine;
 public abstract class RangeComponent {
     public int range;
-    protected Unit owner;
+    protected GameObject owner;
     protected Board board;
     protected BoardPathfinding pathfinding;
-    public RangeComponent (Unit owner, Ability ability) {
+    public RangeComponent (GameObject owner, Board board, Ability ability) {
         this.owner = owner;
-        this.board = owner.Board;
+        this.board = board;
         this.pathfinding = board.Pathfinding;
         this.range = ability.Range;
     }

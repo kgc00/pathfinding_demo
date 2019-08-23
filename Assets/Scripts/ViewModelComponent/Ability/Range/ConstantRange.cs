@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
+using UnityEngine;
 public class ConstantRange : RangeComponent {
-    public ConstantRange (Unit owner, Ability ability) : base (owner, ability) { }
+    public ConstantRange (GameObject owner, Board board, Ability ability) : base (owner, board, ability) { }
 
     public override List<PathfindingData> GetTilesInRange () {
-        var retValue = pathfinding.Search (board.TileAt (owner.Position), ExpandSearch);
+        var retValue = pathfinding.Search (board.TileAt (owner.transform.position.ToPoint ()), ExpandSearch);
         Filter (retValue);
         return retValue;
     }
