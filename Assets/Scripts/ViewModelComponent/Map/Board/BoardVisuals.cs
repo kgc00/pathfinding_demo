@@ -75,6 +75,8 @@ public class BoardVisuals : MonoBehaviour {
     }
 
     public static void RemoveTilesFromHighlightsByUnit (Unit unit) {
+        if (!highlightedTilesByUnit.ContainsKey (unit)) return;
+
         var duplicates = allRangeRenderers
             .GroupBy (x => x)
             .Where (x => x.Count () > 1)

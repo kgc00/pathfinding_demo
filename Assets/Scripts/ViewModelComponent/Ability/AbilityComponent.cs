@@ -63,13 +63,13 @@ public class AbilityComponent : MonoBehaviour {
     private bool SetRangeComponent (Ability ability) {
         switch (ability.RangeComponentType) {
             case RangeComponentType.CONSTANT:
-                rangeComponent = new ConstantRange (owner, ability);
+                rangeComponent = new ConstantRange (owner.gameObject, owner.Board, ability);
                 break;
             case RangeComponentType.LINE:
-                rangeComponent = new LinearRange (owner, ability);
+                rangeComponent = new LinearRange (owner.gameObject, owner.Board, ability);
                 break;
             case RangeComponentType.SELF:
-                rangeComponent = new SelfRange (owner, ability);
+                rangeComponent = new SelfRange (owner.gameObject, owner.Board, ability);
                 break;
             default:
                 return false;
