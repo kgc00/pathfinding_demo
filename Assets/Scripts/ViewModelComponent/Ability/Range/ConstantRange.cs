@@ -12,9 +12,14 @@ public class ConstantRange : RangeComponent {
     // in a more robust implementation we would use a strategy pattern here
     // to mix and match filter with range on a per ability basis
     protected override void Filter (List<PathfindingData> tiles) {
-        for (int i = tiles.Count - 1; i >= 0; --i)
-            if (tiles[i].tile.OccupiedBy == owner)
-                tiles.RemoveAt (i);
+        if (owner.GetComponent<Unit> ()) {
+            for (int i = tiles.Count - 1; i >= 0; --i)
+                if (tiles[i].tile.OccupiedBy == owner.GetComponent<Unit> ())
+                    tiles.RemoveAt (i);
+        } else {
+            return;
+        }
+
     }
 
     bool ExpandSearch (ShadowTile from, Tile to) {
