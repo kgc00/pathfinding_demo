@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 
 public class BombAbility : AttackAbility {
-    ConstantRange rangeComponent;
     public Func<GameObject> onExplosion = () => { return null; };
     public override void Activate () {
         var ownerPos = Owner.Position;
@@ -23,12 +22,12 @@ public class BombAbility : AttackAbility {
     }
 
     public override void OnAbilityConnected (GameObject obj) {
-        rangeComponent = new ConstantRange (obj, Owner.Board, this);
+        var rangeComponent = new SelfAndConstantRange (obj, Owner.Board, this);
         rangeComponent.range = this.AreaOfEffect;
-        Explode (obj.transform.position.ToPoint ());
+        Explode (rangeComponent);
     }
 
-    private void Explode (Point position) {
+    private void Explode (SelfAndConstantRange rangeComponent) {
         // range component is calculating range based on owner pos, rather than projectile pos
         var tiles = rangeComponent.GetTilesInRange ();
         tiles.Where (data => data.tile.IsOccupied ())
@@ -38,7 +37,7 @@ public class BombAbility : AttackAbility {
             });
 
         tiles.ForEach (tile => {
-            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (tile.tile.Position.x, tile.tile.Position.y, -1f), Quaternion.identity);
+            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (tile.tile.Position.x, tile.tile.Position.y, Layers.Foreground), Quaternion.identity);
             Destroy (vfx, 0.2f);
         });
     }
