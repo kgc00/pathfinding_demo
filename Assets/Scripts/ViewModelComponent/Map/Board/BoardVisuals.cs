@@ -11,7 +11,6 @@ public class BoardVisuals : MonoBehaviour {
     private static Dictionary<Unit, List<Renderer>> highlightedTilesByUnit;
     private static List<Renderer> allRangeRenderers;
     private static Dictionary<Unit, List<Renderer>> indicatorRendererByUnit;
-    private static List<Renderer> debugRends;
     Board board;
     public void Initialize (Board board) {
         this.board = board;

@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 
 public class PlayerPrepState : UnitState {
-    public static System.Action<Unit, int> onAbilitySet = delegate { };
-    public static System.Action<Unit, int> onAbilityCommited = delegate { };
+    public static Action<Unit, int> onAbilitySet = delegate { };
+    public static Action<Unit, int> onAbilityCommited = delegate { };
+    public static Action onAbilityCanceled = delegate { };
     AbilityComponent abilityComponent;
     List<Tile> indicatorList;
+    Tile AoECenter;
     public PlayerPrepState (Unit Owner) : base (Owner) {
         this.abilityComponent = Owner.AbilityComponent;
         indicatorList = new List<Tile> ();
@@ -29,9 +32,10 @@ public class PlayerPrepState : UnitState {
             }
         }
 
-        if (controller.DetectInputFor (ControlTypes.CANCEL))
+        if (controller.DetectInputFor (ControlTypes.CANCEL)) {
+            onAbilityCanceled ();
             return new PlayerIdleState (Owner);
-
+        }
         return null;
     }
 
@@ -84,11 +88,26 @@ public class PlayerPrepState : UnitState {
         var selectedTile = Owner.Board.TileAt (mousePosition);
         var isValid = tilesInRange.Exists (data => data.tile == selectedTile);
         // tile is not valid or already is highlighted, return 
-        if (indicatorList.Contains (selectedTile) || !isValid) return;
+        if (!isValid) return;
 
-        // highlight the players pointer location
-        CleanIndicator ();
-        indicatorList.Add (selectedTile);
+        if (abilityComponent.CurrentAbility.AreaOfEffect > 0) {
+            var aoeRange = RangeUtil.GetAoERange (mousePosition, abilityComponent.CurrentAbility);
+            var curFrameCenter = aoeRange.Find (data => data.shadow.distance == 0).tile;
+            if (curFrameCenter == AoECenter) return;
+            else {
+                CleanIndicator ();
+                aoeRange.ForEach (data => {
+                    if (data.shadow.distance == 0)
+                        AoECenter = data.tile;
+
+                    indicatorList.Add (data.tile);
+                });
+            }
+        } else {
+            if (indicatorList.Contains (selectedTile)) return;
+            CleanIndicator ();
+            indicatorList.Add (selectedTile);
+        }
         BoardVisuals.AddIndicator (Owner, indicatorList);
     }
 

@@ -13,6 +13,7 @@ class AbilityPanel : MonoBehaviour {
         SetupState.onAreaLoaded += StopAnimations;
         PlayerIdleState.onAbilitySet += AnimateAbilityPrepped;
         PlayerPrepState.onAbilitySet += AnimateAbilityPrepped;
+        PlayerPrepState.onAbilityCanceled += StopAnimations;
         PlayerPrepState.onAbilityCommited += AnimateAbilityCommited;
         clips = new AnimationClip[2];
         clips[0] = (AnimationClip) Resources.Load ("Animations/ScaleImage", typeof (AnimationClip));

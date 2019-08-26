@@ -24,7 +24,7 @@ public class AbilityTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         SetTooltipText ();
 
-        if (desiredElementPos.x + sizeX < (1000))
+        if (desiredElementPos.x + sizeX < (950))
             tooltipRect.SetPositionAndRotation (desiredElementPos, Quaternion.identity);
         else
             tooltipRect.SetPositionAndRotation (altPos, Quaternion.identity);
@@ -36,7 +36,7 @@ public class AbilityTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         tooltipRect = tooltip.GetComponent<RectTransform> ();
         var margin = 15f;
         sizeX = (tooltipRect.rect.size.x * 1.25f) + margin;
-        var altX = tooltipRect.rect.size.x * 0.21f + margin;
+        var altX = tooltipRect.rect.size.x * 0.33f + margin;
         var rightEdge = (myRect.anchoredPosition.x + myRect.rect.xMax);
         desiredElementPos = new Vector3 (rightEdge + sizeX, 0, 0);
         altPos = new Vector3 (myRect.anchoredPosition.x + altX, 0, 0);
@@ -47,8 +47,7 @@ public class AbilityTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
 
     void SetTooltipText () {
-
-        Debug.Log (string.Format ("ability is {0}", JsonUtility.ToJson (ability)));
+        // Debug.Log (string.Format ("ability is {0}", JsonUtility.ToJson (ability)));
         tooltip.transform.Find ("Header/Name").GetComponent<TextMeshProUGUI> ().SetText (ability.DisplayName);
 
         tooltip.transform.Find ("Target Details/Text/Range")

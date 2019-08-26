@@ -10,5 +10,6 @@ public class AbilityData : ScriptableObject {
     public int AreaOfEffect; // 0 (none), 1, 2
     public string Description;
     public RangeComponentType RangeComponentType;
+    public RangeComponentType AoERangeComponentType;
     public Abilities AbilityType;
 }
