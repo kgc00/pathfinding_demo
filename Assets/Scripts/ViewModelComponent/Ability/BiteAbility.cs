@@ -11,7 +11,10 @@ public class BiteAbility : AttackAbility {
 
     public override void OnAbilityConnected (GameObject targetedUnit) {
         try {
-            targetedUnit.GetComponent<Unit> ().HealthComponent.AdjustHealth (-Damage);
+            var unit = targetedUnit.GetComponent<Unit> ();
+            unit.HealthComponent.AdjustHealth (-Damage);
+            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (unit.Position.x, unit.Position.y, Layers.Foreground), Quaternion.identity);
+            Destroy (vfx, 0.2f);
         } catch (System.Exception) {
             Debug.Log (string.Format ("unable to get unit script from gameobject"));
         }

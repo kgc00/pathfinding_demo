@@ -97,9 +97,7 @@ public class PlayerPrepState : UnitState {
             else {
                 CleanIndicator ();
                 aoeRange.ForEach (data => {
-                    if (data.shadow.distance == 0)
-                        AoECenter = data.tile;
-
+                    if (data.shadow.distance == 0) AoECenter = data.tile;
                     indicatorList.Add (data.tile);
                 });
             }
