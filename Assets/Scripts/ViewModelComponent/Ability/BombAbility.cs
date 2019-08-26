@@ -49,6 +49,7 @@ public class BombAbility : AttackAbility {
         this.RangeComponentType = data.RangeComponentType;
         this.Damage = data.Damage;
         this.AreaOfEffect = data.AreaOfEffect;
+        this.Description = data.Description;
         this.Owner = owner;
     }
 }

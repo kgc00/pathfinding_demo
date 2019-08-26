@@ -34,6 +34,7 @@ public class ShootAbility : AttackAbility {
         this.EnergyCost = data.EnergyCost;
         this.RangeComponentType = data.RangeComponentType;
         this.Damage = data.Damage;
+        this.Description = data.Description;
         this.Owner = owner;
     }
 }

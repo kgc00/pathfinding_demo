@@ -9,6 +9,7 @@ public abstract class Ability : MonoBehaviour {
     public RangeComponentType RangeComponentType;
     public Unit Owner;
     public string DisplayName;
+    public string Description;
 
     // fields populated at runtime
     [HideInInspector] public List<PathfindingData> TilesInRange;

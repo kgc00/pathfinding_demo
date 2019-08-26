@@ -20,5 +20,6 @@ public class RunAbility : MovementAbility {
         this.EnergyCost = data.EnergyCost;
         this.RangeComponentType = data.RangeComponentType;
         this.Owner = owner;
+        this.Description = data.Description;
     }
 }
