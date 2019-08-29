@@ -38,6 +38,10 @@ public class WalkingMovement : MovementComponent {
                 break;
             }
 
+            Directions dir = from.GetDirection (to);
+            if (owner.dir != dir)
+                yield return StartCoroutine (Turn (dir));
+
             // pass in a callback to update our state if our path is blocked during traversal
             yield return StartCoroutine (Walk (from, to, () => shouldBreak = true));
         }

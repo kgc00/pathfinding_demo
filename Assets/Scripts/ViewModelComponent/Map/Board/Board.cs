@@ -99,7 +99,7 @@ public class Board : MonoBehaviour {
             DeleteUnitAt (p);
         }
 
-        Unit unit = CreateUnitFromType (p, type);
+        Unit unit = UnitFactory.CreateUnitFromType (p, type);
 
         unit.gameObject.name = type.ToString ();
         unit.transform.parent = gameObject.transform;
@@ -107,45 +107,17 @@ public class Board : MonoBehaviour {
         return unit;
     }
 
-    private static Unit CreateUnitFromType (Point p, UnitTypes type) {
-        Unit unit = null;
-        if (type == UnitTypes.HERO) {
-            Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Hero;
-            unit = instance as Unit;
-        } else if (type == UnitTypes.MONSTER) {
-            Monster instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            unit = instance as Unit;
-        } else if (type == UnitTypes.SIMPLE_MONSTER) {
-            SimpleMonster instance = Instantiate (Resources.Load ("Prefabs/SimpleMonster", typeof (SimpleMonster)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as SimpleMonster;
-            unit = instance as Unit;
-        }
-        if (unit == null) {
-            Debug.LogError ("unit should not be null and is.");
-            return null;
-        } else
-            return unit;
-    }
-
     public void InitializeUnitAt (Point p) {
         Unit unit = UnitAtForBoardCreation (p);
-        var name = "";
-        if (unit.TypeReference == UnitTypes.HERO) {
-            unit.GetComponent<Hero> ().Initialize (this, UnitTypes.HERO, p);
-            name = UnitTypes.HERO.ToString ();
-        } else if (unit.TypeReference == UnitTypes.MONSTER) {
-            unit.GetComponent<Monster> ().Initialize (this, UnitTypes.MONSTER, p);
-            name = UnitTypes.MONSTER.ToString ();
-        }
+
+        unit.GetComponent<Unit> ().Initialize (this, unit.TypeReference, p);
+        unit.name = unit.TypeReference.ToString ();
 
         if (unit == null) {
             Debug.LogError ("unit should not be null and is.");
             return;
         }
 
-        unit.gameObject.name = name;
         unit.transform.parent = gameObject.transform;
     }
 
