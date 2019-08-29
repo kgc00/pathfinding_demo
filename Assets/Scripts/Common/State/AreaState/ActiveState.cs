@@ -6,8 +6,10 @@ public class ActiveState : AreaState {
 
     public override void Enter () {
         // hero is initialized on the setup state, we initialize every other type here
-        foreach (var unit in area.Board.Units.Where (unit => unit.Value.TypeReference != UnitTypes.HERO)) {
-            area.Board.ActivateUnitAt (unit.Key);
+        var enemies = area.Board.Units.Where (unit => unit.Value.TypeReference != UnitTypes.HERO);
+
+        foreach (var unit in enemies) {
+            area.Board.UnitFactory.ActivateEnemyAt (unit.Key);
         }
     }
     public override AreaState HandleUpdate () {

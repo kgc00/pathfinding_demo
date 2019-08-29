@@ -24,11 +24,10 @@ public class SetupState : AreaState {
 
     private void SetPlayerData () {
         // only allow the player to move at board start state
+        // load their stats/state
         Hero playerUnit = (Hero) area.Board.Units.First (unit => unit.Value.TypeReference == UnitTypes.HERO).Value;
 
-        // load their stats/state
-        area.Board.InitializeUnitAt (playerUnit.Position);
-        playerUnit.LoadUnitState (WorldSaveComponent.GetPlayerStats ());
+        area.Board.UnitFactory.InitializePlayerUnitAt (playerUnit.Position);
     }
 
     private void SetPlayerPosition (List<TileSpawnData> tsd, Point min, Point max) {
