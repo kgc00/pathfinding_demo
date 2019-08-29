@@ -21,5 +21,6 @@ public class RunAbility : MovementAbility {
         this.RangeComponentType = data.RangeComponentType;
         this.Owner = owner;
         this.Description = data.Description;
+        this.TargetType = data.TargetType;
     }
 }

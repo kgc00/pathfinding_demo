@@ -12,4 +12,5 @@ public class AbilityData : ScriptableObject {
     public RangeComponentType RangeComponentType;
     public RangeComponentType AoERangeComponentType;
     public Abilities AbilityType;
+    public Targets TargetType;
 }

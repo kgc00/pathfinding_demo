@@ -52,5 +52,6 @@ public class BombAbility : AttackAbility {
         this.Description = data.Description;
         this.AoERangeComponentType = data.AoERangeComponentType;
         this.Owner = owner;
+        this.TargetType = data.TargetType;
     }
 }
