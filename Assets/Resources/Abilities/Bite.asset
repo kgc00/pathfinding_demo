@@ -16,5 +16,7 @@ MonoBehaviour:
   Range: 1
   EnergyCost: 2
   Damage: 2
+  AreaOfEffect: 0
+  Description: Bite!
   RangeComponentType: 2
   AbilityType: 1

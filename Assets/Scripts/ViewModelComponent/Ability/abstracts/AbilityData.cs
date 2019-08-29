@@ -8,6 +8,9 @@ public class AbilityData : ScriptableObject {
     public float EnergyCost;
     public int Damage;
     public int AreaOfEffect; // 0 (none), 1, 2
+    public string Description;
     public RangeComponentType RangeComponentType;
+    public RangeComponentType AoERangeComponentType;
     public Abilities AbilityType;
+    public Targets TargetType;
 }

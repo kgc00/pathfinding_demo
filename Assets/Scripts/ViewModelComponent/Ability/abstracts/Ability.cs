@@ -7,8 +7,11 @@ public abstract class Ability : MonoBehaviour {
     public int AreaOfEffect;
     public float EnergyCost;
     public RangeComponentType RangeComponentType;
+    public RangeComponentType AoERangeComponentType;
     public Unit Owner;
     public string DisplayName;
+    public string Description;
+    public Targets TargetType;
 
     // fields populated at runtime
     [HideInInspector] public List<PathfindingData> TilesInRange;

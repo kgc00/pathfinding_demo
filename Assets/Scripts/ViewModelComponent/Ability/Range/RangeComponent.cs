@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 public abstract class RangeComponent {
@@ -9,8 +10,18 @@ public abstract class RangeComponent {
         this.owner = owner;
         this.board = board;
         this.pathfinding = board.Pathfinding;
-        this.range = ability.Range;
+        this.range = ability ? ability.Range : 0;
     }
+    public virtual RangeComponent SetAoERange (int range) {
+        this.range = range;
+        return this;
+    }
+
+    public RangeComponent SetOwnerPos (Point mousePosition) {
+        owner.transform.position = new Vector3 (mousePosition.x, mousePosition.y, 0);
+        return this;
+    }
+
     public abstract List<PathfindingData> GetTilesInRange ();
 
     // in a more robust implementation we would use a strategy pattern here

@@ -11,6 +11,7 @@ public class Board : MonoBehaviour {
     public LevelData levelData;
     BoardVisuals vis;
     BoardPathfinding bpf;
+    RangeUtil rangeUtil;
 
     internal void ActivateUnitAt (Point p) {
         Unit instance = null;
@@ -48,8 +49,10 @@ public class Board : MonoBehaviour {
         levelData = data;
         vis = gameObject.AddComponent<BoardVisuals> ();
         bpf = gameObject.AddComponent<BoardPathfinding> ();
+        rangeUtil = gameObject.AddComponent<RangeUtil> ();
         vis.Initialize (this);
         bpf.Initialize (this);
+        rangeUtil.Initialize (this);
         Unit.onUnitDeath += DeleteUnit;
         Load ();
     }

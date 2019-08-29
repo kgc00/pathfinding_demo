@@ -16,5 +16,8 @@ MonoBehaviour:
   Range: 99
   EnergyCost: 3
   Damage: 1
+  AreaOfEffect: 0
+  Description: Target a direction to launch a projectile in.  Collides with walls
+    and units.  Is destroyed and deals damage on collision.
   RangeComponentType: 2
   AbilityType: 2
