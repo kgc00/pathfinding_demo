@@ -3,8 +3,13 @@ using UnityEngine;
 public class BiteAbility : AttackAbility {
     public override void Activate () {
         var targetUnit = Target.tile.OccupiedBy;
+        var from = Owner.Board.TileAt (Owner.Position);
+
         if (targetUnit != null)
             OnAbilityConnected (targetUnit.gameObject);
+
+        var toTurn = from.GetDirection (Target.tile);
+        Owner.AbilityComponent.TurnUnit (toTurn);
 
         OnFinished (EnergyCost);
     }

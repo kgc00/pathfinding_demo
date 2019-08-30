@@ -17,7 +17,7 @@ public abstract class MovementComponent : MonoBehaviour {
             if (!tiles[i].tile.isWalkable)
                 tiles.RemoveAt (i);
     }
-    protected virtual IEnumerator Turn (Directions dir) {
+    public virtual IEnumerator Turn (Directions dir) {
         TransformLocalEulerTweener t =
             (TransformLocalEulerTweener) transform
             .RotateToLocal (
@@ -27,11 +27,12 @@ public abstract class MovementComponent : MonoBehaviour {
         // When rotating between North and West, we must make an exception so it looks like the unit
         // rotates the most efficient way (since 0 and 360 are treated the same)
         if (Mathf.Approximately (t.startValue.z, 0f) &&
-            Mathf.Approximately (t.endValue.z, 270f))
+            Mathf.Approximately (t.endValue.z, 270f)) {
             t.startValue = new Vector3 (t.startValue.x, t.startValue.y, 360f);
-        else if (Mathf.Approximately (t.startValue.z, 270) &&
-            Mathf.Approximately (t.endValue.z, 0))
+        } else if (Mathf.Approximately (t.startValue.z, 270) &&
+            Mathf.Approximately (t.endValue.z, 0)) {
             t.endValue = new Vector3 (t.startValue.x, t.startValue.y, 360f);
+        }
         owner.dir = dir;
 
         while (t != null)

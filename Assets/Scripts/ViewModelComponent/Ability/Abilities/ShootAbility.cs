@@ -2,17 +2,25 @@ using UnityEngine;
 
 public class ShootAbility : AttackAbility {
     public override void Activate () {
+        var board = Owner.Board;
         var ownerPos = Owner.Position;
-        Point dir = new Point ((Mathf.Clamp (Target.tile.Position.x -
+        var from = board.TileAt (ownerPos);
+
+        Point targetDir = new Point ((Mathf.Clamp (Target.tile.Position.x -
             ownerPos.x, -1, 1)), (Mathf.Clamp (Target.tile.Position.y -
             ownerPos.y, -1, 1)));
 
+        if (Owner.dir != targetDir.ToDirection ()) {
+            var toTurn = from.GetDirection (Target.tile);
+            Owner.AbilityComponent.TurnUnit (toTurn);
+        }
+
         var instance = Instantiate (Resources.Load<GameObject> ("Prefabs/Projectile"),
-            new Vector3 ((dir.x + ownerPos.x),
-                (dir.y + ownerPos.y), -2),
+            new Vector3 ((targetDir.x + ownerPos.x),
+                (targetDir.y + ownerPos.y), -2),
             Quaternion.identity);
 
-        instance.AddComponent<ProjectileComponent> ().Initialize (dir, OnAbilityConnected);
+        instance.AddComponent<ProjectileComponent> ().Initialize (targetDir, OnAbilityConnected);
 
         OnFinished (EnergyCost);
     }

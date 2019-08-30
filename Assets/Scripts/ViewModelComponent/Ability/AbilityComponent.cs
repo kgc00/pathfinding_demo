@@ -96,4 +96,8 @@ public class AbilityComponent : MonoBehaviour {
     public List<PathfindingData> GetTilesInRange () {
         return rangeComponent.GetTilesInRange ();
     }
+
+    public void TurnUnit (Directions dir) {
+        StartCoroutine (movement.Turn (dir));
+    }
 }

@@ -16,7 +16,7 @@ public class UnitFactory : MonoBehaviour {
                     new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
                 break;
             case UnitTypes.MONSTER:
-                unit = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
+                unit = Instantiate (Resources.Load ("Prefabs/Slime", typeof (Monster)),
                     new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
                 break;
             default:
@@ -41,7 +41,7 @@ public class UnitFactory : MonoBehaviour {
 
         instance = unit.GetComponent<Monster> ();
         instance.Initialize (board, UnitTypes.MONSTER, p);
-        unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Monster"));
+        unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Slime"));
     }
 
     public void InitializePlayerUnitAt (Point p) {
