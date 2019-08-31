@@ -47,10 +47,12 @@ public class AbilityComponent : MonoBehaviour {
 
     public bool SetCurrentAbility (Ability ability) {
         var toEquip = EquippedAbilities.Find (abil => ability == abil);
+
         if (!toEquip) {
             Debug.LogError (string.Format ("tried to set ability to an out of bounds index"));
             return false;
         }
+
         if (toEquip.EnergyCost > owner.EnergyComponent.CurrentEnergy) return false;
 
         if (!SetRangeComponent (toEquip)) return false;

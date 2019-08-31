@@ -15,9 +15,17 @@ public class UnitFactory : MonoBehaviour {
                 unit = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
                     new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
                 break;
-            case UnitTypes.MONSTER:
+            case UnitTypes.SLIME:
                 unit = Instantiate (Resources.Load ("Prefabs/Slime", typeof (Monster)),
                     new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
+                break;
+            case UnitTypes.GOBLIN_ARCHER:
+                Debug.LogError ("unit should not be null and is.");
+                unit = null;
+                break;
+            case UnitTypes.NONE:
+                Debug.LogError ("unit should not be null and is.");
+                unit = null;
                 break;
             default:
                 Debug.LogError ("unit should not be null and is.");
@@ -40,7 +48,7 @@ public class UnitFactory : MonoBehaviour {
         }
 
         instance = unit.GetComponent<Monster> ();
-        instance.Initialize (board, UnitTypes.MONSTER, p);
+        instance.Initialize (board, UnitTypes.SLIME, p);
         unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Slime"));
     }
 

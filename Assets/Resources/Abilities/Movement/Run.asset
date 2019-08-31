@@ -20,4 +20,6 @@ MonoBehaviour:
   Description: Moves the owner towards the targeted location.  Can be interrupted
     by units that cross paths.
   RangeComponentType: 0
+  AoERangeComponentType: 0
   AbilityType: 0
+  TargetType: 0

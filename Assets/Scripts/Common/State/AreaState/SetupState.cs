@@ -25,7 +25,7 @@ public class SetupState : AreaState {
     private void SetPlayerData () {
         // only allow the player to move at board start state
         // load their stats/state
-        Hero playerUnit = (Hero) area.Board.Units.First (unit => unit.Value.TypeReference == UnitTypes.HERO).Value;
+        Hero playerUnit = (Hero) area.Board.Units.FirstOrDefault (unit => unit.Value.TypeReference == UnitTypes.HERO).Value;
 
         area.Board.UnitFactory.InitializePlayerUnitAt (playerUnit.Position);
     }
@@ -52,7 +52,6 @@ public class SetupState : AreaState {
                 t.SetTransitionDirection (Directions.West);
             else if (t.Position.y == max.y)
                 t.SetTransitionDirection (Directions.North);
-
         });
     }
 
@@ -64,6 +63,8 @@ public class SetupState : AreaState {
 
         // else use the direction we entered from to determine the entrance we return
         // if we just spawned into the game we use the center of the board
+
+        // refactor to use extension method
         switch (area.areaData.from.ToPoint ().ToString ()) {
             case "(1,0)":
                 return area.Board.TileAt (tsd.Find (tile => tile.location.x == min.x).location);

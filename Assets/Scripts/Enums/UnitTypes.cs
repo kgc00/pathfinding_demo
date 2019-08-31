@@ -1,5 +1,6 @@
     public enum UnitTypes {
         HERO,
-        MONSTER,
-        SIMPLE_MONSTER
+        SLIME,
+        GOBLIN_ARCHER,
+        NONE,
     }
