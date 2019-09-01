@@ -13,7 +13,7 @@ public class SlimeBrain : Brain {
 
         // in case where player is dead, end early with some dummy values
         // otherwise we run into null exceptions when searching for player position
-        bool playerIsDead = player == null || !player.HealthComponent.isAlive;
+        bool playerIsDead = player == null || player.HealthComponent.isDead;
         if (playerIsDead) {
             return CreateMovePlan (equiped, null);
         }

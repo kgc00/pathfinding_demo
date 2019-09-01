@@ -5,10 +5,17 @@ using UnityEngine;
 public class RangeUtil : MonoBehaviour {
     private static Board board;
     private static Dictionary<RangeComponentType, RangeComponent> rangeComponents;
-    internal static List<PathfindingData> GetAoERange (Point mousePosition, Ability currentAbility) {
+    internal static List<PathfindingData> GetAoERangeFromMousePosition (Point mousePosition, Ability currentAbility) {
         return rangeComponents[currentAbility.AoERangeComponentType]
-            .SetAoERange (currentAbility.AreaOfEffect)
-            .SetOwnerPos (mousePosition)
+            .SetRange (currentAbility.AreaOfEffect)
+            .SetStartPosFromMouse (mousePosition)
+            .GetTilesInRange ();
+    }
+
+    internal static List<PathfindingData> SurveyBoard (Point startPosition, Board board) {
+        return rangeComponents[RangeComponentType.CONSTANT]
+            .SetRange (99)
+            .SetOwnerPos (startPosition)
             .GetTilesInRange ();
     }
 
@@ -16,10 +23,10 @@ public class RangeUtil : MonoBehaviour {
         board = _board;
         rangeComponents = new Dictionary<RangeComponentType, RangeComponent> () {
             {
-            RangeComponentType.CONSTANT, new ConstantRange (new GameObject (), board, null)
+            RangeComponentType.CONSTANT, new ConstantRange (new GameObject ("Constant Range Component"), board, null)
             }, {
             RangeComponentType.LINE,
-            new LinearRange (new GameObject (), board, null)
+            new LinearRange (new GameObject ("Linear Range Component"), board, null)
             }
         };
     }

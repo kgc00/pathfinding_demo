@@ -419,6 +419,6 @@ MonoBehaviour:
       y: 5
     unitRef: 1
   - location:
-      x: 3
-      y: 2
-    unitRef: 1
+      x: 6
+      y: 6
+    unitRef: 2

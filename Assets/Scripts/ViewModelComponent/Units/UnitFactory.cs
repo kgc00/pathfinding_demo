@@ -13,15 +13,15 @@ public class UnitFactory : MonoBehaviour {
         switch (type) {
             case UnitTypes.HERO:
                 unit = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
-                    new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
+                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
                 break;
             case UnitTypes.SLIME:
                 unit = Instantiate (Resources.Load ("Prefabs/Slime", typeof (Monster)),
-                    new Vector3 (p.x, p.y, -2), Quaternion.identity) as Unit;
+                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
                 break;
             case UnitTypes.GOBLIN_ARCHER:
-                Debug.LogError ("unit should not be null and is.");
-                unit = null;
+                unit = Instantiate (Resources.Load ("Prefabs/Goblin Archer", typeof (Monster)),
+                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
                 break;
             case UnitTypes.NONE:
                 Debug.LogError ("unit should not be null and is.");
@@ -48,8 +48,19 @@ public class UnitFactory : MonoBehaviour {
         }
 
         instance = unit.GetComponent<Monster> ();
-        instance.Initialize (board, UnitTypes.SLIME, p);
-        unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Slime"));
+        switch (unit.TypeReference) {
+            case UnitTypes.SLIME:
+                instance.Initialize (board, unit.TypeReference, p);
+                unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Slime"));
+                break;
+            case UnitTypes.GOBLIN_ARCHER:
+                instance.Initialize (board, unit.TypeReference, p);
+                unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Goblin Archer"));
+                break;
+            default:
+                Debug.LogError ("unable to activate unit");
+                break;
+        }
     }
 
     public void InitializePlayerUnitAt (Point p) {

@@ -59,7 +59,7 @@ public class BoardPathfinding : MonoBehaviour {
     }
 
     // This helper function returns an approximation of the distance to use for pathfinding heuristics
-    public int GetDistance (Tile TileA, Tile TileB) {
+    public int GetUnobstructedDistance (Tile TileA, Tile TileB) {
         int distanceX = Mathf.Abs (TileA.Position.x - TileB.Position.x);
         int distanceY = Mathf.Abs (TileA.Position.y - TileB.Position.y);
 

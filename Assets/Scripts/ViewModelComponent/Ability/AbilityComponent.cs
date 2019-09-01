@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent (typeof (Unit))]
@@ -8,6 +9,7 @@ public class AbilityComponent : MonoBehaviour {
     public Ability CurrentAbility { get; private set; }
     RangeComponent rangeComponent;
     MovementComponent movement;
+    public int LowestEnergySkill => (int) EquippedAbilities.OrderBy (ab => ab.EnergyCost).First ().EnergyCost;
 
     public void Initialize (UnitData data, Unit owner) {
         this.owner = owner;
@@ -53,7 +55,10 @@ public class AbilityComponent : MonoBehaviour {
             return false;
         }
 
-        if (toEquip.EnergyCost > owner.EnergyComponent.CurrentEnergy) return false;
+        if (toEquip.EnergyCost > owner.EnergyComponent.CurrentEnergy) {
+            // Debug.Log (string.Format ("not enough energy"));
+            return false;
+        }
 
         if (!SetRangeComponent (toEquip)) return false;
 
