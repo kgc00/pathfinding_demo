@@ -23,6 +23,10 @@ public class UnitFactory : MonoBehaviour {
                 unit = Instantiate (Resources.Load ("Prefabs/Goblin Archer", typeof (Monster)),
                     new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
                 break;
+            case UnitTypes.GOBLIN_WARRIOR:
+                unit = Instantiate (Resources.Load ("Prefabs/Goblin Warrior", typeof (Monster)),
+                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
+                break;
             case UnitTypes.NONE:
                 Debug.LogError ("unit should not be null and is.");
                 unit = null;
@@ -56,6 +60,10 @@ public class UnitFactory : MonoBehaviour {
             case UnitTypes.GOBLIN_ARCHER:
                 instance.Initialize (board, unit.TypeReference, p);
                 unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Goblin Archer"));
+                break;
+            case UnitTypes.GOBLIN_WARRIOR:
+                instance.Initialize (board, unit.TypeReference, p);
+                unit.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Goblin Warrior"));
                 break;
             default:
                 Debug.LogError ("unable to activate unit");

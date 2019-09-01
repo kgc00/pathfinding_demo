@@ -3,4 +3,5 @@
         SLIME,
         GOBLIN_ARCHER,
         NONE,
+        GOBLIN_WARRIOR
     }
