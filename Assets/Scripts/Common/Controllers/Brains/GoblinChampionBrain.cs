@@ -84,7 +84,14 @@ public class GoblinChampionBrain : Brain {
         if (!abilityComponent.SetCurrentAbility (shockwave)) return null;
 
         var tilesInRange = abilityComponent.GetTilesInRange ();
-        return new PlanOfAction (shockwave, tilesInRange[0], Targets.Enemy, tilesInRange);
+        PathfindingData target = null;
+        foreach (var data in tilesInRange) {
+            if (data.tile == targetData.tile) {
+                target = data;
+                break;
+            }
+        }
+        return new PlanOfAction (shockwave, tilesInRange, target, Targets.Enemy, tilesInRange);
     }
 
     private bool WithinShockwaveRange (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {

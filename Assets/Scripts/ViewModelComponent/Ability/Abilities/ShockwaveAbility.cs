@@ -1,12 +1,25 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class ShockwaveAbility : AttackAbility {
     public override void Activate () {
+        StartCoroutine (countdown (1f, () => SpawnShockwave ()));
+    }
+
+    private void SpawnShockwave () {
         TilesInRange.ForEach (data => OnAbilityConnected (data.tile.gameObject));
 
         OnFinished (EnergyCost);
     }
 
+    private IEnumerator countdown (float timeToWait, System.Action onComplete) {
+        while (timeToWait > 0) {
+            timeToWait -= Time.deltaTime;
+            yield return null;
+        }
+        onComplete ();
+    }
     public override void OnAbilityConnected (GameObject targetedTile) {
         try {
             var unit = targetedTile.GetComponent<Tile> ().OccupiedBy;

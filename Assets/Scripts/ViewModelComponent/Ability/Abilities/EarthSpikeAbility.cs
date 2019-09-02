@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EarthSpikeAbility : AttackAbility {
@@ -15,6 +16,10 @@ public class EarthSpikeAbility : AttackAbility {
             Owner.AbilityComponent.TurnUnit (toTurn);
         }
 
+        var coroutine = StartCoroutine (countdown (1f, () => SpawnSpike ()));
+    }
+
+    private void SpawnSpike () {
         var instance = Instantiate (Resources.Load<GameObject> ("Prefabs/Projectile"),
             new Vector3 (Target.tile.Position.x,
                 Target.tile.Position.y, Layers.Foreground),
@@ -23,6 +28,13 @@ public class EarthSpikeAbility : AttackAbility {
         instance.AddComponent<DestinationComponent> ().Initialize (Target.tile.Position, OnAbilityConnected);
 
         OnFinished (EnergyCost);
+    }
+    private IEnumerator countdown (float timeToWait, System.Action onComplete) {
+        while (timeToWait > 0) {
+            timeToWait -= Time.deltaTime;
+            yield return null;
+        }
+        onComplete ();
     }
 
     public override void OnAbilityConnected (GameObject projectile) {
