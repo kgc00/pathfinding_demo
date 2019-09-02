@@ -8,7 +8,7 @@ public class Entrance : Tile {
         isEnabled = false;
     }
     public void SetEnabled () {
-        isEnabled = false;
+        isEnabled = true;
     }
     public override void SetOccupied (Unit occupier) {
         base.SetOccupied (occupier);

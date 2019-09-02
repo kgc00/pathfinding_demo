@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class GoblinChampionBrain : Brain {
-    int attackRange = -1;
+    int shockwaveRange = -1;
     int lowestCost = -1;
     public GoblinChampionBrain (Unit owner) : base (owner) { }
     public override PlanOfAction Think () {
@@ -18,41 +19,27 @@ public class GoblinChampionBrain : Brain {
         var targetData = FindTarget (tilesOnBoard, player);
         var tilesFromPlayerPerspective = RangeUtil.SurveyBoard (targetData.tile.Position, owner.Board);
 
-        // 1: if we are in range attack the player
-        if (CanAttack (tilesOnBoard, targetData)) return Attack (tilesOnBoard, targetData);
-
-        // 2: move towards player
-        return Move (tilesOnBoard, targetData, tilesFromPlayerPerspective);
+        if (WithinShockwaveRange (tilesOnBoard, targetData))
+            return CloseRangePlan (tilesOnBoard, targetData, tilesFromPlayerPerspective);
+        else
+            return LongRangePlan (tilesOnBoard, targetData, tilesFromPlayerPerspective);
     }
 
     private void SetAttackRange () {
-        if (attackRange == -1) attackRange = abilityComponent.EquippedAbilities.Find (ability => ability is AttackAbility).Range;
+        if (shockwaveRange == -1) shockwaveRange = abilityComponent.EquippedAbilities.Find (ability => ability.DisplayName == "Shockwave").Range;
     }
 
-    private PlanOfAction Attack (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
-        var attackAbility = abilityComponent.EquippedAbilities
-            .Find (ability => ability is AttackAbility);
-        if (!abilityComponent.SetCurrentAbility (attackAbility)) return null;
-        var tilesInRange = abilityComponent.GetTilesInRange ();
+    private PlanOfAction CloseRangePlan (List<PathfindingData> tilesOnBoard, PathfindingData targetData, List<PathfindingData> tilesFromPlayerPerspective) {
+        // 1: 3/10 times move toward player, 7/10 use shockwave
+        var seed = UnityEngine.Random.Range (0, 11);
+        if (seed < 3)
+            return MoveTowardsPlayer (tilesOnBoard, targetData, tilesFromPlayerPerspective);
+        else
+            return UseShockwave (tilesOnBoard, targetData);
 
-        for (int i = 0; i < tilesInRange.Count; i++) {
-            if (tilesInRange[i].tile == targetData.tile) {
-                return new PlanOfAction (attackAbility, tilesInRange[i], Targets.Enemy, tilesInRange);
-            }
-        }
-
-        return null;
     }
 
-    private bool CanAttack (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
-        return targetData.shadow.distance == 1;
-    }
-
-    private void SetLowestAbilityCost () {
-        if (lowestCost == -1) lowestCost = abilityComponent.LowestEnergySkill;
-    }
-
-    private PlanOfAction Move (List<PathfindingData> tilesOnBoard, PathfindingData targetData,
+    private PlanOfAction MoveTowardsPlayer (List<PathfindingData> tilesOnBoard, PathfindingData targetData,
         List<PathfindingData> tilesFromPlayerPerspective) {
         // find my move range
         var movementAbility = abilityComponent.EquippedAbilities
@@ -61,7 +48,6 @@ public class GoblinChampionBrain : Brain {
         var tilesInRange = abilityComponent.GetTilesInRange ();
 
         // Find all tiles a certain distance from the player
-        // cannot use Linq or it would lose the linkedlist of prev tile
         var orderedPossibilities = tilesFromPlayerPerspective.OrderByDescending (data => data.shadow.distance).ToList ();
 
         // find the first available move target
@@ -89,6 +75,54 @@ public class GoblinChampionBrain : Brain {
         }
 
         return moveTarget;
+    }
+
+    private PlanOfAction UseShockwave (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
+        var shockwave = abilityComponent.EquippedAbilities
+            .Find (ability => ability.DisplayName == "Shockwave");
+
+        if (!abilityComponent.SetCurrentAbility (shockwave)) return null;
+
+        var tilesInRange = abilityComponent.GetTilesInRange ();
+        return new PlanOfAction (shockwave, tilesInRange[0], Targets.Enemy, tilesInRange);
+    }
+
+    private bool WithinShockwaveRange (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
+        return targetData.shadow.distance <= shockwaveRange;
+    }
+
+    private void SetLowestAbilityCost () {
+        if (lowestCost == -1) lowestCost = abilityComponent.LowestEnergySkill;
+    }
+
+    private PlanOfAction LongRangePlan (List<PathfindingData> tilesOnBoard, PathfindingData targetData,
+        List<PathfindingData> tilesFromPlayerPerspective) {
+        // 2: 1/10 move towards player, 9/10 times use earth spike
+        var seed = UnityEngine.Random.Range (0, 11);
+        if (seed < 1)
+            return MoveTowardsPlayer (tilesOnBoard, targetData, tilesFromPlayerPerspective);
+        else
+            return UseEarthSpike (tilesOnBoard, targetData);
+
+    }
+
+    private PlanOfAction UseEarthSpike (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
+        var earthSpike = abilityComponent.EquippedAbilities
+            .Find (ability => ability.DisplayName == "Earth Spike");
+
+        if (!abilityComponent.SetCurrentAbility (earthSpike)) return null;
+
+        var tilesInRange = abilityComponent.GetTilesInRange ();
+
+        PathfindingData target = null;
+        foreach (var data in tilesInRange) {
+            if (data.tile == targetData.tile) {
+                target = data;
+                break;
+            }
+        }
+
+        return new PlanOfAction (earthSpike, target, Targets.Enemy, tilesInRange);
     }
 
     bool ShouldWait (Unit player) {

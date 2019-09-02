@@ -27,6 +27,16 @@ public class AbilityFactory : MonoBehaviour {
                     instance.Assign (ability, owner);
                     retVal.Add (instance);
                     break;
+                case Abilities.SHOCKWAVE:
+                    instance = owner.gameObject.AddComponent<ShockwaveAbility> ();
+                    instance.Assign (ability, owner);
+                    retVal.Add (instance);
+                    break;
+                case Abilities.EARTH_SPIKE:
+                    instance = owner.gameObject.AddComponent<EarthSpikeAbility> ();
+                    instance.Assign (ability, owner);
+                    retVal.Add (instance);
+                    break;
                 default:
                     break;
             }

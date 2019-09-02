@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using UnityEngine;
 
 public class Area : MonoBehaviour, IEventHandler {
@@ -37,5 +37,23 @@ public class Area : MonoBehaviour, IEventHandler {
             default:
                 break;
         }
+    }
+
+    public void UpdateBossDoor () {
+        var tileData = Board.Tiles.FirstOrDefault (tile => tile.Value.TypeReference == TileTypes.BOSS_ENTRANCE);
+
+        if (tileData.Value == null) return;
+
+        var bossDoor = (BossRoomEntrance) tileData.Value;
+
+        bossDoor.SetLockedStatus (
+            WorldProgressionComponent.CheckDoorUnlockRequirements (
+                bossDoor, this
+            )
+        );
+    }
+
+    public void OnDestroy () {
+        this.state.HandleTransition ();
     }
 }

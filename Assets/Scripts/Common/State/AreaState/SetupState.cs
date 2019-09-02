@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class SetupState : AreaState {
     private Area area;
     private bool shouldAdvanceState = false;
     public static Action onAreaLoaded = delegate { };
     public SetupState (Area area) { this.area = area; }
-
+    UnitTrackerComponent tracker;
     public override void Enter () {
         // filter our tiles down to entrances only
         List<TileSpawnData> tsd = area.Board.levelData.tiles.Where (tiles => tiles.tileRef == TileTypes.ENTRANCE).ToList ();
@@ -19,6 +20,12 @@ public class SetupState : AreaState {
         InitializeResources (tsd, min, max);
         SetPlayerPosition (tsd, min, max);
         SetPlayerData ();
+        FinishLoading ();
+    }
+
+    private void FinishLoading () {
+        tracker = new UnitTrackerComponent ();
+        tracker.StartTrackingMonstersLeft (area.Board);
         onAreaLoaded ();
     }
 
@@ -52,19 +59,8 @@ public class SetupState : AreaState {
                 t.SetTransitionDirection (Directions.West);
             else if (t.Position.y == max.y)
                 t.SetTransitionDirection (Directions.North);
-            SetupBossDoor (tile);
         });
-    }
-
-    private void SetupBossDoor (TileSpawnData tile) {
-        if (area.Board.TileAt (tile.location).GetComponent<BossRoomEntrance> ()) {
-            BossRoomEntrance bossDoor = area.Board.TileAt (tile.location).GetComponent<BossRoomEntrance> ();
-            bossDoor.SetLockedStatus (
-                WorldProgressionComponent.CheckDoorUnlockRequirements (
-                    bossDoor, area
-                )
-            );
-        }
+        area.UpdateBossDoor ();
     }
 
     private Tile SelectCorrectEntrance (List<TileSpawnData> tsd, Point min, Point max) {
@@ -97,8 +93,13 @@ public class SetupState : AreaState {
 
     public override AreaState HandleUpdate () {
         if (shouldAdvanceState)
-            return new ActiveState (area);
+            return new ActiveState (area, tracker);
 
         return null;
+    }
+
+    public override void HandleTransition () {
+        UnityEngine.Debug.Log (string.Format ("called"));
+        this.tracker.StopTrackingMonstersLeft ();
     }
 }

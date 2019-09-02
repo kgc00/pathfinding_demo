@@ -2,29 +2,40 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 public class WorldProgressionComponent {
-    public int AreasCleared { get; private set; }
-    int threshold;
+    public static int AreasCleared { get; private set; }
+    static Dictionary<Point, int> thresholds = new Dictionary<Point, int> ();
     World world;
     static Dictionary<Point, AreaData> worldMap;
     public WorldProgressionComponent (World world) {
         this.world = world;
         worldMap = world.world;
     }
-    public void AreaCleared () {
+
+    private void SetThresholds (Dictionary<Point, AreaData> world) {
+        // var dynamicallySet = world.Select (area => area.Value).Where (data => data.areaStateData.areaType == AreaTypes.MOB_ROOM).ToList ().Count;
+        var staticSet = 3;
+        thresholds.Add (new Point (0, 1), staticSet);
+    }
+
+    public void AreaCleared (Area area) {
         Debug.Log (string.Format ("cleared"));
         AreasCleared++;
-        if (AreasCleared >= threshold) {
-
-        }
+        area.UpdateBossDoor ();
     }
 
     public static bool CheckDoorUnlockRequirements (BossRoomEntrance door, Area area) {
-        var location = worldMap.Select (worldMapArea => worldMapArea.Value).Where (mapArea => mapArea.areaStateData.initialLevel == area.areaData.initialLevel).Select (thing => thing.Location);
-        Debug.Log (string.Format ("location {0}", location.ToString ()));
-        // if (area.areaData.initialLevel)
-        return false;
+        var instance = worldMap.Values.FirstOrDefault (val => val.areaStateData.initialLevel == area.areaData.initialLevel);
+        var entry = thresholds.Keys.FirstOrDefault (key => key == instance.Location);
+
+        if (AreasCleared >= thresholds[entry]) {
+            Debug.Log (string.Format ("above"));
+            return true;
+        } else {
+            Debug.Log (string.Format ("below"));
+            return false;
+        }
     }
     internal void Initialize (Dictionary<Point, AreaData> world) {
-        threshold = world.Select (area => area.Value).Where (data => data.areaStateData.areaType == AreaTypes.MOB_ROOM).ToList ().Count;
+        SetThresholds (world);
     }
 }

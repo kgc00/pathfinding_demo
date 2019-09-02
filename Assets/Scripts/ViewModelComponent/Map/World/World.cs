@@ -91,7 +91,7 @@ public class World : MonoBehaviour, IEventHandler {
                 }
                 break;
             case EventTypes.AreaCleared:
-                progressionComponent.AreaCleared ();
+                progressionComponent.AreaCleared (curArea.GetComponent<Area> ());
                 break;
             default:
                 break;
