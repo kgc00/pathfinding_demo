@@ -2,5 +2,6 @@ public enum EventTypes {
     TransitionEvent,
     BaseEvent,
     StateChangeEvent,
-    PlayerLoaded
+    PlayerLoaded,
+    AreaCleared
 }

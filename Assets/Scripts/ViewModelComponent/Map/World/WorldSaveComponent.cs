@@ -4,7 +4,6 @@ public class WorldSaveComponent : MonoBehaviour {
 
     public bool HasLoaded { get; private set; } = false;
     private static UnitData playerData;
-
     internal LevelData createLevelInstance (LevelData initialLevel) {
         LevelData boardData = ScriptableObject.CreateInstance<LevelData> ();
         // cannot directly assign boardData's values to initialLevel

@@ -48,6 +48,20 @@ public class Board : MonoBehaviour {
         Load ();
     }
 
+    public void CreateUnitFactory () {
+        var unitWrapper = new GameObject ();
+        unitWrapper.transform.SetParent (gameObject.transform);
+        unitWrapper.name = "Units";
+
+        var tileWrapper = new GameObject ();
+        tileWrapper.transform.SetParent (gameObject.transform);
+        tileWrapper.name = "Tiles";
+        this.tileWrapper = tileWrapper.transform;
+
+        this.UnitFactory = gameObject.AddComponent<UnitFactory> ();
+        this.UnitFactory.Initialize (this, unitWrapper.transform);
+    }
+
     ~Board () {
         Unit.onUnitDeath -= DeleteUnit;
     }
@@ -68,6 +82,10 @@ public class Board : MonoBehaviour {
             tile = instance;
         } else if (type == TileTypes.WALL) {
             Tile instance = Instantiate (Resources.Load ("Prefabs/Wall", typeof (Tile)),
+                new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
+            tile = instance;
+        } else if (type == TileTypes.BOSS_ENTRANCE) {
+            Tile instance = Instantiate (Resources.Load ("Prefabs/Boss Entrance", typeof (Tile)),
                 new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
             tile = instance;
         }

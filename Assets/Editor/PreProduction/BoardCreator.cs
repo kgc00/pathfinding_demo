@@ -174,6 +174,7 @@ public class BoardCreator : MonoBehaviour {
         AssetDatabase.Refresh ();
     }
     public void Load () {
+        Current.CreateUnitFactory ();
         ClearBoard ();
         if (levelData == null)
             return;

@@ -52,7 +52,19 @@ public class SetupState : AreaState {
                 t.SetTransitionDirection (Directions.West);
             else if (t.Position.y == max.y)
                 t.SetTransitionDirection (Directions.North);
+            SetupBossDoor (tile);
         });
+    }
+
+    private void SetupBossDoor (TileSpawnData tile) {
+        if (area.Board.TileAt (tile.location).GetComponent<BossRoomEntrance> ()) {
+            BossRoomEntrance bossDoor = area.Board.TileAt (tile.location).GetComponent<BossRoomEntrance> ();
+            bossDoor.SetLockedStatus (
+                WorldProgressionComponent.CheckDoorUnlockRequirements (
+                    bossDoor, area
+                )
+            );
+        }
     }
 
     private Tile SelectCorrectEntrance (List<TileSpawnData> tsd, Point min, Point max) {

@@ -1,5 +1,6 @@
     public enum TileTypes {
         DIRT,
         WALL,
-        ENTRANCE
+        ENTRANCE,
+        BOSS_ENTRANCE
     }

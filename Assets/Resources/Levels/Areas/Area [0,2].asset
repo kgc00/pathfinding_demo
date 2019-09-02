@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9edc37e72c119db44bdcffef7140283e, type: 3}
-  m_Name: Area [0,0]
+  m_Name: Area [0,2]
   m_EditorClassIdentifier: 
   Location:
     x: 0
-    y: 0
+    y: 2
   areaStateData:
-    initialLevel: {fileID: 11400000, guid: a954de0137a966847892fa0696d388ca, type: 2}
+    initialLevel: {fileID: 11400000, guid: 6ca5a6306d052a442a8a05402f387e6d, type: 2}
     currentInstance: {fileID: 0}
-    from: 3
-    areaType: 4
+    from: 2
+    areaType: 1

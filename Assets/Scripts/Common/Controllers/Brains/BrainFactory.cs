@@ -11,6 +11,9 @@ public class BrainFactory {
             case UnitTypes.GOBLIN_WARRIOR:
                 brain = new GoblinWarriorBrain (owner);
                 break;
+            case UnitTypes.GOBLIN_CHAMPION:
+                brain = new GoblinChampionBrain (owner);
+                break;
             default:
                 brain = null;
                 break;

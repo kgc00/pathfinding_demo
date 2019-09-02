@@ -16,6 +16,7 @@ MonoBehaviour:
     x: 1
     y: 0
   areaStateData:
-    initialLevel: {fileID: 11400000, guid: 6fca7d3c1b053eb408c45a66838d6cbe, type: 2}
+    initialLevel: {fileID: 11400000, guid: d1a9faf4cb382c841809a2a3559eee86, type: 2}
     currentInstance: {fileID: 0}
-    from: 3
+    from: 1
+    areaType: 2

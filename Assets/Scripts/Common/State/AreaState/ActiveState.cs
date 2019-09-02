@@ -11,6 +11,8 @@ public class ActiveState : AreaState {
         foreach (var unit in enemies) {
             area.Board.UnitFactory.ActivateEnemyAt (unit.Key);
         }
+
+        new UnitTrackerComponent ().StartTrackingMonstersLeft (area.Board);
     }
     public override AreaState HandleUpdate () {
         return null;
