@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907e4541233bc5a4b86ef00546f3378c, type: 3}
+  m_Name: Run
+  m_EditorClassIdentifier: 
+  DisplayName: Run
+  Range: 3
+  EnergyCost: 2
+  Damage: 0
+  AreaOfEffect: 0
+  Description: Moves the owner towards the targeted location.  Can be interrupted
+    by units that cross paths.
+  RangeComponentType: 0
+  AoERangeComponentType: 0
+  AbilityType: 0
+  TargetType: 0

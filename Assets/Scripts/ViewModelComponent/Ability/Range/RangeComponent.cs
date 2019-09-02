@@ -9,16 +9,27 @@ public abstract class RangeComponent {
     public RangeComponent (GameObject owner, Board board, Ability ability) {
         this.owner = owner;
         this.board = board;
-        this.pathfinding = board.Pathfinding;
+        this.pathfinding = board ? board.Pathfinding : null;
         this.range = ability ? ability.Range : 0;
     }
-    public virtual RangeComponent SetAoERange (int range) {
+    public virtual RangeComponent SetRange (int range) {
         this.range = range;
         return this;
     }
 
-    public RangeComponent SetOwnerPos (Point mousePosition) {
+    public RangeComponent SetStartPosFromMouse (Point mousePosition) {
         owner.transform.position = new Vector3 (mousePosition.x, mousePosition.y, 0);
+        return this;
+    }
+
+    public RangeComponent SetOwnerPos (Point ownerPos) {
+        owner.transform.position = new Vector3 (ownerPos.x, ownerPos.y, 0);
+        return this;
+    }
+
+    public RangeComponent SetBoard (Board board) {
+        this.board = board;
+        this.pathfinding = board.Pathfinding;
         return this;
     }
 

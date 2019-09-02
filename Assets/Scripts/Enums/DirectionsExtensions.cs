@@ -13,7 +13,7 @@ public static class DirectionsExtensions {
         return Directions.None;
     }
     public static Vector3 ToEuler (this Directions d) {
-        return new Vector3 (0, (int) d * 90, 0);
+        return new Vector3 (0, 0, (int) d * 90);
     }
 
     public static Point ToPoint (this Directions d) {

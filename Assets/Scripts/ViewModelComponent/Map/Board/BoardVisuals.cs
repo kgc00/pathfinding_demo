@@ -27,7 +27,7 @@ public class BoardVisuals : MonoBehaviour {
     }
 
     public static void AddIndicator (Unit unit, List<Tile> tiles) {
-        if (!unit.HealthComponent.isAlive) return;
+        if (unit.HealthComponent.isDead) return;
 
         List<Renderer> temp = tiles.ConvertAll (item => item.GetComponent<Renderer> ()).ToList ();
 
@@ -51,7 +51,7 @@ public class BoardVisuals : MonoBehaviour {
     }
 
     public static void AddTileToHighlights (Unit unit, List<Tile> tiles) {
-        if (!unit.HealthComponent.isAlive) return;
+        if (unit.HealthComponent.isDead) return;
         List<Renderer> temp = new List<Renderer> ();
         if (highlightedTilesByUnit == null)
             return;

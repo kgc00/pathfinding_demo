@@ -91,7 +91,7 @@ public class PlayerPrepState : UnitState {
         if (!isValid) return;
 
         if (abilityComponent.CurrentAbility.AreaOfEffect > 0) {
-            var aoeRange = RangeUtil.GetAoERange (mousePosition, abilityComponent.CurrentAbility);
+            var aoeRange = RangeUtil.GetAoERangeFromMousePosition (mousePosition, abilityComponent.CurrentAbility);
             var curFrameCenter = aoeRange.Find (data => data.shadow.distance == 0).tile;
             if (curFrameCenter == AoECenter) return;
             else {

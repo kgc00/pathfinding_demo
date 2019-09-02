@@ -7,12 +7,13 @@ public class World : MonoBehaviour, IEventHandler {
     [HideInInspector] public static World Instance;
     // Load all area data and store it in a list
     [SerializeField] private List<AreaData> data;
-    private Dictionary<Point, AreaData> world = new Dictionary<Point, AreaData> ();
+    public Dictionary<Point, AreaData> world { get; private set; } = new Dictionary<Point, AreaData> ();
     [SerializeField] private Point curLoc = new Point (0, 0);
     private GameObject curArea;
     private AreaStateHandler areaStateHandler;
     private WorldSaveComponent worldSaveComponent;
     public EventManager eventManager;
+    public WorldProgressionComponent progressionComponent { get; private set; }
     private void Awake () {
         if (Instance != this && Instance != null) {
             Destroy (gameObject);
@@ -89,6 +90,9 @@ public class World : MonoBehaviour, IEventHandler {
                     worldSaveComponent.SetAbilitiesLoaded ();
                 }
                 break;
+            case EventTypes.AreaCleared:
+                progressionComponent.AreaCleared ();
+                break;
             default:
                 break;
         }
@@ -120,6 +124,8 @@ public class World : MonoBehaviour, IEventHandler {
         eventManager = new EventManager (this, null);
         worldSaveComponent = gameObject.AddComponent<WorldSaveComponent> ();
         worldSaveComponent.InitializePlayerStats ();
+        progressionComponent = new WorldProgressionComponent (this);
+        progressionComponent.Initialize (world);
         areaStateHandler = gameObject.AddComponent<AreaStateHandler> ();
         areaStateHandler.Initialize (world);
         Unit.onUnitDeath += RemoveUnitFromAreaInstance;

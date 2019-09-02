@@ -24,11 +24,10 @@ public class SetupState : AreaState {
 
     private void SetPlayerData () {
         // only allow the player to move at board start state
-        Hero playerUnit = (Hero) area.Board.Units.First (unit => unit.Value.TypeReference == UnitTypes.HERO).Value;
-
         // load their stats/state
-        area.Board.InitializeUnitAt (playerUnit.Position);
-        playerUnit.LoadUnitState (WorldSaveComponent.GetPlayerStats ());
+        Hero playerUnit = (Hero) area.Board.Units.FirstOrDefault (unit => unit.Value.TypeReference == UnitTypes.HERO).Value;
+
+        area.Board.UnitFactory.InitializePlayerUnitAt (playerUnit.Position);
     }
 
     private void SetPlayerPosition (List<TileSpawnData> tsd, Point min, Point max) {
@@ -53,8 +52,19 @@ public class SetupState : AreaState {
                 t.SetTransitionDirection (Directions.West);
             else if (t.Position.y == max.y)
                 t.SetTransitionDirection (Directions.North);
-
+            SetupBossDoor (tile);
         });
+    }
+
+    private void SetupBossDoor (TileSpawnData tile) {
+        if (area.Board.TileAt (tile.location).GetComponent<BossRoomEntrance> ()) {
+            BossRoomEntrance bossDoor = area.Board.TileAt (tile.location).GetComponent<BossRoomEntrance> ();
+            bossDoor.SetLockedStatus (
+                WorldProgressionComponent.CheckDoorUnlockRequirements (
+                    bossDoor, area
+                )
+            );
+        }
     }
 
     private Tile SelectCorrectEntrance (List<TileSpawnData> tsd, Point min, Point max) {
@@ -65,6 +75,8 @@ public class SetupState : AreaState {
 
         // else use the direction we entered from to determine the entrance we return
         // if we just spawned into the game we use the center of the board
+
+        // refactor to use extension method
         switch (area.areaData.from.ToPoint ().ToString ()) {
             case "(1,0)":
                 return area.Board.TileAt (tsd.Find (tile => tile.location.x == min.x).location);

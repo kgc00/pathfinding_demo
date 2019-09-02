@@ -12,29 +12,7 @@ public class Board : MonoBehaviour {
     BoardVisuals vis;
     BoardPathfinding bpf;
     RangeUtil rangeUtil;
-
-    internal void ActivateUnitAt (Point p) {
-        Unit instance = null;
-        Unit unit = UnitAtForBoardCreation (p);
-        var name = "";
-        if (unit.TypeReference == UnitTypes.HERO) {
-            instance = unit.GetComponent<Hero> ();
-            instance.Initialize (this, UnitTypes.HERO, p);
-            name = UnitTypes.HERO.ToString ();
-            instance.LoadUnitState (Resources.Load<UnitData> ("Beastiary/HeroStats"));
-        } else if (unit.TypeReference == UnitTypes.MONSTER) {
-            instance = unit.GetComponent<Monster> ();
-            instance.Initialize (this, UnitTypes.MONSTER, p);
-            name = UnitTypes.MONSTER.ToString ();
-            instance.LoadUnitState (Resources.Load<UnitData> ("Beastiary/Monster"));
-        }
-
-        if (instance == null) {
-            Debug.LogError ("unit should not be null and is.");
-            return;
-        }
-    }
-
+    public UnitFactory UnitFactory;
     public BoardPathfinding Pathfinding => bpf;
     private Area area;
     public Point[] Dirs => new Point[4] {
@@ -43,18 +21,45 @@ public class Board : MonoBehaviour {
         new Point (1, 0),
         new Point (-1, 0)
     };
+    private Transform tileWrapper;
 
     public void Initialize (LevelData data, Area a) {
         this.area = a;
         levelData = data;
+
+        var unitWrapper = new GameObject ();
+        unitWrapper.transform.SetParent (gameObject.transform);
+        unitWrapper.name = "Units";
+
+        var tileWrapper = new GameObject ();
+        tileWrapper.transform.SetParent (gameObject.transform);
+        tileWrapper.name = "Tiles";
+        this.tileWrapper = tileWrapper.transform;
+
         vis = gameObject.AddComponent<BoardVisuals> ();
         bpf = gameObject.AddComponent<BoardPathfinding> ();
         rangeUtil = gameObject.AddComponent<RangeUtil> ();
+        UnitFactory = gameObject.AddComponent<UnitFactory> ();
         vis.Initialize (this);
         bpf.Initialize (this);
         rangeUtil.Initialize (this);
+        UnitFactory.Initialize (this, unitWrapper.transform);
         Unit.onUnitDeath += DeleteUnit;
         Load ();
+    }
+
+    public void CreateUnitFactory () {
+        var unitWrapper = new GameObject ();
+        unitWrapper.transform.SetParent (gameObject.transform);
+        unitWrapper.name = "Units";
+
+        var tileWrapper = new GameObject ();
+        tileWrapper.transform.SetParent (gameObject.transform);
+        tileWrapper.name = "Tiles";
+        this.tileWrapper = tileWrapper.transform;
+
+        this.UnitFactory = gameObject.AddComponent<UnitFactory> ();
+        this.UnitFactory.Initialize (this, unitWrapper.transform);
     }
 
     ~Board () {
@@ -79,6 +84,10 @@ public class Board : MonoBehaviour {
             Tile instance = Instantiate (Resources.Load ("Prefabs/Wall", typeof (Tile)),
                 new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
             tile = instance;
+        } else if (type == TileTypes.BOSS_ENTRANCE) {
+            Tile instance = Instantiate (Resources.Load ("Prefabs/Boss Entrance", typeof (Tile)),
+                new Vector3 (p.x, p.y, 0), Quaternion.identity) as Tile;
+            tile = instance;
         }
 
         if (tile == null) {
@@ -89,7 +98,7 @@ public class Board : MonoBehaviour {
         tile.Initialize (this, p, type);
         tile.gameObject.name = type.ToString ();
         tiles.Add (tile.Position, tile);
-        tile.transform.parent = gameObject.transform;
+        tile.transform.SetParent (tileWrapper);
         return tile;
 
     }
@@ -99,54 +108,10 @@ public class Board : MonoBehaviour {
             DeleteUnitAt (p);
         }
 
-        Unit unit = CreateUnitFromType (p, type);
+        Unit unit = UnitFactory.CreateUnitFromType (p, type);
 
-        unit.gameObject.name = type.ToString ();
-        unit.transform.parent = gameObject.transform;
         units.Add (unit.Position, unit);
         return unit;
-    }
-
-    private static Unit CreateUnitFromType (Point p, UnitTypes type) {
-        Unit unit = null;
-        if (type == UnitTypes.HERO) {
-            Hero instance = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Hero;
-            unit = instance as Unit;
-        } else if (type == UnitTypes.MONSTER) {
-            Monster instance = Instantiate (Resources.Load ("Prefabs/Monster", typeof (Monster)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as Monster;
-            unit = instance as Unit;
-        } else if (type == UnitTypes.SIMPLE_MONSTER) {
-            SimpleMonster instance = Instantiate (Resources.Load ("Prefabs/SimpleMonster", typeof (SimpleMonster)),
-                new Vector3 (p.x, p.y, -2), Quaternion.identity) as SimpleMonster;
-            unit = instance as Unit;
-        }
-        if (unit == null) {
-            Debug.LogError ("unit should not be null and is.");
-            return null;
-        } else
-            return unit;
-    }
-
-    public void InitializeUnitAt (Point p) {
-        Unit unit = UnitAtForBoardCreation (p);
-        var name = "";
-        if (unit.TypeReference == UnitTypes.HERO) {
-            unit.GetComponent<Hero> ().Initialize (this, UnitTypes.HERO, p);
-            name = UnitTypes.HERO.ToString ();
-        } else if (unit.TypeReference == UnitTypes.MONSTER) {
-            unit.GetComponent<Monster> ().Initialize (this, UnitTypes.MONSTER, p);
-            name = UnitTypes.MONSTER.ToString ();
-        }
-
-        if (unit == null) {
-            Debug.LogError ("unit should not be null and is.");
-            return;
-        }
-
-        unit.gameObject.name = name;
-        unit.transform.parent = gameObject.transform;
     }
 
     public Tile TileAt (Point p) {
@@ -157,7 +122,7 @@ public class Board : MonoBehaviour {
 
     // this method uses the point key in the units dictionary to find a unit
     // therefore it is only for level creation, not runtime usage
-    public Unit UnitAtForBoardCreation (Point p) {
+    public Unit UnitFromStartLocation (Point p) {
         Unit unit = null;
         units.TryGetValue (p, out unit);
         return unit;

@@ -7,7 +7,7 @@ public class AreaStateHandler : MonoBehaviour {
         this.world = world;
     }
     public void RemoveUnit (Unit u, Point curLoc, Area area) {
-        UnitSpawnData sd = new UnitSpawnData (new Point (-99, -99), UnitTypes.MONSTER);
+        UnitSpawnData sd = new UnitSpawnData (new Point (-99, -99), UnitTypes.SLIME);
         foreach (KeyValuePair<Point, Unit> pair in area.Board.Units) {
             if (pair.Value == u) {
                 foreach (UnitSpawnData data in world[curLoc].areaStateData.currentInstance.units) {

@@ -24,7 +24,7 @@ public class ProjectileComponent : MonoBehaviour {
         }
 
         MoveGameObject ();
-        Point p = AssignPosIfInBounds ();
+        Point? p = AssignPosIfInBounds ();
         CollisionLogic (p);
     }
 
@@ -35,14 +35,23 @@ public class ProjectileComponent : MonoBehaviour {
         ));
     }
 
-    private Point AssignPosIfInBounds () {
+    private Point? AssignPosIfInBounds () {
         Point p = transform.position.ToPoint ();
-        if (!board.TileAt (p) || !board.TileAt (p).isWalkable) Destroy (gameObject);
+        if (!board.TileAt (p)) {
+            Destroy (gameObject);
+            return null;
+        }
+        if (!board.TileAt (p).isWalkable) {
+            OnConnected (board.TileAt (p).gameObject);
+            Destroy (gameObject);
+        }
         return p;
     }
 
-    private void CollisionLogic (Point p) {
-        var unit = board.UnitAt (p);
+    private void CollisionLogic (Point? p) {
+        if (p == null) return;
+
+        var unit = board.UnitAt ((Point) p);
         if (unit) {
             OnConnected (unit.gameObject);
             Destroy (gameObject);

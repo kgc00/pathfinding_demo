@@ -3,7 +3,7 @@ public class HealthComponent : MonoBehaviour {
     public static System.Action<Unit, int> onHealthChanged = delegate { };
     public UnitData data;
     public Unit owner;
-    public bool isAlive => data.CurrentHP > 0;
+    public bool isDead => data.CurrentHP <= 0;
     public int CurrentHP => data.CurrentHP;
     public void Initialize (UnitData data, Unit owner, bool shouldMakeInstance) {
         this.data = shouldMakeInstance ?
