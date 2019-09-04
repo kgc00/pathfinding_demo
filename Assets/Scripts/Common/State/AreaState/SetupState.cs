@@ -11,7 +11,7 @@ public class SetupState : AreaState {
     UnitTrackerComponent tracker;
     public override void Enter () {
         // filter our tiles down to entrances only
-        List<TileSpawnData> tsd = area.Board.levelData.tiles.Where (tiles => tiles.tileRef == TileTypes.ENTRANCE).ToList ();
+        List<TileSpawnData> tsd = area.Board.levelData.tiles.Where (tiles => tiles.tileRef == TileTypes.ENTRANCE || tiles.tileRef == TileTypes.BOSS_ENTRANCE).ToList ();
 
         // find min and max values for this board
         Point min = BoardUtility.SetMinV2Int (area.Board.levelData);
@@ -24,8 +24,11 @@ public class SetupState : AreaState {
     }
 
     private void FinishLoading () {
-        tracker = new UnitTrackerComponent ();
-        tracker.StartTrackingMonstersLeft (area.Board);
+        if (area.areaData.areaType == AreaTypes.MOB_ROOM) {
+            tracker = new UnitTrackerComponent ();
+            tracker.StartTrackingMonstersLeft (area.Board);
+            SetupMobRoom.DisableEntrances (area.Board);
+        }
         onAreaLoaded ();
     }
 
@@ -51,6 +54,7 @@ public class SetupState : AreaState {
     private void InitializeEntrances (List<TileSpawnData> tsd, Point min, Point max) {
         tsd.ForEach (tile => {
             Entrance t = area.Board.TileAt (tile.location) as Entrance;
+
             if (t.Position.x == min.x)
                 t.SetTransitionDirection (Directions.East);
             else if (t.Position.y == min.y)
@@ -71,8 +75,6 @@ public class SetupState : AreaState {
 
         // else use the direction we entered from to determine the entrance we return
         // if we just spawned into the game we use the center of the board
-
-        // refactor to use extension method
         switch (area.areaData.from.ToPoint ().ToString ()) {
             case "(1,0)":
                 return area.Board.TileAt (tsd.Find (tile => tile.location.x == min.x).location);
@@ -100,6 +102,8 @@ public class SetupState : AreaState {
 
     public override void HandleTransition () {
         UnityEngine.Debug.Log (string.Format ("called"));
-        this.tracker.StopTrackingMonstersLeft ();
+        if (tracker != null) {
+            this.tracker.StopTrackingMonstersLeft ();
+        }
     }
 }

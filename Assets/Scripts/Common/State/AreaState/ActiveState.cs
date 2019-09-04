@@ -9,8 +9,7 @@ public class ActiveState : AreaState {
     }
 
     public override void HandleTransition () {
-        UnityEngine.Debug.Log (string.Format ("called"));
-        this.tracker.StopTrackingMonstersLeft ();
+        if (tracker != null) tracker.StopTrackingMonstersLeft ();
     }
 
     public override void Enter () {
@@ -20,8 +19,8 @@ public class ActiveState : AreaState {
         foreach (var unit in enemies) {
             area.Board.UnitFactory.ActivateEnemyAt (unit.Key);
         }
-
     }
+
     public override AreaState HandleUpdate () {
         return null;
     }

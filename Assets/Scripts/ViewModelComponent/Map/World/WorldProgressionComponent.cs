@@ -21,6 +21,7 @@ public class WorldProgressionComponent {
         Debug.Log (string.Format ("cleared"));
         AreasCleared++;
         area.UpdateBossDoor ();
+        SetupMobRoom.EnableEntrances (area.Board);
     }
 
     public static bool CheckDoorUnlockRequirements (BossRoomEntrance door, Area area) {

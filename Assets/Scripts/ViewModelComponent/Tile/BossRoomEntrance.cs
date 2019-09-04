@@ -7,4 +7,10 @@ public class BossRoomEntrance : Entrance {
         if (shouldUnlock) SetEnabled ();
         else SetDisabled ();
     }
+    public override void SetEnabled () {
+        base.SetEnabled ();
+        var res = Resources.Load ("Materials/BossEntrance", typeof (Material)) as Material;
+        GetComponent<Renderer> ().material.color = res.color;
+
+    }
 }
