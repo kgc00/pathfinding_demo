@@ -75,7 +75,7 @@ public class World : MonoBehaviour, IEventHandler {
         eventManager.HandleUpdate ();
     }
 
-    // refactor into a handler component
+    // refactor into a handler component?
     public void HandleIncomingEvent (InfoEventArgs curEvent) {
         switch (curEvent.type.eventType) {
             case EventTypes.TransitionEvent:
@@ -91,19 +91,26 @@ public class World : MonoBehaviour, IEventHandler {
             case EventTypes.AreaCleared:
                 progressionComponent.AreaCleared (curArea.GetComponent<Area> ());
                 break;
+            case EventTypes.PlayerDied:
+                TransitionToNewArea (new Point (0, 0), true);
+                curEvent.e.Invoke ();
+                break;
             default:
                 break;
         }
     }
 
-    private void TransitionToNewArea (Point newLoc) {
+    private void TransitionToNewArea (Point newLoc, bool placeUnitInCenter = false) {
         if (curArea)
             Destroy (curArea);
 
         if (world[newLoc].areaStateData.currentInstance == null)
             world[newLoc].areaStateData.currentInstance = worldSaveComponent.createLevelInstance (world[newLoc].areaStateData.initialLevel);
 
-        areaStateHandler.SetEnterDirection (out world[newLoc].areaStateData.from, curLoc, newLoc);
+        if (placeUnitInCenter) world[newLoc].areaStateData.from = Directions.None;
+        else {
+            areaStateHandler.SetEnterDirection (out world[newLoc].areaStateData.from, curLoc, newLoc);
+        }
         curLoc = newLoc;
         LoadCurrentArea (world[newLoc].areaStateData);
     }

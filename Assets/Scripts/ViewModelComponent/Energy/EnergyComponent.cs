@@ -29,4 +29,11 @@ public class EnergyComponent : MonoBehaviour {
 
         return true;
     }
+
+    internal void Refill () {
+        var prevAmount = data.CurrentEnergy;
+        data.CurrentEnergy = data.MaxEnergy;
+
+        if (owner is Hero) onEnergyChanged (owner, prevAmount);
+    }
 }

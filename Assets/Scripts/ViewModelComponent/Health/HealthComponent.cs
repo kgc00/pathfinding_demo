@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 public class HealthComponent : MonoBehaviour {
     public static System.Action<Unit, int> onHealthChanged = delegate { };
@@ -16,6 +17,13 @@ public class HealthComponent : MonoBehaviour {
         var prevAmount = data.CurrentHP;
         Mathf.Clamp (data.CurrentHP += amount, 0, data.MaxHP);
         if (data.CurrentHP <= 0) owner.UnitDeath ();
+
+        if (owner is Hero) onHealthChanged (owner, prevAmount);
+    }
+
+    internal void Refill () {
+        var prevAmount = data.CurrentHP;
+        data.CurrentHP = data.MaxHP;
 
         if (owner is Hero) onHealthChanged (owner, prevAmount);
     }
