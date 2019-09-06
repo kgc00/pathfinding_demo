@@ -15,6 +15,9 @@ public class PlayerActingState : UnitState {
     public override void Enter () {
         // call the ability's start method
         abilityComponent.ActivateWithCallback ((cooldownDuration) => this.UpdateState (cooldownDuration));
+        if (Owner is Hero) {
+            EventQueue.AddEvent (new AreaStateChangeEventArgs (Owner, null, AreaStateTypes.Active));
+        }
     }
 
     // return ActingState until updatestate is called;

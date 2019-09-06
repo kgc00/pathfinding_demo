@@ -14,6 +14,7 @@ public abstract class Unit : MonoBehaviour {
     public AbilityComponent AbilityComponent { get; protected set; }
     public HealthComponent HealthComponent;
     public EnergyComponent EnergyComponent;
+    public bool OccupationException { get; private set; }
 
     public virtual void Initialize (Board board, UnitTypes r, Point spawnLocation) {
         this.Board = board;
@@ -48,4 +49,20 @@ public abstract class Unit : MonoBehaviour {
         occupationState?.ExitTileUponDeath ();
         onUnitDeath (this);
     }
+
+    ///<summary>
+    /// Enables unit from occupying the tile it is over
+    ///</summary>
+
+    public virtual void SetOccupationException () {
+        OccupationException = true;
+    }
+
+    ///<summary>
+    /// Disables unit from occupying the tile it is over
+    ///</summary>
+    public virtual void UnsetOccupationException () {
+        OccupationException = false;
+    }
+
 }

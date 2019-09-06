@@ -19,8 +19,6 @@ public class UnitTrackerComponent {
     private void TrackMonsterDeath (Unit unit) {
         if (unit.TypeReference != UnitTypes.HERO) monstersLeft--;
 
-        UnityEngine.Debug.Log (string.Format ("monstersLeft: {0}", monstersLeft));
-
         if (monstersLeft <= 0) {
             EventQueue.AddEvent (new AreaClearedEvent (this, null));
         }

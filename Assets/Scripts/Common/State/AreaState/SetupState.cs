@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
+// initial generic state for each room use to spawn and load resources.
+// if more design requirements based on room type were necessary
+// this should be split into room specific setupstates to handle that logic
 public class SetupState : AreaState {
     private Area area;
     private bool shouldAdvanceState = false;
@@ -24,7 +26,7 @@ public class SetupState : AreaState {
     }
 
     private void FinishLoading () {
-        if (area.areaData.areaType == AreaTypes.MOB_ROOM) {
+        if (area.AreaData.areaType == AreaTypes.MOB_ROOM) {
             tracker = new UnitTrackerComponent ();
             tracker.StartTrackingMonstersLeft (area.Board);
             SetupMobRoom.DisableEntrances (area.Board);
@@ -63,6 +65,8 @@ public class SetupState : AreaState {
                 t.SetTransitionDirection (Directions.West);
             else if (t.Position.y == max.y)
                 t.SetTransitionDirection (Directions.North);
+
+            t.SetEnabled ();
         });
         area.UpdateBossDoor ();
     }
@@ -75,7 +79,7 @@ public class SetupState : AreaState {
 
         // else use the direction we entered from to determine the entrance we return
         // if we just spawned into the game we use the center of the board
-        switch (area.areaData.from.ToPoint ().ToString ()) {
+        switch (area.AreaData.from.ToPoint ().ToString ()) {
             case "(1,0)":
                 return area.Board.TileAt (tsd.Find (tile => tile.location.x == min.x).location);
             case "(0,1)":
@@ -94,16 +98,12 @@ public class SetupState : AreaState {
     }
 
     public override AreaState HandleUpdate () {
-        if (shouldAdvanceState)
-            return new ActiveState (area, tracker);
+        if (shouldAdvanceState) return new ActiveState (area, tracker);
 
         return null;
     }
 
     public override void HandleTransition () {
-        UnityEngine.Debug.Log (string.Format ("called"));
-        if (tracker != null) {
-            this.tracker.StopTrackingMonstersLeft ();
-        }
+        if (tracker != null) tracker.StopTrackingMonstersLeft ();
     }
 }

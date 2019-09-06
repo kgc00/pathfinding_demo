@@ -40,12 +40,20 @@ public class BoardVisuals : MonoBehaviour {
             return;
 
         indicatorRendererByUnit[unit].ForEach (rend => {
+            // not an entrance
+            if (!rend.GetComponent<Entrance> ()) {
+                rend.material.color = Color.white;
+                return;
+            }
+
             // resets entrance color to normal
-            if (rend.GetComponent<Entrance> ())
+            if (rend.GetComponent<Entrance> ().isEnabled) {
                 // should refactor to some const/variable... 
                 rend.material.color = new Color (0.04748131f, 0.9150943f, 0.8268626f);
-            else
-                rend.material.color = Color.white;
+            } else {
+                // should refactor to some const/variable... 
+                rend.material.color = new Color (0.2969028f, 0.4528302f, 0.437308f);
+            }
         });
         indicatorRendererByUnit[unit].Clear ();
     }

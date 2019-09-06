@@ -18,21 +18,18 @@ public class WorldProgressionComponent {
     }
 
     public void AreaCleared (Area area) {
-        Debug.Log (string.Format ("cleared"));
         AreasCleared++;
         area.UpdateBossDoor ();
         SetupMobRoom.EnableEntrances (area.Board);
     }
 
     public static bool CheckDoorUnlockRequirements (BossRoomEntrance door, Area area) {
-        var instance = worldMap.Values.FirstOrDefault (val => val.areaStateData.initialLevel == area.areaData.initialLevel);
+        var instance = worldMap.Values.FirstOrDefault (val => val.areaStateData.initialLevel == area.AreaData.initialLevel);
         var entry = thresholds.Keys.FirstOrDefault (key => key == instance.Location);
 
         if (AreasCleared >= thresholds[entry]) {
-            Debug.Log (string.Format ("above"));
             return true;
         } else {
-            Debug.Log (string.Format ("below"));
             return false;
         }
     }

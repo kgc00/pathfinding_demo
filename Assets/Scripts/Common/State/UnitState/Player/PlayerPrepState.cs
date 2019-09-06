@@ -22,8 +22,7 @@ public class PlayerPrepState : UnitState {
 
         // loop through them and see if any have been pressed...
         for (int i = 0; i < pressed.Length; i++) {
-            if (!pressed[i])
-                continue;
+            if (!pressed[i]) continue;
 
             // transition to the next state with that data
             if (abilityComponent.SetCurrentAbility (i)) {
@@ -47,8 +46,7 @@ public class PlayerPrepState : UnitState {
             return didSwap;
         }
 
-        // generate valid moves this frame
-        List<PathfindingData> tilesInRange = abilityComponent.GetTilesInRange ();
+        List<PathfindingData> tilesInRange = GetTilesInRange ();
         Point mousePosition = BoardUtility.mousePosFromScreenPoint ();
         HighlightTiles (tilesInRange, mousePosition);
 
@@ -68,6 +66,18 @@ public class PlayerPrepState : UnitState {
             }
         }
         return null;
+    }
+
+    private List<PathfindingData> GetTilesInRange () {
+        // return normal range if the area is a cleared mob room
+        // or we are not using a movement ability
+        bool useMovementAbility = abilityComponent.CurrentAbility is MovementAbility;
+        if (!AreaStateHandler.AreaIsCleared (Owner.Board) || !useMovementAbility) {
+            return abilityComponent.GetTilesInRange ();
+        }
+
+        // return all tiles if we are in a cleared room
+        return RangeUtil.SurveyBoard (Owner.Position, Owner.Board);
     }
 
     private void HighlightTiles (List<PathfindingData> tilesInRange, Point mousePosition) {

@@ -33,7 +33,7 @@ public class World : MonoBehaviour, IEventHandler {
         GameObject instance = new GameObject ("Area: " + curLoc.ToString ());
         Area area = instance.AddComponent<Area> ();
         eventManager.UpdateArea (area);
-        area.Initialize (transitionTo);
+        area.Initialize (transitionTo, curLoc);
         curArea = instance;
     }
 
@@ -79,10 +79,8 @@ public class World : MonoBehaviour, IEventHandler {
     public void HandleIncomingEvent (InfoEventArgs curEvent) {
         switch (curEvent.type.eventType) {
             case EventTypes.TransitionEvent:
-                if (curArea.GetComponent<Area> ().State is ActiveState) {
-                    TransitionEventArgs transitionEvent = (TransitionEventArgs) curEvent;
-                    TransitionToNewArea (curLoc + transitionEvent.transitionDirection);
-                }
+                TransitionEventArgs transitionEvent = (TransitionEventArgs) curEvent;
+                TransitionToNewArea (curLoc + transitionEvent.transitionDirection);
                 break;
             case EventTypes.PlayerLoaded:
                 if (!worldSaveComponent.HasLoaded) {

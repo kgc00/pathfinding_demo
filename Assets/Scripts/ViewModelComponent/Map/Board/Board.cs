@@ -14,7 +14,7 @@ public class Board : MonoBehaviour {
     RangeUtil rangeUtil;
     public UnitFactory UnitFactory;
     public BoardPathfinding Pathfinding => bpf;
-    private Area area;
+    public Area Area { get; private set; }
     public Point[] Dirs => new Point[4] {
         new Point (0, 1),
         new Point (0, -1),
@@ -24,7 +24,7 @@ public class Board : MonoBehaviour {
     private Transform tileWrapper;
 
     public void Initialize (LevelData data, Area a) {
-        this.area = a;
+        this.Area = a;
         levelData = data;
 
         var unitWrapper = new GameObject ();
