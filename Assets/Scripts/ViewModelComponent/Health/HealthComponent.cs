@@ -15,7 +15,10 @@ public class HealthComponent : MonoBehaviour {
 
     public void AdjustHealth (int amount) {
         var prevAmount = data.CurrentHP;
-        Mathf.Clamp (data.CurrentHP += amount, 0, data.MaxHP);
+        data.CurrentHP = Mathf.Clamp (data.CurrentHP + amount, 0, data.MaxHP);
+
+        if (data.CurrentHP < prevAmount) AudioUtil.PlayRandomHurtSound ();
+
         if (data.CurrentHP <= 0) owner.UnitDeath ();
 
         if (owner is Hero) onHealthChanged (owner, prevAmount);

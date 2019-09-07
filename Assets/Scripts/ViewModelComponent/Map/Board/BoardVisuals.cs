@@ -106,6 +106,9 @@ public class BoardVisuals : MonoBehaviour {
 
     private static void RenderIndicatorHighlights () {
         foreach (KeyValuePair<Unit, List<Renderer>> pair in indicatorRendererByUnit) {
+            // if a unit dies with highlights up
+            if (pair.Key == null) continue;
+
             if (pair.Key is Monster) {
                 pair.Value.ForEach (rend =>
                     rend.material.color = Color.yellow);
@@ -119,6 +122,9 @@ public class BoardVisuals : MonoBehaviour {
     private static void RenderRangeHighlights () {
         // keep all tiles associated with user's unit(s) blue
         foreach (KeyValuePair<Unit, List<Renderer>> pair in highlightedTilesByUnit) {
+            // if a unit dies with highlights up
+            if (pair.Key == null) continue;
+
             if (pair.Key is Monster) {
                 pair.Value.ForEach (rend =>
                     rend.material.color = Color.red);

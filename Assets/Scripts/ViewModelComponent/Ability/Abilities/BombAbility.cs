@@ -26,6 +26,8 @@ public class BombAbility : AttackAbility {
         instance.AddComponent<ProjectileComponent> ().Initialize (targetDir, OnAbilityConnected);
         instance.AddComponent<DestinationComponent> ().Initialize (Target.tile.Position, OnAbilityConnected);
 
+        AudioComponent.PlaySound (Sounds.BOMB_LAUNCHED);
+
         OnFinished (EnergyCost);
     }
 
@@ -48,6 +50,7 @@ public class BombAbility : AttackAbility {
             var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (tile.tile.Position.x, tile.tile.Position.y, Layers.Foreground), Quaternion.identity);
             Destroy (vfx, 0.2f);
         });
+        AudioComponent.PlaySound (Sounds.BOMB);
     }
 
     public override void Assign (AbilityData data, Unit owner) {

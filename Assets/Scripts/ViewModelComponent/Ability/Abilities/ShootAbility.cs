@@ -22,6 +22,8 @@ public class ShootAbility : AttackAbility {
 
         instance.AddComponent<ProjectileComponent> ().Initialize (targetDir, OnAbilityConnected);
 
+        AudioComponent.PlaySound (Sounds.SHOOT);
+
         OnFinished (EnergyCost);
     }
 

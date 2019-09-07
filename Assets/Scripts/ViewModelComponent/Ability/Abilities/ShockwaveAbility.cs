@@ -8,6 +8,8 @@ public class ShockwaveAbility : AttackAbility {
     }
 
     private void SpawnShockwave () {
+        if (Owner == null) return;
+
         TilesInRange.ForEach (data => OnAbilityConnected (data.tile.gameObject));
 
         OnFinished (EnergyCost);
@@ -27,6 +29,7 @@ public class ShockwaveAbility : AttackAbility {
             if (unit != null) {
                 unit.HealthComponent.AdjustHealth (-Damage);
             }
+            AudioComponent.PlaySound (Sounds.BOMB);
             var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (pos.x, pos.y, Layers.Foreground), Quaternion.identity);
             Destroy (vfx, 0.2f);
         } catch (System.Exception) {

@@ -31,6 +31,7 @@ public class SetupState : AreaState {
             tracker.StartTrackingMonstersLeft (area.Board);
             SetupMobRoom.DisableEntrances (area.Board);
         }
+        AudioComponent.StopSound (Sounds.RUNNING);
         onAreaLoaded ();
     }
 

@@ -90,6 +90,7 @@ public class World : MonoBehaviour, IEventHandler {
                 break;
             case EventTypes.AreaCleared:
                 progressionComponent.AreaCleared (curArea.GetComponent<Area> ());
+                curEvent.e.Invoke ();
                 break;
             case EventTypes.PlayerDied:
                 TransitionToNewArea (new Point (0, 0), true);

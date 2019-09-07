@@ -20,12 +20,16 @@ public class EarthSpikeAbility : AttackAbility {
     }
 
     private void SpawnSpike () {
+        if (Owner == null) return;
+
         var instance = Instantiate (Resources.Load<GameObject> ("Prefabs/Projectile"),
             new Vector3 (Target.tile.Position.x,
                 Target.tile.Position.y, Layers.Foreground),
             Quaternion.identity);
 
         instance.AddComponent<DestinationComponent> ().Initialize (Target.tile.Position, OnAbilityConnected);
+
+        AudioComponent.PlaySound (Sounds.BOMB_LAUNCHED);
 
         OnFinished (EnergyCost);
     }
@@ -42,6 +46,7 @@ public class EarthSpikeAbility : AttackAbility {
             var unit = Owner.Board.TileAt (projectile.transform.position.ToPoint ()).OccupiedBy;
             unit.HealthComponent.AdjustHealth (-Damage);
             var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (unit.Position.x, unit.Position.y, Layers.Foreground), Quaternion.identity);
+            AudioComponent.PlaySound (Sounds.BOMB);
             Destroy (vfx, 0.2f);
         } catch (System.Exception) {
             Debug.Log (string.Format ("unable to get unit script from gameobject"));

@@ -21,6 +21,8 @@ public class Entrance : Tile {
     public override void SetOccupied (Unit occupier) {
         base.SetOccupied (occupier);
         if (occupier is Hero && isEnabled && Board.Area.State is ActiveState) {
+            AudioComponent.StopSound (Sounds.RUNNING);
+            AudioComponent.PlaySound (Sounds.ENTRANCE);
             EventQueue.AddEvent (new TransitionEventArgs (this, null, transitionsToThe.ToPoint ()));
         }
     }

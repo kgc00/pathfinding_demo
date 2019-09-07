@@ -24,6 +24,7 @@ public class Hero : Unit {
         EventQueue.AddEvent (new PlayerDiedEventArgs (this, () => {
             HealthComponent.Refill ();
             EnergyComponent.Refill ();
+            AudioComponent.PlaySound (Sounds.PLAYER_DEATH);
         }));
     }
 }

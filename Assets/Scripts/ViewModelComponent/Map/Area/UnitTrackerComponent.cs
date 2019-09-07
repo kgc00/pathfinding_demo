@@ -20,7 +20,13 @@ public class UnitTrackerComponent {
         if (unit.TypeReference != UnitTypes.HERO) monstersLeft--;
 
         if (monstersLeft <= 0) {
-            EventQueue.AddEvent (new AreaClearedEvent (this, null));
+            AudioComponent.PlaySound (Sounds.AREA_CLEARED);
+            Unit playerUnit = FindPlayerUnit (unit.Board);
+            EventQueue.AddEvent (new AreaClearedEvent (this, () => playerUnit.HealthComponent.AdjustHealth (playerUnit.HealthComponent.data.MaxHP)));
         }
+    }
+
+    private Unit FindPlayerUnit (Board board) {
+        return board.Units.FirstOrDefault (data => data.Value is Hero).Value;
     }
 }

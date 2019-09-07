@@ -15,10 +15,12 @@ MonoBehaviour:
   DisplayName: Bomb
   Range: 4
   EnergyCost: 3
-  Damage: 3
+  Damage: 1
   AreaOfEffect: 2
   Description: Target a direction to launch a projectile in.  Collides with walls
     and units.  Explodes upon collision and deals damage to all units in range.  Will
     detonate once it reaches the selected location.  WILL affect player units!
   RangeComponentType: 2
+  AoERangeComponentType: 0
   AbilityType: 3
+  TargetType: 0

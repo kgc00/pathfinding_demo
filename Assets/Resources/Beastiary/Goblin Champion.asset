@@ -20,6 +20,6 @@ MonoBehaviour:
   MaxHP: 10
   CurrentEnergy: 0
   MaxEnergy: 10
-  EnergyRegenRate: 0.01
+  EnergyRegenRate: 0.2
   UnitType: 5
   MovementType: 0
