@@ -145,7 +145,7 @@ public class Board : MonoBehaviour {
     }
 
     public void DeleteUnitAt (Point p) {
-        if (units.ContainsKey (p)) {
+        if (units.ContainsKey (p) && units[p] != null) {
             Destroy (units[p].gameObject, .25f);
             units.Remove (p);
         }

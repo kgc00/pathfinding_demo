@@ -21,6 +21,9 @@ public class WorldProgressionComponent {
         AreasCleared++;
         area.UpdateBossDoor ();
         SetupMobRoom.EnableEntrances (area.Board);
+        if (area.AreaData.areaType == AreaTypes.BOSS_ROOM) {
+            Debug.Log (string.Format ("you win"));
+        }
     }
 
     public static bool CheckDoorUnlockRequirements (BossRoomEntrance door, Area area) {

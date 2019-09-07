@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Entrance
+  m_Name: Entrance_Disabled
   m_Shader: {fileID: 4800000, guid: bfdae0d04dad7574fb2330b0990104f1, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -73,5 +73,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.047481313, g: 0.9150943, b: 0.8268626, a: 1}
+    - _Color: {r: 0.29690284, g: 0.4528302, b: 0.43730798, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

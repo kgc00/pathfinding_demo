@@ -67,10 +67,10 @@ public class BoardVisuals : MonoBehaviour {
         var query = tiles.Where (tile => tile.TypeReference == TileTypes.DIRT);
         foreach (var tile in query) {
             Renderer rend = tile.GetComponent<Renderer> ();
-            if (unit is Monster && rend.material.color != Color.green) {
+            if (unit is Monster && rend.material.color != Color.cyan) {
                 rend.material.color = Color.red;
             } else if (unit is Hero && rend.material.color != Color.blue) {
-                rend.material.color = Color.green;
+                rend.material.color = Color.cyan;
             }
             temp.Add (rend);
         }
@@ -117,14 +117,14 @@ public class BoardVisuals : MonoBehaviour {
     }
 
     private static void RenderRangeHighlights () {
-        // keep all tiles associated with user's unit(s) green
+        // keep all tiles associated with user's unit(s) blue
         foreach (KeyValuePair<Unit, List<Renderer>> pair in highlightedTilesByUnit) {
             if (pair.Key is Monster) {
                 pair.Value.ForEach (rend =>
                     rend.material.color = Color.red);
             } else {
                 pair.Value.ForEach (rend =>
-                    rend.material.color = Color.green);
+                    rend.material.color = Color.cyan);
             }
         }
     }

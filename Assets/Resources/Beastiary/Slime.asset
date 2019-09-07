@@ -17,7 +17,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5c7d9e833e83c8242b9ed66185607ce7, type: 2}
   CurrentHP: 3
   MaxHP: 3
-  CurrentEnergy: 0
+  CurrentEnergy: 5
   MaxEnergy: 10
   EnergyRegenRate: 0.01
   UnitType: 1

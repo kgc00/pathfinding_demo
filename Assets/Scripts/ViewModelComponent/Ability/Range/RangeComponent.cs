@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public abstract class RangeComponent {
     public int range;
-    protected GameObject owner;
+    public GameObject Owner { get; protected set; }
     protected Board board;
     protected BoardPathfinding pathfinding;
-    public RangeComponent (GameObject owner, Board board, Ability ability) {
-        this.owner = owner;
+    public RangeComponent (GameObject Owner, Board board, Ability ability) {
+        this.Owner = Owner;
         this.board = board;
         this.pathfinding = board ? board.Pathfinding : null;
         this.range = ability ? ability.Range : 0;
@@ -18,12 +18,12 @@ public abstract class RangeComponent {
     }
 
     public RangeComponent SetStartPosFromMouse (Point mousePosition) {
-        owner.transform.position = new Vector3 (mousePosition.x, mousePosition.y, 0);
+        Owner.transform.position = new Vector3 (mousePosition.x, mousePosition.y, 0);
         return this;
     }
 
     public RangeComponent SetOwnerPos (Point ownerPos) {
-        owner.transform.position = new Vector3 (ownerPos.x, ownerPos.y, 0);
+        Owner.transform.position = new Vector3 (ownerPos.x, ownerPos.y, 0);
         return this;
     }
 

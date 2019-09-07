@@ -13,20 +13,20 @@ public class SetupState : AreaState {
     UnitTrackerComponent tracker;
     public override void Enter () {
         // filter our tiles down to entrances only
-        List<TileSpawnData> tsd = area.Board.levelData.tiles.Where (tiles => tiles.tileRef == TileTypes.ENTRANCE || tiles.tileRef == TileTypes.BOSS_ENTRANCE).ToList ();
+        List<TileSpawnData> entrances = area.Board.levelData.tiles.Where (tiles => tiles.tileRef == TileTypes.ENTRANCE || tiles.tileRef == TileTypes.BOSS_ENTRANCE).ToList ();
 
         // find min and max values for this board
         Point min = BoardUtility.SetMinV2Int (area.Board.levelData);
         Point max = BoardUtility.SetMaxV2Int (area.Board.levelData);
 
-        InitializeResources (tsd, min, max);
-        SetPlayerPosition (tsd, min, max);
+        InitializeResources (entrances, min, max);
+        SetPlayerPosition (entrances, min, max);
         SetPlayerData ();
         FinishLoading ();
     }
 
     private void FinishLoading () {
-        if (area.AreaData.areaType == AreaTypes.MOB_ROOM) {
+        if (area.AreaData.areaType == AreaTypes.MOB_ROOM || area.AreaData.areaType == AreaTypes.BOSS_ROOM) {
             tracker = new UnitTrackerComponent ();
             tracker.StartTrackingMonstersLeft (area.Board);
             SetupMobRoom.DisableEntrances (area.Board);
@@ -42,19 +42,19 @@ public class SetupState : AreaState {
         area.Board.UnitFactory.InitializePlayerUnitAt (playerUnit.Position);
     }
 
-    private void SetPlayerPosition (List<TileSpawnData> tsd, Point min, Point max) {
+    private void SetPlayerPosition (List<TileSpawnData> entrances, Point min, Point max) {
         // UnityEngine.Debug.Log (string.Format ("level from {0}", area.areaData.from));
-        Tile entrance = SelectCorrectEntrance (tsd, min, max);
+        Tile entrance = SelectCorrectEntrance (entrances, min, max);
         // UnityEngine.Debug.Log (string.Format ("entrance found: {0} at {1}", entrance.name, entrance.Position));
         Unit hero = area.Board.CreateUnitAt (entrance.Position, UnitTypes.HERO);
     }
 
-    private void InitializeResources (List<TileSpawnData> tsd, Point min, Point max) {
-        InitializeEntrances (tsd, min, max);
+    private void InitializeResources (List<TileSpawnData> entrances, Point min, Point max) {
+        InitializeEntrances (entrances, min, max);
     }
 
-    private void InitializeEntrances (List<TileSpawnData> tsd, Point min, Point max) {
-        tsd.ForEach (tile => {
+    private void InitializeEntrances (List<TileSpawnData> entrances, Point min, Point max) {
+        entrances.ForEach (tile => {
             Entrance t = area.Board.TileAt (tile.location) as Entrance;
 
             if (t.Position.x == min.x)
@@ -71,23 +71,23 @@ public class SetupState : AreaState {
         area.UpdateBossDoor ();
     }
 
-    private Tile SelectCorrectEntrance (List<TileSpawnData> tsd, Point min, Point max) {
+    private Tile SelectCorrectEntrance (List<TileSpawnData> entrances, Point min, Point max) {
         // UnityEngine.Debug.Log (string.Format ("selecting entrance for {0}", area.areaData.from.ToPoint ().ToString ()));
         // if there's only 1 return that
-        if (tsd.Count () == 1)
-            return area.Board.TileAt (tsd[0].location);
+        if (entrances.Count () == 1)
+            return area.Board.TileAt (entrances[0].location);
 
         // else use the direction we entered from to determine the entrance we return
         // if we just spawned into the game we use the center of the board
         switch (area.AreaData.from.ToPoint ().ToString ()) {
             case "(1,0)":
-                return area.Board.TileAt (tsd.Find (tile => tile.location.x == min.x).location);
+                return area.Board.TileAt (entrances.Find (tile => tile.location.x == min.x).location);
             case "(0,1)":
-                return area.Board.TileAt (tsd.Find (tile => tile.location.y == max.y).location);
+                return area.Board.TileAt (entrances.Find (tile => tile.location.y == max.y).location);
             case "(-1,0)":
-                return area.Board.TileAt (tsd.Find (tile => tile.location.x == max.x).location);
+                return area.Board.TileAt (entrances.Find (tile => tile.location.x == max.x).location);
             case "(0,-1)":
-                return area.Board.TileAt (tsd.Find (tile => tile.location.y == min.y).location);
+                return area.Board.TileAt (entrances.Find (tile => tile.location.y == min.y).location);
             default:
                 return area.Board.TileAt (new Point ((max.x / 2), (max.y / 2)));
         }
