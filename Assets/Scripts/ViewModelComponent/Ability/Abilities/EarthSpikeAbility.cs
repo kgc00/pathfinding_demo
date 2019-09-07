@@ -16,7 +16,7 @@ public class EarthSpikeAbility : AttackAbility {
             Owner.AbilityComponent.TurnUnit (toTurn);
         }
 
-        var coroutine = StartCoroutine (countdown (1f, () => SpawnSpike ()));
+        var coroutine = StartCoroutine (countdown (1.15f, () => SpawnSpike ()));
     }
 
     private void SpawnSpike () {

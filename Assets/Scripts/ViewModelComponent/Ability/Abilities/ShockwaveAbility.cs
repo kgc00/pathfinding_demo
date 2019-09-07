@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShockwaveAbility : AttackAbility {
     public override void Activate () {
-        StartCoroutine (countdown (1f, () => SpawnShockwave ()));
+        StartCoroutine (countdown (1.15f, () => SpawnShockwave ()));
     }
 
     private void SpawnShockwave () {
