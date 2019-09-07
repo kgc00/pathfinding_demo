@@ -25,7 +25,7 @@ public class ShockwaveAbility : AttackAbility {
     public override void OnAbilityConnected (GameObject targetedTile) {
         try {
             var unit = targetedTile.GetComponent<Tile> ().OccupiedBy;
-            var pos = targetedTile.transform.position;
+            var pos = targetedTile.transform.position.ToPoint ();
             if (unit != null) {
                 unit.HealthComponent.AdjustHealth (-Damage);
             }

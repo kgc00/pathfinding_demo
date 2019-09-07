@@ -158,13 +158,15 @@ public class BoardCreator : MonoBehaviour {
         boardData.units = new List<UnitSpawnData> ();
         foreach (KeyValuePair<Point, Unit> element in units)
             boardData.units.Add (new UnitSpawnData (element.Key, element.Value.TypeReference));
-
+#if UNITY_EDITOR
         string fileURI = string.Format (
             "Assets/Resources/Levels/{1}.asset",
             filePath, fileName);
         AssetDatabase.CreateAsset (boardData, fileURI);
+#endif
     }
     void CreateSaveDirectory () {
+#if UNITY_EDITOR
         string filePath = Application.dataPath + "/Resources";
         if (!Directory.Exists (filePath))
             AssetDatabase.CreateFolder ("Assets", "Resources");
@@ -172,6 +174,7 @@ public class BoardCreator : MonoBehaviour {
         if (!Directory.Exists (filePath))
             AssetDatabase.CreateFolder ("Assets/Resources", "Levels");
         AssetDatabase.Refresh ();
+#endif
     }
     public void Load () {
         Current.CreateUnitFactory ();

@@ -19,10 +19,15 @@ public class RangeUtil : MonoBehaviour {
     }
 
     internal void Initialize (Board board) {
+        Debug.Log (string.Format ("initialized"));
         if (rangeComponents != null) UpdateBoard (board);
         else CreateRangeComponents (board);
     }
 
+    public static void ClearComponent () {
+        rangeComponents.Clear ();
+        rangeComponents = null;
+    }
     private static void CreateRangeComponents (Board board) {
         var wrapperName = "Range Components";
         var wrapper = GameObject.Find (wrapperName) ? GameObject.Find (wrapperName) :

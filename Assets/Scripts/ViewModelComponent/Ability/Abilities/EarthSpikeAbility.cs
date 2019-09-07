@@ -44,13 +44,14 @@ public class EarthSpikeAbility : AttackAbility {
     public override void OnAbilityConnected (GameObject projectile) {
         try {
             var unit = Owner.Board.TileAt (projectile.transform.position.ToPoint ()).OccupiedBy;
-            unit.HealthComponent.AdjustHealth (-Damage);
-            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (unit.Position.x, unit.Position.y, Layers.Foreground), Quaternion.identity);
-            AudioComponent.PlaySound (Sounds.BOMB);
-            Destroy (vfx, 0.2f);
+            if (unit) unit.HealthComponent.AdjustHealth (-Damage);
         } catch (System.Exception) {
-            Debug.Log (string.Format ("unable to get unit script from gameobject"));
+            // Debug.Log (string.Format ("unable to get unit script from gameobject"));
         }
+        var projectilePosition = projectile.transform.position.ToPoint ();
+        var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (projectilePosition.x, projectilePosition.y, Layers.Foreground), Quaternion.identity);
+        AudioComponent.PlaySound (Sounds.BOMB);
+        Destroy (vfx, 0.2f);
     }
 
     public override void Assign (AbilityData data, Unit owner) {

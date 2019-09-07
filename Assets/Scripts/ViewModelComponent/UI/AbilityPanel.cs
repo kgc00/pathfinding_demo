@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 class AbilityPanel : MonoBehaviour {
     private Image[] images;
     private Animation[] wrappers;
@@ -9,7 +11,7 @@ class AbilityPanel : MonoBehaviour {
     GameObject tooltip;
     GameObject abilityElement;
     void Awake () {
-        Hero.onUnitCreated += PopulateAbilityPanel;
+        Hero.onUnitCreated += SafelyPopulatePanel;
         SetupState.onAreaLoaded += StopAnimations;
         PlayerIdleState.onAbilitySet += AnimateAbilityPrepped;
         PlayerPrepState.onAbilitySet += AnimateAbilityPrepped;
@@ -41,9 +43,25 @@ class AbilityPanel : MonoBehaviour {
             tooltip.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, 0);
 
             abilityElement = Resources.Load<GameObject> ("Prefabs/UI/Ability Element");
+
+            SafelyPopulatePanel ();
         } catch (System.Exception) {
             Debug.Log (string.Format ("unable to load tooltip or ability element prefab"));
             throw;
+        }
+    }
+
+    private void SafelyPopulatePanel () {
+        if (images == null) {
+            var hero = FindObjectOfType<Board> ().Units.FirstOrDefault (data => data.Value is Hero).Value;
+            if (hero == null) return;
+            PopulateAbilityPanel (hero);
+        }
+    }
+
+    private void SafelyPopulatePanel (Unit unit) {
+        if (images == null) {
+            PopulateAbilityPanel (unit);
         }
     }
 
@@ -58,10 +76,13 @@ class AbilityPanel : MonoBehaviour {
         }
     }
 
-    ~AbilityPanel () {
-        Hero.onUnitCreated -= PopulateAbilityPanel;
+    void OnDestroy () {
+        Hero.onUnitCreated -= SafelyPopulatePanel;
+        SetupState.onAreaLoaded -= StopAnimations;
         PlayerIdleState.onAbilitySet -= AnimateAbilityPrepped;
-        PlayerIdleState.onEntered -= StopAnimations;
+        PlayerPrepState.onAbilitySet -= AnimateAbilityPrepped;
+        PlayerPrepState.onAbilityCanceled -= StopAnimations;
+        PlayerPrepState.onAbilityCommited -= AnimateAbilityCommited;
     }
 
     void PopulateAbilityPanel (Unit unit) {

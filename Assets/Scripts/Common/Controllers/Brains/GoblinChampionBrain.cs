@@ -8,6 +8,7 @@ public class GoblinChampionBrain : Brain {
     int lowestCost = -1;
     public GoblinChampionBrain (Unit owner) : base (owner) { }
     public override PlanOfAction Think () {
+        if (owner == null) return null;
         // determine where the player is
         var player = board.Units.FirstOrDefault (unit => unit.Value is Hero).Value;
 
@@ -104,9 +105,9 @@ public class GoblinChampionBrain : Brain {
 
     private PlanOfAction LongRangePlan (List<PathfindingData> tilesOnBoard, PathfindingData targetData,
         List<PathfindingData> tilesFromPlayerPerspective) {
-        // 2: 1/10 move towards player, 9/10 times use earth spike
+        // 2: 2/10 move towards player, 8/10 times use earth spike
         var seed = UnityEngine.Random.Range (0, 11);
-        if (seed < 1)
+        if (seed < 2)
             return MoveTowardsPlayer (tilesOnBoard, targetData, tilesFromPlayerPerspective);
         else
             return UseEarthSpike (tilesOnBoard, targetData);

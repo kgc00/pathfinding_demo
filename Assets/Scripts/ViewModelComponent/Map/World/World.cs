@@ -25,7 +25,7 @@ public class World : MonoBehaviour, IEventHandler {
         Initialize ();
     }
 
-    ~World () {
+    void OnDestroy () {
         Unit.onUnitDeath -= RemoveUnitFromAreaInstance;
     }
 
@@ -95,6 +95,11 @@ public class World : MonoBehaviour, IEventHandler {
             case EventTypes.PlayerDied:
                 TransitionToNewArea (new Point (0, 0), true);
                 curEvent.e.Invoke ();
+                break;
+            case EventTypes.GameCleared:
+                RangeUtil.ClearComponent ();
+                curEvent.e.Invoke ();
+                Destroy (gameObject);
                 break;
             default:
                 break;
