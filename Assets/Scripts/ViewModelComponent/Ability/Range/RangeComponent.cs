@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 public abstract class RangeComponent {
-    public int range;
+    protected int range;
     public GameObject Owner { get; protected set; }
     protected Board board;
     protected BoardPathfinding pathfinding;

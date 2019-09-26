@@ -10,7 +10,7 @@ public class ShockwaveAbility : AttackAbility {
     private void SpawnShockwave () {
         if (Owner == null) return;
 
-        TilesInRange.ForEach (data => OnAbilityConnected (data.tile.gameObject));
+        TilesInRange.ForEach (data => OnAbilityConnected (data.Tile.gameObject));
 
         OnFinished (EnergyCost);
     }

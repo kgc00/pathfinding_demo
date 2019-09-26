@@ -13,14 +13,14 @@ public class WalkingMovement : MovementComponent {
         PathfindingData startdata = AddStartingData (tilesInRange);
 
         foreach (var data in tilesInRange) {
-            if (data.shadow.distance == 1) {
-                data.shadow.previous = startdata.shadow;
+            if (data.Shadow.Distance == 1) {
+                data.Shadow.SetPrevious(startdata.Shadow);
             }
         }
 
         while (target != null) {
-            path.Insert (0, target.tile);
-            target = tilesInRange.Find (data => data.shadow == target.shadow.previous);
+            path.Insert (0, target.Tile);
+            target = tilesInRange.Find (data => data.Shadow == target.Shadow.Previous);
         }
 
         // Move to each waypoint in succession
@@ -29,7 +29,7 @@ public class WalkingMovement : MovementComponent {
             Tile from = path[i - 1];
             Tile to = path[i];
 
-            if (shouldBreak || !path.Contains (startdata.tile))
+            if (shouldBreak || !path.Contains (startdata.Tile))
                 break;
 
             // some dynamic obstacle like a unit is now
@@ -60,10 +60,10 @@ public class WalkingMovement : MovementComponent {
 
     // using the strategy pattern to customize how we travel
     IEnumerator Walk (Tile from, Tile target, System.Action onInterrupted) {
-        float journeyLength = Vector3.Distance (owner.transform.position, target.center);
+        float journeyLength = Vector3.Distance (owner.transform.position, target.Center);
         float startTime = Time.time;
         float speed = 1;
-        while (owner.transform.position != target.center) {
+        while (owner.transform.position != target.Center) {
             bool targetOccupied = target.IsOccupied () && !target.IsOccupiedBy (owner);
             if (targetOccupied) {
                 target = from;
@@ -73,7 +73,7 @@ public class WalkingMovement : MovementComponent {
 
             float distCovered = (Time.time - startTime) * speed;
             float fracJourney = distCovered / journeyLength;
-            owner.transform.position = Vector3.Lerp (owner.transform.position, target.center, fracJourney);
+            owner.transform.position = Vector3.Lerp (owner.transform.position, target.Center, fracJourney);
             yield return false;
         }
     }

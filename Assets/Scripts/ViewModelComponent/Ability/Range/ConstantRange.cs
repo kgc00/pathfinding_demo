@@ -14,15 +14,13 @@ public class ConstantRange : RangeComponent {
     protected override void Filter (List<PathfindingData> tiles) {
         if (Owner.GetComponent<Unit> ()) {
             for (int i = tiles.Count - 1; i >= 0; --i)
-                if (tiles[i].tile.OccupiedBy == Owner.GetComponent<Unit> ())
+                if (tiles[i].Tile.OccupiedBy == Owner.GetComponent<Unit> ())
                     tiles.RemoveAt (i);
-        } else {
-            return;
         }
 
     }
 
     bool ExpandSearch (ShadowTile from, Tile to) {
-        return (from.distance + 1) <= range && to.isWalkable;
+        return (from.Distance + 1 <= range) && to.isWalkable;
     }
 }

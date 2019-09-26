@@ -16,15 +16,15 @@ public class BiteAbility : AttackAbility {
     private void FinishExecution () {
         if (Owner == null) return;
 
-        var targetUnit = Target.tile.OccupiedBy;
+        var targetUnit = Target.Tile.OccupiedBy;
         var from = Owner.Board.TileAt (Owner.Position);
 
-        var toTurn = from.GetDirection (Target.tile);
+        var toTurn = from.GetDirection (Target.Tile);
         Owner.AbilityComponent.TurnUnit (toTurn);
 
         if (targetUnit != null) OnAbilityConnected (targetUnit.gameObject);
 
-        var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (Target.tile.Position.x, Target.tile.Position.y, Layers.Foreground), Quaternion.identity);
+        var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (Target.Tile.Position.x, Target.Tile.Position.y, Layers.Foreground), Quaternion.identity);
         AudioComponent.PlaySound (Sounds.BITE);
         Destroy (vfx, 0.2f);
 

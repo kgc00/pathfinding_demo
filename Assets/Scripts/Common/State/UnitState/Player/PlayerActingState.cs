@@ -5,8 +5,7 @@ public class PlayerActingState : UnitState {
     PathfindingData targetTile;
     UnitState state;
     AbilityComponent abilityComponent;
-    public PlayerActingState (Unit Owner,
-        List<PathfindingData> tilesInRange, PathfindingData targetTile) : base (Owner) {
+    public PlayerActingState (Unit Owner, List<PathfindingData> tilesInRange, PathfindingData targetTile) : base (Owner) {
         this.tilesInRange = tilesInRange;
         this.targetTile = targetTile;
         this.abilityComponent = Owner.AbilityComponent;

@@ -14,7 +14,7 @@ public abstract class MovementComponent : MonoBehaviour {
 
     protected virtual void Filter (List<PathfindingData> tiles) {
         for (int i = tiles.Count - 1; i >= 0; --i)
-            if (!tiles[i].tile.isWalkable)
+            if (!tiles[i].Tile.isWalkable)
                 tiles.RemoveAt (i);
     }
     public virtual IEnumerator Turn (Directions dir) {

@@ -12,13 +12,13 @@ public class LinearRange : RangeComponent {
     protected override void Filter (List<PathfindingData> tiles) {
         if (Owner.GetComponent<Unit> ()) {
             for (int i = tiles.Count - 1; i >= 0; --i)
-                if (!tiles[i].tile.isWalkable || tiles[i].tile.OccupiedBy == Owner.GetComponent<Unit> ())
+                if (!tiles[i].Tile.isWalkable || tiles[i].Tile.OccupiedBy == Owner.GetComponent<Unit> ())
                     tiles.RemoveAt (i);
         } else {
             for (int i = tiles.Count - 1; i >= 0; --i)
-                if (!tiles[i].tile.isWalkable)
+                if (!tiles[i].Tile.isWalkable)
                     tiles.RemoveAt (i);
-        }
+        }   
     }
 
     bool ExpandSearch (ShadowTile from, Tile to) {
@@ -26,6 +26,6 @@ public class LinearRange : RangeComponent {
 
         return (ownerPos.y == to.Position.y ||
                 ownerPos.x == to.Position.x) &&
-            (from.distance + 1) <= range;
+            (from.Distance + 1) <= range;
     }
 }

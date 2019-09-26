@@ -16,7 +16,7 @@ public class AIPrepState : UnitState {
         var plan = controller.Brain.Think ();
         if (plan == null) return null;
 
-        BoardVisuals.AddIndicator (Owner, plan.affectedTiles.ConvertAll (data => data.tile));
+        BoardVisuals.AddIndicator (Owner, plan.affectedTiles.ConvertAll (data => data.Tile));
 
         if (!abilityComponent.CurrentAbility) return null;
         HighlightTiles (plan.tilesInRange);
@@ -34,7 +34,7 @@ public class AIPrepState : UnitState {
         // convert pathfinding struct to tiles for AddTileToHighlights func...
         List<Tile> tiles = new List<Tile> ();
         tilesInRange.ForEach (element => {
-            tiles.Add (element.tile);
+            tiles.Add (element.Tile);
         });
         BoardVisuals.AddTileToHighlights (Owner, tiles);
     }

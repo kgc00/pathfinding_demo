@@ -50,7 +50,7 @@ public class SlimeBrain : Brain {
 
     private PathfindingData FindMovementTarget (Tile targetTile, List<PathfindingData> tilesInRange) {
         foreach (var item in tilesInRange) {
-            if (item.tile == targetTile) {
+            if (item.Tile == targetTile) {
                 return item;
             }
         }
@@ -79,7 +79,7 @@ public class SlimeBrain : Brain {
     // that skill will reach the target... none of this has astar /
     // obstacle pathfinding support
     private PathfindingData FindAndSetTarget (Tile targetTile, Ability ability, List<PathfindingData> tilesInRange) {
-        var tile = tilesInRange.Find (data => data.tile == targetTile);
+        var tile = tilesInRange.Find (data => data.Tile == targetTile);
         if (tile != null) {
             return tile;
         }

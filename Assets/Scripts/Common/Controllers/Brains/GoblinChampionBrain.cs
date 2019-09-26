@@ -18,7 +18,7 @@ public class GoblinChampionBrain : Brain {
 
         var tilesOnBoard = RangeUtil.SurveyBoard (owner.Position, owner.Board);
         var targetData = FindTarget (tilesOnBoard, player);
-        var tilesFromPlayerPerspective = RangeUtil.SurveyBoard (targetData.tile.Position, owner.Board);
+        var tilesFromPlayerPerspective = RangeUtil.SurveyBoard (targetData.Tile.Position, owner.Board);
 
         if (WithinShockwaveRange (tilesOnBoard, targetData))
             return CloseRangePlan (tilesOnBoard, targetData, tilesFromPlayerPerspective);
@@ -49,7 +49,7 @@ public class GoblinChampionBrain : Brain {
         var tilesInRange = abilityComponent.GetTilesInRange ();
 
         // Find all tiles a certain distance from the player
-        var orderedPossibilities = tilesFromPlayerPerspective.OrderByDescending (data => data.shadow.distance).ToList ();
+        var orderedPossibilities = tilesFromPlayerPerspective.OrderByDescending (data => data.Shadow.Distance).ToList ();
 
         // find the first available move target
         PathfindingData moveTarget = FindFirstAvailable (tilesInRange, targetData, orderedPossibilities);
@@ -68,7 +68,7 @@ public class GoblinChampionBrain : Brain {
 
         foreach (var item in ordered) {
             for (int i = 0; i < tilesInRange.Count; i++) {
-                if (tilesInRange[i].tile == item.tile) {
+                if (tilesInRange[i].Tile == item.Tile) {
                     moveTarget = tilesInRange[i];
                     break;
                 }
@@ -87,7 +87,7 @@ public class GoblinChampionBrain : Brain {
         var tilesInRange = abilityComponent.GetTilesInRange ();
         PathfindingData target = null;
         foreach (var data in tilesInRange) {
-            if (data.tile == targetData.tile) {
+            if (data.Tile == targetData.Tile) {
                 target = data;
                 break;
             }
@@ -96,7 +96,7 @@ public class GoblinChampionBrain : Brain {
     }
 
     private bool WithinShockwaveRange (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
-        return targetData.shadow.distance <= shockwaveRange;
+        return targetData.Shadow.Distance <= shockwaveRange;
     }
 
     private void SetLowestAbilityCost () {
@@ -124,7 +124,7 @@ public class GoblinChampionBrain : Brain {
 
         PathfindingData target = null;
         foreach (var data in tilesInRange) {
-            if (data.tile == targetData.tile) {
+            if (data.Tile == targetData.Tile) {
                 target = data;
                 break;
             }
@@ -145,7 +145,7 @@ public class GoblinChampionBrain : Brain {
     PathfindingData FindTarget (List<PathfindingData> tilesOnBoard, Unit player) {
         var targetTile = board.TileAt (player.Position);
         foreach (var item in tilesOnBoard) {
-            if (item.tile == targetTile) {
+            if (item.Tile == targetTile) {
                 return item;
             }
         }

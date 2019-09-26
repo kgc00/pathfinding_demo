@@ -9,8 +9,8 @@ public class BombAbility : AttackAbility {
         var ownerPos = Owner.Position;
         var from = board.TileAt (ownerPos);
 
-        Point targetDir = new Point ((Mathf.Clamp (Target.tile.Position.x -
-            ownerPos.x, -1, 1)), (Mathf.Clamp (Target.tile.Position.y -
+        Point targetDir = new Point ((Mathf.Clamp (Target.Tile.Position.x -
+            ownerPos.x, -1, 1)), (Mathf.Clamp (Target.Tile.Position.y -
             ownerPos.y, -1, 1)));
 
         var instance = Instantiate (Resources.Load<GameObject> ("Prefabs/Projectile"),
@@ -19,12 +19,12 @@ public class BombAbility : AttackAbility {
             Quaternion.identity);
 
         if (Owner.dir != targetDir.ToDirection ()) {
-            var toTurn = from.GetDirection (Target.tile);
+            var toTurn = from.GetDirection (Target.Tile);
             Owner.AbilityComponent.TurnUnit (toTurn);
         }
 
         instance.AddComponent<ProjectileComponent> ().Initialize (targetDir, OnAbilityConnected);
-        instance.AddComponent<DestinationComponent> ().Initialize (Target.tile.Position, OnAbilityConnected);
+        instance.AddComponent<DestinationComponent> ().Initialize (Target.Tile.Position, OnAbilityConnected);
 
         AudioComponent.PlaySound (Sounds.BOMB_LAUNCHED);
 
@@ -33,21 +33,21 @@ public class BombAbility : AttackAbility {
 
     public override void OnAbilityConnected (GameObject obj) {
         var rangeComponent = new SelfAndConstantRange (obj, Owner.Board, this);
-        rangeComponent.range = this.AreaOfEffect;
+        rangeComponent.SetRange(this.AreaOfEffect);
         Explode (rangeComponent);
     }
 
     private void Explode (SelfAndConstantRange rangeComponent) {
         // range component is calculating range based on owner pos, rather than projectile pos
         var tiles = rangeComponent.GetTilesInRange ();
-        tiles.Where (data => data.tile.IsOccupied ())
-            .Select (data => data.tile.OccupiedBy).ToList ()
+        tiles.Where (data => data.Tile.IsOccupied ())
+            .Select (data => data.Tile.OccupiedBy).ToList ()
             .ForEach (unit => {
                 unit.HealthComponent.AdjustHealth (-Damage);
             });
 
         tiles.ForEach (tile => {
-            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (tile.tile.Position.x, tile.tile.Position.y, Layers.Foreground), Quaternion.identity);
+            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (tile.Tile.Position.x, tile.Tile.Position.y, Layers.Foreground), Quaternion.identity);
             Destroy (vfx, 0.2f);
         });
         AudioComponent.PlaySound (Sounds.BOMB);

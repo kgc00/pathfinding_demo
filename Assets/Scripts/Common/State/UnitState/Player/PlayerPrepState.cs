@@ -53,12 +53,12 @@ public class PlayerPrepState : UnitState {
         // user clicks on a walkable tile which is in range....
         if (controller.DetectInputFor (ControlTypes.CONFIRM)) {
             PathfindingData selectedTarget = tilesInRange.Find (
-                element => element.tile.Position == mousePosition
+                element => element.Tile.Position == mousePosition
             );
 
             // transition to acting state if it's a valid selection
             // and we successfully prep our ability for use
-            bool targetIsValid = selectedTarget != null && selectedTarget.tile.isWalkable;
+            bool targetIsValid = selectedTarget != null && selectedTarget.Tile.isWalkable;
             if (targetIsValid && Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost) &&
                 abilityComponent.PrepAbility (tilesInRange, selectedTarget)) {
                 onAbilityCommited (Owner, abilityComponent.IndexOfCurrentAbility ());
@@ -89,26 +89,26 @@ public class PlayerPrepState : UnitState {
         // convert pathfinding struct to tiles for AddTileToHighlights func...
         List<Tile> tiles = new List<Tile> ();
         tilesInRange.ForEach (element => {
-            tiles.Add (element.tile);
+            tiles.Add (element.Tile);
         });
         BoardVisuals.AddTileToHighlights (Owner, tiles);
     }
 
     private void HandleIndicator (List<PathfindingData> tilesInRange, Point mousePosition) {
         var selectedTile = Owner.Board.TileAt (mousePosition);
-        var isValid = tilesInRange.Exists (data => data.tile == selectedTile);
+        var isValid = tilesInRange.Exists (data => data.Tile == selectedTile);
         // tile is not valid or already is highlighted, return 
         if (!isValid) return;
 
         if (abilityComponent.CurrentAbility.AreaOfEffect > 0) {
             var aoeRange = RangeUtil.GetAoERangeFromMousePosition (mousePosition, abilityComponent.CurrentAbility);
-            var curFrameCenter = aoeRange.Find (data => data.shadow.distance == 0).tile;
+            var curFrameCenter = aoeRange.Find (data => data.Shadow.Distance == 0).Tile;
             if (curFrameCenter == AoECenter) return;
             else {
                 CleanIndicator ();
                 aoeRange.ForEach (data => {
-                    if (data.shadow.distance == 0) AoECenter = data.tile;
-                    indicatorList.Add (data.tile);
+                    if (data.Shadow.Distance == 0) AoECenter = data.Tile;
+                    indicatorList.Add (data.Tile);
                 });
             }
         } else {

@@ -17,7 +17,7 @@ public class GoblinArcherBrain : Brain {
 
         var tilesOnBoard = RangeUtil.SurveyBoard (owner.Position, owner.Board);
         var targetData = FindTarget (tilesOnBoard, player);
-        var tilesFromPlayerPerspective = RangeUtil.SurveyBoard (targetData.tile.Position, owner.Board);
+        var tilesFromPlayerPerspective = RangeUtil.SurveyBoard (targetData.Tile.Position, owner.Board);
         // 1: if too close, move away from player
 
         if (WeAreTooClose (tilesOnBoard, targetData)) return Move (tilesOnBoard, targetData, tilesFromPlayerPerspective, true);
@@ -33,7 +33,7 @@ public class GoblinArcherBrain : Brain {
     }
 
     private bool ThereAreNoObstacles (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
-        return owner.Board.Pathfinding.GetUnobstructedDistance (owner.Board.TileAt (owner.Position), targetData.tile) == targetData.shadow.distance;
+        return owner.Board.Pathfinding.GetUnobstructedDistance (owner.Board.TileAt (owner.Position), targetData.Tile) == targetData.Shadow.Distance;
     }
 
     private PlanOfAction Attack (List<PathfindingData> tilesOnBoard, PathfindingData targetData, List<PathfindingData> tilesFromPlayerPerspective) {
@@ -43,7 +43,7 @@ public class GoblinArcherBrain : Brain {
         var tilesInRange = abilityComponent.GetTilesInRange ();
 
         for (int i = 0; i < tilesInRange.Count; i++) {
-            if (tilesInRange[i].tile == targetData.tile) {
+            if (tilesInRange[i].Tile == targetData.Tile) {
                 return new PlanOfAction (attackAbility, tilesInRange[i], Targets.Enemy, tilesInRange);
             }
         }
@@ -52,7 +52,7 @@ public class GoblinArcherBrain : Brain {
     }
 
     private bool WeOccupyTheSameAxis (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
-        return owner.Position.x == targetData.tile.Position.x || owner.Position.y == targetData.tile.Position.y;
+        return owner.Position.x == targetData.Tile.Position.x || owner.Position.y == targetData.Tile.Position.y;
     }
 
     private void SetLowestAbilityCost () {
@@ -70,8 +70,8 @@ public class GoblinArcherBrain : Brain {
         // Find all tiles a certain distance from the player
         // cannot use Linq or it would lose the linkedlist of prev tile
         var orderedPossibilities = moveAway ?
-            tilesFromPlayerPerspective.OrderBy (data => data.shadow.distance).ToList () :
-            tilesFromPlayerPerspective.OrderByDescending (data => data.shadow.distance).ToList ();
+            tilesFromPlayerPerspective.OrderBy (data => data.Shadow.Distance).ToList () :
+            tilesFromPlayerPerspective.OrderByDescending (data => data.Shadow.Distance).ToList ();
 
         // find the first available move target
         PathfindingData moveTarget = FindFirstAvailable (tilesInRange, targetData, orderedPossibilities, checkSameAxis);
@@ -87,9 +87,9 @@ public class GoblinArcherBrain : Brain {
     private PathfindingData FindFirstAvailable (List<PathfindingData> tilesInRange,
         PathfindingData targetData, List<PathfindingData> ordered, bool checkSameAxis = false) {
         PathfindingData moveTarget = null;
-        var prioritized = ordered.FindAll (data => data.tile.Position.x == targetData.tile.Position.x || data.tile.Position.y == targetData.tile.Position.y);
-        if (checkSameAxis) moveTarget = CheckXYAxis (tilesInRange, moveTarget, prioritized, targetData.tile);
-        if (moveTarget == null) { moveTarget = CheckRestOfPool (tilesInRange, ordered, moveTarget, targetData.tile); }
+        var prioritized = ordered.FindAll (data => data.Tile.Position.x == targetData.Tile.Position.x || data.Tile.Position.y == targetData.Tile.Position.y);
+        if (checkSameAxis) moveTarget = CheckXYAxis (tilesInRange, moveTarget, prioritized, targetData.Tile);
+        if (moveTarget == null) { moveTarget = CheckRestOfPool (tilesInRange, ordered, moveTarget, targetData.Tile); }
 
         return moveTarget;
     }
@@ -97,7 +97,7 @@ public class GoblinArcherBrain : Brain {
     private PathfindingData CheckRestOfPool (List<PathfindingData> tilesInRange, List<PathfindingData> ordered, PathfindingData moveTarget, Tile playerTile) {
         foreach (var item in ordered) {
             for (int i = 0; i < tilesInRange.Count; i++) {
-                if (tilesInRange[i].tile == item.tile && item.shadow.distance >= minDistance) {
+                if (tilesInRange[i].Tile == item.Tile && item.Shadow.Distance >= minDistance) {
                     moveTarget = tilesInRange[i];
                     break;
                 }
@@ -110,8 +110,8 @@ public class GoblinArcherBrain : Brain {
     private PathfindingData CheckXYAxis (List<PathfindingData> tilesInRange, PathfindingData moveTarget, List<PathfindingData> prioritized, Tile playerTile) {
         foreach (var item in prioritized) {
             for (int i = 0; i < tilesInRange.Count; i++) {
-                if (tilesInRange[i].tile == item.tile && item.shadow.distance >= minDistance) {
-                    if (owner.Board.Pathfinding.GetUnobstructedDistance (playerTile, item.tile) == item.shadow.distance) {
+                if (tilesInRange[i].Tile == item.Tile && item.Shadow.Distance >= minDistance) {
+                    if (owner.Board.Pathfinding.GetUnobstructedDistance (playerTile, item.Tile) == item.Shadow.Distance) {
                         moveTarget = tilesInRange[i];
                         break;
                     }
@@ -123,7 +123,7 @@ public class GoblinArcherBrain : Brain {
     }
 
     bool WeAreTooClose (List<PathfindingData> tilesOnBoard, PathfindingData targetData) {
-        return targetData.shadow.distance < minDistance;
+        return targetData.Shadow.Distance < minDistance;
     }
 
     bool ShouldWait (Unit player) {
@@ -138,7 +138,7 @@ public class GoblinArcherBrain : Brain {
     PathfindingData FindTarget (List<PathfindingData> tilesOnBoard, Unit player) {
         var targetTile = board.TileAt (player.Position);
         foreach (var item in tilesOnBoard) {
-            if (item.tile == targetTile) {
+            if (item.Tile == targetTile) {
                 return item;
             }
         }

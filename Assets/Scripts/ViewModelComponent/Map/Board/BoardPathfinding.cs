@@ -12,24 +12,23 @@ public class BoardPathfinding : MonoBehaviour {
     // general pathfinding used by abilities and player.  lightweight, simple
     public List<PathfindingData> Search (Tile start, Func<ShadowTile, Tile, bool> addTile) {
         List<ShadowTile> shadows = new List<ShadowTile> ();
-        var startShadow = new ShadowTile (int.MaxValue, start.Position, null, start);
+        var startShadow = new ShadowTile (0, start.Position, null, start);
         shadows.Add (startShadow);
 
         Queue<ShadowTile> checkNext = new Queue<ShadowTile> ();
         Queue<ShadowTile> checkNow = new Queue<ShadowTile> ();
-        shadows[0].distance = 0;
 
         checkNow.Enqueue (shadows[0]);
         while (checkNow.Count > 0) {
             ShadowTile currentShadow = checkNow.Dequeue ();
             for (int i = 0; i < 4; ++i) {
-                Tile nextTile = GetTile (currentShadow.position + board.Dirs[i]);
+                Tile nextTile = GetTile (currentShadow.Position + board.Dirs[i]);
                 if (nextTile == null) {
                     continue;
                 }
-                ShadowTile oldShadow = shadows.Find (shadow => shadow.tile == nextTile);
+                ShadowTile oldShadow = shadows.Find (shadow => shadow.Tile == nextTile);
                 if (oldShadow != null) {
-                    if (oldShadow.distance <= currentShadow.distance + 1) {
+                    if (oldShadow.Distance <= currentShadow.Distance + 1) {
                         continue;
                     }
                     continue;
@@ -37,7 +36,7 @@ public class BoardPathfinding : MonoBehaviour {
 
                 // use strategy pattern to define unique filtering logic for each request
                 if (addTile (currentShadow, nextTile)) {
-                    var checkedShadow = new ShadowTile (currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);
+                    var checkedShadow = new ShadowTile (currentShadow.Distance + 1, nextTile.Position, currentShadow, nextTile);
                     checkNext.Enqueue (checkedShadow);
                     shadows.Add (checkedShadow);
                 }
@@ -52,7 +51,7 @@ public class BoardPathfinding : MonoBehaviour {
 
         // use a pool of pathfinding data
         shadows.ForEach (shadow => {
-            retValue.Add (new PathfindingData (shadow.tile, shadow));
+            retValue.Add (new PathfindingData (shadow.Tile, shadow));
         });
 
         return retValue;

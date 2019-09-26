@@ -4,17 +4,22 @@ using UnityEngine;
 public class Tile : MonoBehaviour {
     public Point Position { get; protected set; }
     public Board Board { get; protected set; }
-    public Unit OccupiedBy;
-    public bool isWalkable;
-    [SerializeField] public TileTypes TypeReference;
-    private Renderer myRend;
-    public Vector3 center { get { return new Vector3 (Position.x, Position.y, -2); } }
+    public Unit OccupiedBy { get; protected set; }
+
+    public bool isWalkable { get; protected set; }
+
+    [SerializeField] public TileTypes TypeReference { get; protected set; }
+    public Vector3 Center { get { return new Vector3 (Position.x, Position.y, -2); } }
 
     public virtual void Initialize (Board board, Point pos, TileTypes r) {
         Position = pos;
         Board = board;
         TypeReference = r;
-        myRend = this.GetComponent<Renderer> ();
+        if (TypeReference != TileTypes.WALL) {
+            isWalkable = true;
+        } else {
+            isWalkable = false;
+        }
     }
 
     public virtual void SetOccupied (Unit occupier) {
@@ -22,10 +27,6 @@ public class Tile : MonoBehaviour {
     }
     public void SetUnoccupied () {
         OccupiedBy = null;
-    }
-
-    protected virtual void OnOccupied (Unit occupier) {
-
     }
 
     public bool IsOccupied () {

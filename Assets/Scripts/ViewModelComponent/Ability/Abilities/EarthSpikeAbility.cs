@@ -7,12 +7,12 @@ public class EarthSpikeAbility : AttackAbility {
         var ownerPos = Owner.Position;
         var from = board.TileAt (ownerPos);
 
-        Point targetDir = new Point ((Mathf.Clamp (Target.tile.Position.x -
-            ownerPos.x, -1, 1)), (Mathf.Clamp (Target.tile.Position.y -
+        Point targetDir = new Point ((Mathf.Clamp (Target.Tile.Position.x -
+            ownerPos.x, -1, 1)), (Mathf.Clamp (Target.Tile.Position.y -
             ownerPos.y, -1, 1)));
 
         if (Owner.dir != targetDir.ToDirection ()) {
-            var toTurn = from.GetDirection (Target.tile);
+            var toTurn = from.GetDirection (Target.Tile);
             Owner.AbilityComponent.TurnUnit (toTurn);
         }
 
@@ -23,11 +23,11 @@ public class EarthSpikeAbility : AttackAbility {
         if (Owner == null) return;
 
         var instance = Instantiate (Resources.Load<GameObject> ("Prefabs/Projectile"),
-            new Vector3 (Target.tile.Position.x,
-                Target.tile.Position.y, Layers.Foreground),
+            new Vector3 (Target.Tile.Position.x,
+                Target.Tile.Position.y, Layers.Foreground),
             Quaternion.identity);
 
-        instance.AddComponent<DestinationComponent> ().Initialize (Target.tile.Position, OnAbilityConnected);
+        instance.AddComponent<DestinationComponent> ().Initialize (Target.Tile.Position, OnAbilityConnected);
 
         AudioComponent.PlaySound (Sounds.BOMB_LAUNCHED);
 

@@ -6,12 +6,12 @@ public class ShootAbility : AttackAbility {
         var ownerPos = Owner.Position;
         var from = board.TileAt (ownerPos);
 
-        Point targetDir = new Point ((Mathf.Clamp (Target.tile.Position.x -
-            ownerPos.x, -1, 1)), (Mathf.Clamp (Target.tile.Position.y -
+        Point targetDir = new Point ((Mathf.Clamp (Target.Tile.Position.x -
+            ownerPos.x, -1, 1)), (Mathf.Clamp (Target.Tile.Position.y -
             ownerPos.y, -1, 1)));
 
         if (Owner.dir != targetDir.ToDirection ()) {
-            var toTurn = from.GetDirection (Target.tile);
+            var toTurn = from.GetDirection (Target.Tile);
             Owner.AbilityComponent.TurnUnit (toTurn);
         }
 

@@ -16,6 +16,6 @@ public class SelfAndConstantRange : RangeComponent {
     }
 
     bool ExpandSearch (ShadowTile from, Tile to) {
-        return (from.distance + 1) <= range && to.isWalkable;
+        return (from.Distance + 1) <= range && to.isWalkable;
     }
 }
