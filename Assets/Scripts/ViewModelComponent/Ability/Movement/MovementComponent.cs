@@ -21,7 +21,7 @@ public abstract class MovementComponent : MonoBehaviour {
         TransformLocalEulerTweener t =
             (TransformLocalEulerTweener) transform
             .RotateToLocal (
-                dir.ToEuler (), 0.25f, EasingEquations.EaseInOutQuad
+                dir.ToEuler (), 0.05f, EasingEquations.EaseInOutQuad
             );
 
         // When rotating between North and West, we must make an exception so it looks like the unit

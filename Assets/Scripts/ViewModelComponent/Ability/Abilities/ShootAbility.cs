@@ -22,18 +22,21 @@ public class ShootAbility : AttackAbility {
 
         instance.AddComponent<ProjectileComponent> ().Initialize (targetDir, OnAbilityConnected);
 
+        AudioComponent.PlaySound (Sounds.SHOOT);
+
         OnFinished (EnergyCost);
     }
 
     public override void OnAbilityConnected (GameObject targetedUnit) {
         try {
             var unit = targetedUnit.GetComponent<Unit> ();
-            unit.HealthComponent.AdjustHealth (-Damage);
-            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (unit.Position.x, unit.Position.y, Layers.Foreground), Quaternion.identity);
-            Destroy (vfx, 0.2f);
+            if (unit) unit.HealthComponent.AdjustHealth (-Damage);
         } catch (System.Exception) {
             Debug.Log (string.Format ("unable to get unit script from gameobject"));
         }
+        var projectilePos = targetedUnit.transform.position.ToPoint ();
+        var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (projectilePos.x, projectilePos.y, Layers.Foreground), Quaternion.identity);
+        Destroy (vfx, 0.2f);
     }
 
     public override void Assign (AbilityData data, Unit owner) {

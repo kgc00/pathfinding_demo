@@ -25,7 +25,7 @@ public class World : MonoBehaviour, IEventHandler {
         Initialize ();
     }
 
-    ~World () {
+    void OnDestroy () {
         Unit.onUnitDeath -= RemoveUnitFromAreaInstance;
     }
 
@@ -33,7 +33,7 @@ public class World : MonoBehaviour, IEventHandler {
         GameObject instance = new GameObject ("Area: " + curLoc.ToString ());
         Area area = instance.AddComponent<Area> ();
         eventManager.UpdateArea (area);
-        area.Initialize (transitionTo);
+        area.Initialize (transitionTo, curLoc);
         curArea = instance;
     }
 
@@ -75,14 +75,12 @@ public class World : MonoBehaviour, IEventHandler {
         eventManager.HandleUpdate ();
     }
 
-    // refactor into a handler component
+    // refactor into a handler component?
     public void HandleIncomingEvent (InfoEventArgs curEvent) {
         switch (curEvent.type.eventType) {
             case EventTypes.TransitionEvent:
-                if (curArea.GetComponent<Area> ().State is ActiveState) {
-                    TransitionEventArgs transitionEvent = (TransitionEventArgs) curEvent;
-                    TransitionToNewArea (curLoc + transitionEvent.transitionDirection);
-                }
+                TransitionEventArgs transitionEvent = (TransitionEventArgs) curEvent;
+                TransitionToNewArea (curLoc + transitionEvent.transitionDirection);
                 break;
             case EventTypes.PlayerLoaded:
                 if (!worldSaveComponent.HasLoaded) {
@@ -91,21 +89,34 @@ public class World : MonoBehaviour, IEventHandler {
                 }
                 break;
             case EventTypes.AreaCleared:
-                progressionComponent.AreaCleared ();
+                progressionComponent.AreaCleared (curArea.GetComponent<Area> ());
+                curEvent.e.Invoke ();
+                break;
+            case EventTypes.PlayerDied:
+                TransitionToNewArea (new Point (0, 0), true);
+                curEvent.e.Invoke ();
+                break;
+            case EventTypes.GameCleared:
+                RangeUtil.ClearComponent ();
+                curEvent.e.Invoke ();
+                Destroy (gameObject);
                 break;
             default:
                 break;
         }
     }
 
-    private void TransitionToNewArea (Point newLoc) {
+    private void TransitionToNewArea (Point newLoc, bool placeUnitInCenter = false) {
         if (curArea)
             Destroy (curArea);
 
         if (world[newLoc].areaStateData.currentInstance == null)
             world[newLoc].areaStateData.currentInstance = worldSaveComponent.createLevelInstance (world[newLoc].areaStateData.initialLevel);
 
-        areaStateHandler.SetEnterDirection (out world[newLoc].areaStateData.from, curLoc, newLoc);
+        if (placeUnitInCenter) world[newLoc].areaStateData.from = Directions.None;
+        else {
+            areaStateHandler.SetEnterDirection (out world[newLoc].areaStateData.from, curLoc, newLoc);
+        }
         curLoc = newLoc;
         LoadCurrentArea (world[newLoc].areaStateData);
     }

@@ -10,7 +10,7 @@ public class OccupationState {
     }
 
     public virtual void Enter () {
-        if (isLevelEditor)
+        if (isLevelEditor || Occupier.OccupationException)
             return;
 
         occupiedTile = Board.TileAt (Occupier.Position);
@@ -35,10 +35,8 @@ public class OccupationState {
         // if for some reason we are leaving an occupied tile,
         // make sure to set the occupied reference to the correct unit
         Unit u = Board.UnitAt (occupiedTile.Position);
-        if (u)
-            occupiedTile.SetOccupied (u);
-        else
-            occupiedTile.SetUnoccupied ();
+        if (u) occupiedTile.SetOccupied (u);
+        else occupiedTile.SetUnoccupied ();
 
         //update the occupied tile var
         occupiedTile = newTile;

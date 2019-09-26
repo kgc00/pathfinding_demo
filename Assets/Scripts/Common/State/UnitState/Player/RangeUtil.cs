@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RangeUtil : MonoBehaviour {
-    private static Board board;
     private static Dictionary<RangeComponentType, RangeComponent> rangeComponents;
     internal static List<PathfindingData> GetAoERangeFromMousePosition (Point mousePosition, Ability currentAbility) {
         return rangeComponents[currentAbility.AoERangeComponentType]
@@ -19,15 +18,40 @@ public class RangeUtil : MonoBehaviour {
             .GetTilesInRange ();
     }
 
-    internal void Initialize (Board _board) {
-        board = _board;
+    internal void Initialize (Board board) {
+        Debug.Log (string.Format ("initialized"));
+        if (rangeComponents != null) UpdateBoard (board);
+        else CreateRangeComponents (board);
+    }
+
+    public static void ClearComponent () {
+        rangeComponents.Clear ();
+        rangeComponents = null;
+    }
+    private static void CreateRangeComponents (Board board) {
+        var wrapperName = "Range Components";
+        var wrapper = GameObject.Find (wrapperName) ? GameObject.Find (wrapperName) :
+            new GameObject (wrapperName);
+
+        var constantWrapper = new GameObject ("Constant Range Component");
+        constantWrapper.transform.SetParent (wrapper.transform);
+
+        var linearWrapper = new GameObject ("Constant Range Component");
+        linearWrapper.transform.SetParent (wrapper.transform);
+
         rangeComponents = new Dictionary<RangeComponentType, RangeComponent> () {
             {
-            RangeComponentType.CONSTANT, new ConstantRange (new GameObject ("Constant Range Component"), board, null)
+            RangeComponentType.CONSTANT, new ConstantRange (constantWrapper, board, null)
             }, {
             RangeComponentType.LINE,
-            new LinearRange (new GameObject ("Linear Range Component"), board, null)
+            new LinearRange (linearWrapper, board, null)
             }
         };
+    }
+
+    void UpdateBoard (Board board) {
+        foreach (var comp in rangeComponents) {
+            comp.Value.SetBoard (board);
+        }
     }
 }

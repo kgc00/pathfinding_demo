@@ -1,18 +1,20 @@
-using System;
+using System.Linq;
 using UnityEngine;
 
 public class Area : MonoBehaviour, IEventHandler {
     public Board Board { get; private set; }
     private AreaState state;
     public AreaState State { get => state; }
+    public Point Location { get; private set; }
 
-    [SerializeField] public AreaStateData areaData;
-    public void Initialize (AreaStateData ad) {
-        areaData = ad;
+    [SerializeField] public AreaStateData AreaData;
+    public void Initialize (AreaStateData ad, Point location) {
+        AreaData = ad;
+        Location = location;
         GameObject boardGO = new GameObject ("Board");
         boardGO.transform.parent = transform;
         Board = boardGO.AddComponent<Board> ();
-        Board.Initialize (areaData.currentInstance, this);
+        Board.Initialize (AreaData.currentInstance, this);
         state = new SetupState (this);
         this.state.Enter ();
     }
@@ -37,5 +39,23 @@ public class Area : MonoBehaviour, IEventHandler {
             default:
                 break;
         }
+    }
+
+    public void UpdateBossDoor () {
+        var tileData = Board.Tiles.FirstOrDefault (tile => tile.Value.TypeReference == TileTypes.BOSS_ENTRANCE);
+
+        if (tileData.Value == null) return;
+
+        var bossDoor = (BossRoomEntrance) tileData.Value;
+
+        bossDoor.SetLockedStatus (
+            WorldProgressionComponent.CheckDoorUnlockRequirements (
+                bossDoor, this
+            )
+        );
+    }
+
+    public void OnDestroy () {
+        this.state.HandleTransition ();
     }
 }

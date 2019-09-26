@@ -15,10 +15,10 @@ MonoBehaviour:
   EquippedAbilities:
   - {fileID: 11400000, guid: 63a545da9d9d82d478353f2bbdd44bd6, type: 2}
   - {fileID: 11400000, guid: 5c7d9e833e83c8242b9ed66185607ce7, type: 2}
-  CurrentHP: 3
-  MaxHP: 3
-  CurrentEnergy: 0
-  MaxEnergy: 10
-  EnergyRegenRate: 0.01
-  UnitType: 2
+  CurrentHP: 5
+  MaxHP: 5
+  CurrentEnergy: 6
+  MaxEnergy: 6
+  EnergyRegenRate: 1
+  UnitType: 4
   MovementType: 0

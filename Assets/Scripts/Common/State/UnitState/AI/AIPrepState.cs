@@ -16,7 +16,7 @@ public class AIPrepState : UnitState {
         var plan = controller.Brain.Think ();
         if (plan == null) return null;
 
-        BoardVisuals.AddIndicator (Owner, new List<Tile> { plan.targetLocation.tile });
+        BoardVisuals.AddIndicator (Owner, plan.affectedTiles.ConvertAll (data => data.tile));
 
         if (!abilityComponent.CurrentAbility) return null;
         HighlightTiles (plan.tilesInRange);

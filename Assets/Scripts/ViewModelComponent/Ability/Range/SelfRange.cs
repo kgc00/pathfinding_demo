@@ -4,7 +4,7 @@ public class SelfRange : RangeComponent {
     public SelfRange (GameObject owner, Board board, Ability ability) : base (owner, board, ability) { }
 
     public override List<PathfindingData> GetTilesInRange () {
-        var retValue = pathfinding.Search (board.TileAt (owner.transform.position.ToPoint ()), ExpandSearch);
+        var retValue = pathfinding.Search (board.TileAt (Owner.transform.position.ToPoint ()), ExpandSearch);
         Filter (retValue);
         return retValue;
     }

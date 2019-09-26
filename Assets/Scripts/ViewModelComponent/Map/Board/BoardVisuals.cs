@@ -40,12 +40,20 @@ public class BoardVisuals : MonoBehaviour {
             return;
 
         indicatorRendererByUnit[unit].ForEach (rend => {
+            // not an entrance
+            if (!rend.GetComponent<Entrance> ()) {
+                rend.material.color = Color.white;
+                return;
+            }
+
             // resets entrance color to normal
-            if (rend.GetComponent<Entrance> ())
+            if (rend.GetComponent<Entrance> ().isEnabled) {
                 // should refactor to some const/variable... 
                 rend.material.color = new Color (0.04748131f, 0.9150943f, 0.8268626f);
-            else
-                rend.material.color = Color.white;
+            } else {
+                // should refactor to some const/variable... 
+                rend.material.color = new Color (0.2969028f, 0.4528302f, 0.437308f);
+            }
         });
         indicatorRendererByUnit[unit].Clear ();
     }
@@ -59,10 +67,10 @@ public class BoardVisuals : MonoBehaviour {
         var query = tiles.Where (tile => tile.TypeReference == TileTypes.DIRT);
         foreach (var tile in query) {
             Renderer rend = tile.GetComponent<Renderer> ();
-            if (unit is Monster && rend.material.color != Color.green) {
+            if (unit is Monster && rend.material.color != Color.cyan) {
                 rend.material.color = Color.red;
             } else if (unit is Hero && rend.material.color != Color.blue) {
-                rend.material.color = Color.green;
+                rend.material.color = Color.cyan;
             }
             temp.Add (rend);
         }
@@ -98,6 +106,9 @@ public class BoardVisuals : MonoBehaviour {
 
     private static void RenderIndicatorHighlights () {
         foreach (KeyValuePair<Unit, List<Renderer>> pair in indicatorRendererByUnit) {
+            // if a unit dies with highlights up
+            if (pair.Key == null) continue;
+
             if (pair.Key is Monster) {
                 pair.Value.ForEach (rend =>
                     rend.material.color = Color.yellow);
@@ -109,14 +120,17 @@ public class BoardVisuals : MonoBehaviour {
     }
 
     private static void RenderRangeHighlights () {
-        // keep all tiles associated with user's unit(s) green
+        // keep all tiles associated with user's unit(s) blue
         foreach (KeyValuePair<Unit, List<Renderer>> pair in highlightedTilesByUnit) {
+            // if a unit dies with highlights up
+            if (pair.Key == null) continue;
+
             if (pair.Key is Monster) {
                 pair.Value.ForEach (rend =>
                     rend.material.color = Color.red);
             } else {
                 pair.Value.ForEach (rend =>
-                    rend.material.color = Color.green);
+                    rend.material.color = Color.cyan);
             }
         }
     }

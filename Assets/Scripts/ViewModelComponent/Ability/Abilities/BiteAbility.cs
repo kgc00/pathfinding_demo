@@ -1,15 +1,32 @@
+using System.Collections;
 using UnityEngine;
-
 public class BiteAbility : AttackAbility {
     public override void Activate () {
+
+        StartCoroutine (countdown (1f, () => FinishExecution ()));
+
+    }
+    private IEnumerator countdown (float timeToWait, System.Action onComplete) {
+        while (timeToWait > 0) {
+            timeToWait -= Time.deltaTime;
+            yield return null;
+        }
+        onComplete ();
+    }
+    private void FinishExecution () {
+        if (Owner == null) return;
+
         var targetUnit = Target.tile.OccupiedBy;
         var from = Owner.Board.TileAt (Owner.Position);
 
-        if (targetUnit != null)
-            OnAbilityConnected (targetUnit.gameObject);
-
         var toTurn = from.GetDirection (Target.tile);
         Owner.AbilityComponent.TurnUnit (toTurn);
+
+        if (targetUnit != null) OnAbilityConnected (targetUnit.gameObject);
+
+        var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (Target.tile.Position.x, Target.tile.Position.y, Layers.Foreground), Quaternion.identity);
+        AudioComponent.PlaySound (Sounds.BITE);
+        Destroy (vfx, 0.2f);
 
         OnFinished (EnergyCost);
     }
@@ -18,8 +35,6 @@ public class BiteAbility : AttackAbility {
         try {
             var unit = targetedUnit.GetComponent<Unit> ();
             unit.HealthComponent.AdjustHealth (-Damage);
-            var vfx = Instantiate (Resources.Load<GameObject> ("Prefabs/Player Impact Visual"), new Vector3 (unit.Position.x, unit.Position.y, Layers.Foreground), Quaternion.identity);
-            Destroy (vfx, 0.2f);
         } catch (System.Exception) {
             Debug.Log (string.Format ("unable to get unit script from gameobject"));
         }

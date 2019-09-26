@@ -22,11 +22,18 @@ public class EnergyComponent : MonoBehaviour {
         var newTotal = data.CurrentEnergy + amount;
         var prevAmount = data.CurrentEnergy;
 
-        if (newTotal > data.MaxEnergy) return false;
+        if (newTotal < 0) return false;
         data.CurrentEnergy = Mathf.Clamp (newTotal, 0, data.MaxEnergy);
 
         if (owner is Hero) onEnergyChanged (owner, prevAmount);
 
         return true;
+    }
+
+    internal void Refill () {
+        var prevAmount = data.CurrentEnergy;
+        data.CurrentEnergy = data.MaxEnergy;
+
+        if (owner is Hero) onEnergyChanged (owner, prevAmount);
     }
 }

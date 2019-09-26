@@ -284,7 +284,7 @@ PrefabInstance:
         type: 3}
       propertyPath: levelData
       value: 
-      objectReference: {fileID: 11400000, guid: 2c0ad079c33feba4b9e6487860bc444c,
+      objectReference: {fileID: 11400000, guid: 3c1f7ca3589038c4ca8e2bcfe72588fe,
         type: 2}
     - target: {fileID: 3593236074385590029, guid: 6a5f6162a99f32143a03001908900d82,
         type: 3}
@@ -339,6 +339,12 @@ PrefabInstance:
       propertyPath: tilePrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 8686014421294541010, guid: 3efec3e56160ebe4399d05bc3073dc03,
+        type: 3}
+    - target: {fileID: 3593236074385590029, guid: 6a5f6162a99f32143a03001908900d82,
+        type: 3}
+      propertyPath: tileSelectionIndicatorPrefab
+      value: 
+      objectReference: {fileID: 137804177371799968, guid: eb7b1df601c8f8447b837535d25d4638,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a5f6162a99f32143a03001908900d82, type: 3}

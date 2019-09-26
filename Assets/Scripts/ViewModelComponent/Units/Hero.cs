@@ -19,4 +19,12 @@ public class Hero : Unit {
         UnitState = new PlayerIdleState (this);
         UnitState.Enter ();
     }
+    public override void UnitDeath () {
+        base.UnitDeath ();
+        EventQueue.AddEvent (new PlayerDiedEventArgs (this, () => {
+            HealthComponent.Refill ();
+            EnergyComponent.Refill ();
+            AudioComponent.PlaySound (Sounds.PLAYER_DEATH);
+        }));
+    }
 }

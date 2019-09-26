@@ -3,5 +3,7 @@ public enum Abilities {
     BITE_ABILITY,
     SHOOT_ABILITY,
     BOMB_ABILITY,
-    NONE
+    NONE,
+    SHOCKWAVE,
+    EARTH_SPIKE
 }

@@ -3,5 +3,7 @@ public enum EventTypes {
     BaseEvent,
     StateChangeEvent,
     PlayerLoaded,
-    AreaCleared
+    AreaCleared,
+    PlayerDied,
+    GameCleared
 }

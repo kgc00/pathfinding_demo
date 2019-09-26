@@ -2,7 +2,15 @@ using System.Linq;
 
 public class ActiveState : AreaState {
     private Area area;
-    public ActiveState (Area area) { this.area = area; }
+    private UnitTrackerComponent tracker;
+    public ActiveState (Area area, UnitTrackerComponent tracker) {
+        this.area = area;
+        this.tracker = tracker;
+    }
+
+    public override void HandleTransition () {
+        if (tracker != null) tracker.StopTrackingMonstersLeft ();
+    }
 
     public override void Enter () {
         // hero is initialized on the setup state, we initialize every other type here
@@ -11,9 +19,8 @@ public class ActiveState : AreaState {
         foreach (var unit in enemies) {
             area.Board.UnitFactory.ActivateEnemyAt (unit.Key);
         }
-
-        new UnitTrackerComponent ().StartTrackingMonstersLeft (area.Board);
     }
+
     public override AreaState HandleUpdate () {
         return null;
     }

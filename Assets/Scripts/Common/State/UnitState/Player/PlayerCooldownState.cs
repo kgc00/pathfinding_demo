@@ -23,10 +23,6 @@ public class PlayerCooldownState : UnitState {
         // should probably only fire when area is in setupstate
         if (!Owner) return;
 
-        if (Owner is Hero) {
-            EventQueue.AddEvent (new AreaStateChangeEventArgs (Owner, null, AreaStateTypes.Active));
-        }
-
         state = new PlayerIdleState (Owner);
     }
 

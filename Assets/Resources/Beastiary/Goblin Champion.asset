@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Goblin Champion
   m_EditorClassIdentifier: 
   EquippedAbilities:
-  - {fileID: 11400000, guid: 63a545da9d9d82d478353f2bbdd44bd6, type: 2}
+  - {fileID: 11400000, guid: 773f9606eca78ed4ebc95bf96cd20fc0, type: 2}
+  - {fileID: 11400000, guid: 6df3d1064d766614298d70e665b69afa, type: 2}
   - {fileID: 11400000, guid: 5c7d9e833e83c8242b9ed66185607ce7, type: 2}
-  CurrentHP: 3
-  MaxHP: 3
+  CurrentHP: 10
+  MaxHP: 10
   CurrentEnergy: 0
   MaxEnergy: 10
-  EnergyRegenRate: 0.01
+  EnergyRegenRate: 0.05
   UnitType: 5
   MovementType: 0
