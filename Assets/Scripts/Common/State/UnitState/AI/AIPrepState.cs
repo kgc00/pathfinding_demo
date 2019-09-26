@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 public class AIPrepState : UnitState {
     AbilityComponent abilityComponent;
@@ -14,20 +11,21 @@ public class AIPrepState : UnitState {
 
     public override UnitState HandleInput (Controller controller) {
         var plan = controller.Brain.Think ();
-        if (plan == null) return null;
 
-        BoardVisuals.AddIndicator (Owner, plan.affectedTiles.ConvertAll (data => data.tile));
+        if (NoValidActionsAreAvailable (plan)) return null;
 
-        if (!abilityComponent.CurrentAbility) return null;
-        HighlightTiles (plan.tilesInRange);
-
-        if (!Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost)) {
-            return null;
+        if (abilityComponent.CurrentAbility is AttackAbility) {
+            BoardVisuals.AddIndicator (Owner, plan.affectedTiles.ConvertAll (data => data.tile));
         }
 
-        if (!abilityComponent.PrepAbility (plan.tilesInRange, plan.targetLocation)) return null;
-
         return new AIActingState (Owner, plan.tilesInRange, plan.targetLocation);
+    }
+
+    private bool NoValidActionsAreAvailable (PlanOfAction plan) {
+        return plan == null ||
+            !abilityComponent.CurrentAbility ||
+            !Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost) ||
+            !abilityComponent.PrepAbility (plan.tilesInRange, plan.targetLocation);
     }
 
     private void HighlightTiles (List<PathfindingData> tilesInRange) {

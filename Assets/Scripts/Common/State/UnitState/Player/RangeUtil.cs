@@ -19,7 +19,6 @@ public class RangeUtil : MonoBehaviour {
     }
 
     internal void Initialize (Board board) {
-        Debug.Log (string.Format ("initialized"));
         if (rangeComponents != null) UpdateBoard (board);
         else CreateRangeComponents (board);
     }
