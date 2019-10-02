@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -101,75 +102,41 @@ class AbilityPanel : MonoBehaviour {
         panelItem.transform.localScale = new Vector3 (1, 1, 1);
         var tooltipTrigger = panelItem.AddComponent<AbilityTooltip> ();
         tooltipTrigger.Initialize (tooltip, ability);
-        // var rect = panelItem.AddComponent<RectTransform> ();
-        // rect.pivot = new Vector2 (0, 0);
-        // rect.sizeDelta = new Vector2 (180, 75);
-        // var layoutGroup = panelItem.AddComponent<HorizontalLayoutGroup> ();
-        // layoutGroup.childAlignment = TextAnchor.MiddleCenter;
-        // layoutGroup.childForceExpandHeight = true;
-        // layoutGroup.childForceExpandWidth = true;
-        // layoutGroup.childControlHeight = false;
-        // layoutGroup.childControlWidth = false;
 
         SetChildImage (panelItem, ability, index);
         SetChildText (panelItem, ability, index);
     }
 
     private void SetChildImage (GameObject panelItem, Ability ability, int index) {
+        AssignImageRefs (panelItem, index);
+        LoadIcon (ability, index);
+    }
+
+    private void AssignImageRefs (GameObject panelItem, int index) {
         images[index] = panelItem.transform
             .Find ("Wrapper/Image Wrapper/Ability Image")
             .GetComponent<Image> ();
         wrappers[index] = panelItem.transform.Find ("Wrapper").GetComponent<Animation> ();
     }
 
+    ///<summary>
+    /// Loads Icon from resources.
+    /// <para>
+    /// All icons must be 64x64 or they will not fit properly
+    /// </para>
+    ///</summary>
+    private void LoadIcon (Ability ability, int index) {
+        var resourcesPath = "Art/Abilities/" + ability.DisplayName;
+        var fullApplicationPath = Application.dataPath + "/Resources/" + resourcesPath + ".png";
+
+        if (File.Exists (fullApplicationPath)) images[index].sprite = Resources.Load<Sprite> (resourcesPath);
+        else Debug.Log (string.Format ("could not find icon for: {0}", ability.DisplayName));
+    }
+
     private void SetChildText (GameObject panelItem, Ability ability, int index) {
         var textChild = panelItem.transform.Find ("Wrapper/Text Wrapper/Key Text");
         textChild.GetComponent<TextMeshProUGUI> ().SetText ((index + 1).ToString ());
     }
-
-    // private void SetChildText (GameObject panelItem, Ability ability, int index) {
-    //     var textParent = new GameObject (string.Format ("Text Holder"));
-    //     textParent.transform.SetParent (panelItem.transform);
-    //     textParent.transform.localScale = new Vector3 (1, 1, 1);
-
-    //     var layoutGroup = textParent.AddComponent<VerticalLayoutGroup> ();
-    //     layoutGroup.childAlignment = TextAnchor.MiddleCenter;
-    //     layoutGroup.padding = new RectOffset (0, 0, 15, 15);
-    //     layoutGroup.childForceExpandHeight = true;
-    //     layoutGroup.childForceExpandWidth = true;
-    //     layoutGroup.childControlHeight = false;
-    //     layoutGroup.childControlWidth = false;
-
-    //     var textChild1 = new GameObject (string.Format ("Button Text"));
-    //     textChild1.transform.SetParent (textParent.transform);
-    //     textChild1.transform.localScale = new Vector3 (1, 1, 1);
-
-    //     var rect1 = textChild1.AddComponent<RectTransform> ();
-    //     rect1.pivot = new Vector2 (0.5f, 0.5f);
-    //     rect1.sizeDelta = new Vector2 (80, 30);
-
-    //     var textComponent1 = textChild1.AddComponent<Text> ();
-    //     textComponent1.alignment = TextAnchor.MiddleCenter;
-    //     textComponent1.text = "Press: " + (index + 1).ToString ();
-    //     textComponent1.fontSize = 26;
-    //     textComponent1.font = Resources.GetBuiltinResource (typeof (Font), "Arial.ttf") as Font;
-    //     textComponent1.resizeTextForBestFit = true;
-
-    //     var textChild2 = new GameObject (string.Format ("Ability Text"));
-    //     textChild2.transform.SetParent (textParent.transform);
-    //     textChild2.transform.localScale = new Vector3 (1, 1, 1);
-
-    //     var rect2 = textChild2.AddComponent<RectTransform> ();
-    //     rect2.pivot = new Vector2 (0.5f, 0.5f);
-    //     rect2.sizeDelta = new Vector2 (80, 30);
-
-    //     var textComponent2 = textChild2.AddComponent<Text> ();
-    //     textComponent2.alignment = TextAnchor.MiddleCenter;
-    //     textComponent2.text = ability.DisplayName;
-    //     textComponent2.fontSize = 18;
-    //     textComponent2.resizeTextForBestFit = true;
-    //     textComponent2.font = Resources.GetBuiltinResource (typeof (Font), "Arial.ttf") as Font;
-    // }
 
     void AnimateAbilityPrepped (Unit unit, int slot) {
         StopAnimations ();
