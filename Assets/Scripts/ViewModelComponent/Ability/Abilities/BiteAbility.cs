@@ -3,7 +3,7 @@ using UnityEngine;
 public class BiteAbility : AttackAbility {
     public override void Activate () {
 
-        StartCoroutine (countdown (1f, () => FinishExecution ()));
+        StartCoroutine (countdown (1.15f, () => FinishExecution ()));
 
     }
     private IEnumerator countdown (float timeToWait, System.Action onComplete) {

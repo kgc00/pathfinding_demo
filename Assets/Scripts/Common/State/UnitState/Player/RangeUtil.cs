@@ -12,10 +12,12 @@ public class RangeUtil : MonoBehaviour {
     }
 
     public static List<PathfindingData> SurveyBoard (Point startPosition, Board board) {
-        return rangeComponents[RangeComponentType.CONSTANT]
-            .SetRange (99)
-            .SetOwnerPos (startPosition)
-            .GetTilesInRange ();
+        if (board != null) {
+            return rangeComponents[RangeComponentType.CONSTANT]
+                .SetRange (99)
+                .SetOwnerPos (startPosition)
+                .GetTilesInRange ();
+        } else { return new List<PathfindingData> (); }
     }
 
     internal void Initialize (Board board) {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bomb
   m_EditorClassIdentifier: 
   DisplayName: Bomb
-  Range: 4
+  Range: 5
   EnergyCost: 3
   Damage: 1
   AreaOfEffect: 2
