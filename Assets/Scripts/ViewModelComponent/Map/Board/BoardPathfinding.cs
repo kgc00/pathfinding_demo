@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,33 +8,37 @@ public class BoardPathfinding : MonoBehaviour {
         this.board = board;
     }
 
-    // general pathfinding used by abilities and player.  lightweight, simple
+    /// <summary> 
+    /// General pathfinding algorithm used by all abilities.
+    /// <param name="start">Tile we calculate from</param>
+    /// <param name="addTile">Function used to determine whether a new tile should be considered a valid option.</param>
+    /// </summary> 
+
     public List<PathfindingData> Search (Tile start, Func<ShadowTile, Tile, bool> addTile) {
         List<ShadowTile> shadows = new List<ShadowTile> ();
-        var startShadow = new ShadowTile (int.MaxValue, start.Position, null, start);
+        var startShadow = new ShadowTile (0, start.Position, null, start);
         shadows.Add (startShadow);
 
         Queue<ShadowTile> checkNext = new Queue<ShadowTile> ();
         Queue<ShadowTile> checkNow = new Queue<ShadowTile> ();
-        shadows[0].distance = 0;
 
         checkNow.Enqueue (shadows[0]);
         while (checkNow.Count > 0) {
             ShadowTile currentShadow = checkNow.Dequeue ();
+
+            // add the next 'ring' of tiles to search, expanding out from
+            // whatever tile we are currently checking
             for (int i = 0; i < 4; ++i) {
                 Tile nextTile = GetTile (currentShadow.position + board.Dirs[i]);
                 if (nextTile == null) {
                     continue;
                 }
-                ShadowTile oldShadow = shadows.Find (shadow => shadow.tile == nextTile);
-                if (oldShadow != null) {
-                    if (oldShadow.distance <= currentShadow.distance + 1) {
-                        continue;
-                    }
-                    continue;
-                }
 
-                // use strategy pattern to define unique filtering logic for each request
+                // skip the addTile logic if this tile has been checked already
+                ShadowTile oldShadow = shadows.Find (shadow => shadow.tile == nextTile);
+                if (oldShadow != null) continue;
+
+                // use strategy pattern to define which adjacent tiles are valid targets
                 if (addTile (currentShadow, nextTile)) {
                     var checkedShadow = new ShadowTile (currentShadow.distance + 1, nextTile.Position, currentShadow, nextTile);
                     checkNext.Enqueue (checkedShadow);
@@ -44,13 +47,12 @@ public class BoardPathfinding : MonoBehaviour {
             }
 
             // swap the ref between empty and full queue's to avoid re-allocating
-            if (checkNow.Count == 0)
-                SwapReference (ref checkNow, ref checkNext);
+            if (checkNow.Count == 0) SwapReference (ref checkNow, ref checkNext);
         }
 
+        // convert our algorithm's results to a pathfindingdata structure so
+        // it's usable outside this algorithm
         List<PathfindingData> retValue = new List<PathfindingData> ();
-
-        // use a pool of pathfinding data
         shadows.ForEach (shadow => {
             retValue.Add (new PathfindingData (shadow.tile, shadow));
         });
@@ -58,18 +60,16 @@ public class BoardPathfinding : MonoBehaviour {
         return retValue;
     }
 
-    // This helper function returns an approximation of the distance to use for pathfinding heuristics
-    public int GetUnobstructedDistance (Tile TileA, Tile TileB) {
-        int distanceX = Mathf.Abs (TileA.Position.x - TileB.Position.x);
-        int distanceY = Mathf.Abs (TileA.Position.y - TileB.Position.y);
+    /// <summary>
+    /// Returns the unobstroctued distance between two tiles.
+    /// <param name="from">Tile we calculate from</param>
+    /// <param name="to">Tile we calculate to</param>
+    /// </summary>
+    public int GetUnobstructedDistance (Tile from, Tile to) {
+        int distanceX = Mathf.Abs (from.Position.x - to.Position.x);
+        int distanceY = Mathf.Abs (from.Position.y - to.Position.y);
 
-        // Each tile away is a distance of one, if the tile is diagonal, we return a 
-        // distance of 2 to simulate square grid movement.
-        if (distanceX > distanceY) {
-            return (2 * distanceY) + (distanceX - distanceY);
-        } else {
-            return (2 * distanceX) + (distanceY - distanceX);
-        }
+        return distanceX + distanceY;
     }
 
     public Tile GetTile (Point p) {

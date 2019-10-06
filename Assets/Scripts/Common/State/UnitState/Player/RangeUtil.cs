@@ -43,7 +43,7 @@ public class RangeUtil : MonoBehaviour {
             RangeComponentType.CONSTANT, new ConstantRange (constantWrapper, board, null)
             }, {
             RangeComponentType.LINE,
-            new LinearRange (linearWrapper, board, null)
+            new LinearObstructableRange (linearWrapper, board, null)
             }
         };
     }

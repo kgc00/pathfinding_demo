@@ -6,7 +6,7 @@ public class RangeComponentFactory {
                 component = new ConstantRange (null, null, null);
                 break;
             case RangeComponentType.LINE:
-                component = new LinearRange (null, null, null);
+                component = new LinearObstructableRange (null, null, null);
                 break;
             case RangeComponentType.SELF:
                 component = new SelfRange (null, null, null);

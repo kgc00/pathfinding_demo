@@ -56,7 +56,6 @@ public class AbilityComponent : MonoBehaviour {
         }
 
         if (toEquip.EnergyCost > owner.EnergyComponent.CurrentEnergy) {
-            // Debug.Log (string.Format ("not enough energy"));
             return false;
         }
 
@@ -73,7 +72,7 @@ public class AbilityComponent : MonoBehaviour {
                 rangeComponent = new ConstantRange (owner.gameObject, owner.Board, ability);
                 break;
             case RangeComponentType.LINE:
-                rangeComponent = new LinearRange (owner.gameObject, owner.Board, ability);
+                rangeComponent = new LinearObstructableRange (owner.gameObject, owner.Board, ability);
                 break;
             case RangeComponentType.SELF:
                 rangeComponent = new SelfRange (owner.gameObject, owner.Board, ability);

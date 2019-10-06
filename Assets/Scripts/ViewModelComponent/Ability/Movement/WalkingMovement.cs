@@ -14,7 +14,7 @@ public class WalkingMovement : MovementComponent {
 
         foreach (var data in tilesInRange) {
             if (data.shadow.distance == 1) {
-                data.shadow.previous = startdata.shadow;
+                data.shadow.AssignPrevious (startdata.shadow);
             }
         }
 

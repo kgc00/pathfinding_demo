@@ -7,14 +7,12 @@ public class Tile : MonoBehaviour {
     public Unit OccupiedBy;
     public bool isWalkable;
     [SerializeField] public TileTypes TypeReference;
-    private Renderer myRend;
     public Vector3 center { get { return new Vector3 (Position.x, Position.y, -2); } }
 
     public virtual void Initialize (Board board, Point pos, TileTypes r) {
         Position = pos;
         Board = board;
         TypeReference = r;
-        myRend = this.GetComponent<Renderer> ();
     }
 
     public virtual void SetOccupied (Unit occupier) {
