@@ -23,7 +23,7 @@ public class WorldSaveComponent : MonoBehaviour {
 
     internal void InitializePlayerStats () {
         UnitData instance = ScriptableObject.CreateInstance<UnitData> ();
-        UnitData refData = Resources.Load<UnitData> (string.Format ("Beastiary/HeroStats"));
+        UnitData refData = Resources.Load<UnitData> (string.Format ("Beastiary/{0}_Stats", UnitsClearedManager.currentUnit));
         instance.Assign (refData);
         playerData = instance;
     }

@@ -15,7 +15,7 @@ public class AbilityComponent : MonoBehaviour {
         this.owner = owner;
 
         // call into a util to dynamically generate the kind of component we should be using
-        this.movement = UnitUtility.AddMovementComponentFromType (data.MovementType, owner.gameObject);
+        this.movement = UnitFactory.AddMovementComponentFromType (data.MovementType, owner.gameObject);
         this.movement.Initialize (owner.Board, owner);
 
         // we load our units from unitdata/abilitydata and convert that into

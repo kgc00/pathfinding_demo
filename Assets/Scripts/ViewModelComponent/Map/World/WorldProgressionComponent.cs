@@ -22,8 +22,16 @@ public class WorldProgressionComponent {
         area.UpdateBossDoor ();
         SetupMobRoom.EnableEntrances (area.Board);
         if (area.AreaData.areaType == AreaTypes.BOSS_ROOM) {
-            EventQueue.AddEvent (new GameClearedEvent (this, () => SceneUtility.LoadScene ("Win Screen")));
+            EventQueue.AddEvent (new GameClearedEvent (this, () => ClearedBossRoom ()));
         }
+    }
+
+    private static void ClearedBossRoom () {
+        UnitsClearedManager.AddUnitCleared ();
+        if (UnitsClearedManager.hasCompletionStatus) {
+            UnitsClearedManager.ResetClearedUnits ();
+            SceneUtility.LoadScene ("Win Screen");
+        } else SceneUtility.LoadScene ("Character Select");
     }
 
     public static bool CheckDoorUnlockRequirements (BossRoomEntrance door, Area area) {

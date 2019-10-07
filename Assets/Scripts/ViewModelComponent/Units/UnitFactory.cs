@@ -12,8 +12,7 @@ public class UnitFactory : MonoBehaviour {
         Unit unit;
         switch (type) {
             case UnitTypes.HERO:
-                unit = Instantiate (Resources.Load ("Prefabs/Hero", typeof (Hero)),
-                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
+                unit = CreatePlayerCharacter (p);
                 break;
             case UnitTypes.SLIME:
                 unit = Instantiate (Resources.Load ("Prefabs/Slime", typeof (Monster)),
@@ -44,6 +43,21 @@ public class UnitFactory : MonoBehaviour {
         unit.name = unit.TypeReference.ToString ();
         unit.transform.SetParent (unitWrapper);
         return unit;
+    }
+
+    private static Unit CreatePlayerCharacter (Point p) {
+        switch (UnitsClearedManager.currentUnit) {
+            case PlayableUnits.SHARPSHOOTER:
+                return Instantiate (Resources.Load ("Prefabs/Sharpshooter", typeof (Hero)),
+                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
+            case PlayableUnits.BRAWLER:
+                return Instantiate (Resources.Load ("Prefabs/Brawler", typeof (Hero)),
+                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
+            default:
+                return Instantiate (Resources.Load ("Prefabs/Sharpshooter", typeof (Hero)),
+                    new Vector3 (p.x, p.y, Layers.Foreground), Quaternion.identity) as Unit;
+        }
+
     }
 
     public void ActivateEnemyAt (Point p) {
@@ -91,5 +105,14 @@ public class UnitFactory : MonoBehaviour {
 
         unit.transform.SetParent (board.transform.Find ("Units").transform);
         unit.LoadUnitState (WorldSaveComponent.GetPlayerStats ());
+    }
+
+    public static MovementComponent AddMovementComponentFromType (MovementType type, GameObject owner) {
+        switch (type) {
+            case MovementType.WALKING:
+                return owner.AddComponent<WalkingMovement> ();
+            default:
+                return null;
+        }
     }
 }
