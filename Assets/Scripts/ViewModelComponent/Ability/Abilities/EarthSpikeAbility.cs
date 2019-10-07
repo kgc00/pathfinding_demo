@@ -16,7 +16,7 @@ public class EarthSpikeAbility : AttackAbility {
             Owner.AbilityComponent.TurnUnit (toTurn);
         }
 
-        var coroutine = StartCoroutine (countdown (1.5f, () => SpawnSpike ()));
+        CoroutineHelper.Instance.StartInterruptibleRoutine (Owner, 1.5f, () => SpawnSpike (), () => OnFinished (EnergyCost));
     }
 
     private void SpawnSpike () {
@@ -32,13 +32,6 @@ public class EarthSpikeAbility : AttackAbility {
         AudioComponent.PlaySound (Sounds.BOMB_LAUNCHED);
 
         OnFinished (EnergyCost);
-    }
-    private IEnumerator countdown (float timeToWait, System.Action onComplete) {
-        while (timeToWait > 0) {
-            timeToWait -= Time.deltaTime;
-            yield return null;
-        }
-        onComplete ();
     }
 
     public override void OnAbilityConnected (GameObject projectile) {

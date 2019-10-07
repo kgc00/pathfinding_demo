@@ -37,6 +37,16 @@ public class AbilityFactory : MonoBehaviour {
                     instance.Assign (ability, owner);
                     retVal.Add (instance);
                     break;
+                case Abilities.SLASH_ABILITY:
+                    instance = owner.gameObject.AddComponent<SlashAbility> ();
+                    instance.Assign (ability, owner);
+                    retVal.Add (instance);
+                    break;
+                case Abilities.KNOCKOUT_ABILITY:
+                    instance = owner.gameObject.AddComponent<KnockoutAbility> ();
+                    instance.Assign (ability, owner);
+                    retVal.Add (instance);
+                    break;
                 default:
                     break;
             }

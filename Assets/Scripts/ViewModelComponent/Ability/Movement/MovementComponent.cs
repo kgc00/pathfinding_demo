@@ -5,11 +5,13 @@ using UnityEngine;
 public abstract class MovementComponent : MonoBehaviour {
     protected Board board;
     protected Unit owner;
+    protected UnitData data;
 
     public abstract IEnumerator Traverse (List<PathfindingData> path, PathfindingData target, System.Action onComplete);
-    public virtual void Initialize (Board board, Unit owner) {
+    public virtual void Initialize (Board board, Unit owner, UnitData data) {
         this.board = board;
         this.owner = owner;
+        this.data = data;
     }
 
     protected virtual void Filter (List<PathfindingData> tiles) {

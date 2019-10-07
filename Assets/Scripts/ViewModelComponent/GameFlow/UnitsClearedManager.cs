@@ -15,7 +15,8 @@ public class UnitsClearedManager {
     }
 
     public static void AddUnitCleared () {
-        if (currentUnit != PlayableUnits.NONE) ClearCurrentUnit ();
+        if (unitsCleared.ContainsKey (currentUnit)) ClearCurrentUnit ();
+        else throw new Exception ("Key does not exist bro, geez");
     }
 
     private static void ClearCurrentUnit () {

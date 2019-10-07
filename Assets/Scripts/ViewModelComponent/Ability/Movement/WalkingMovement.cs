@@ -4,8 +4,8 @@ using System.Linq;
 using UnityEngine;
 
 public class WalkingMovement : MovementComponent {
-    public override void Initialize (Board board, Unit owner) {
-        base.Initialize (board, owner);
+    public override void Initialize (Board board, Unit owner, UnitData data) {
+        base.Initialize (board, owner, data);
     }
 
     public override IEnumerator Traverse (List<PathfindingData> tilesInRange, PathfindingData target, System.Action onComplete) {
@@ -62,7 +62,7 @@ public class WalkingMovement : MovementComponent {
     IEnumerator Walk (Tile from, Tile target, System.Action onInterrupted) {
         float journeyLength = Vector3.Distance (owner.transform.position, target.center);
         float startTime = Time.time;
-        float speed = 1;
+        float speed = 1 * data.MovementSpeed;
         while (owner.transform.position != target.center) {
             bool targetOccupied = target.IsOccupied () && !target.IsOccupiedBy (owner);
             if (targetOccupied) {

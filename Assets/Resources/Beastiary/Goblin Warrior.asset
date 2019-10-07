@@ -19,6 +19,7 @@ MonoBehaviour:
   MaxHP: 5
   CurrentEnergy: 6
   MaxEnergy: 6
+  MovementSpeed: 1.25
   EnergyRegenRate: 1
   UnitType: 4
   MovementType: 0

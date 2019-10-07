@@ -1,18 +1,13 @@
 using System.Collections;
 using UnityEngine;
-public class BiteAbility : AttackAbility {
+public class KnockoutAbility : AttackAbility {
     public override void Activate () {
-        CoroutineHelper.Instance.StartInterruptibleRoutine (Owner, 1.15f, () => FinishExecution (), () => OnFinished (EnergyCost));
-    }
-    private IEnumerator countdown (float timeToWait, System.Action onComplete) {
-        while (timeToWait > 0) {
-            timeToWait -= Time.deltaTime;
-            yield return null;
-        }
-        onComplete ();
-    }
-    private void FinishExecution () {
         if (Owner == null) return;
+
+        if (Target == null) {
+            Debug.Log (string.Format ("No Target"));
+            return;
+        }
 
         var targetUnit = Target.tile.OccupiedBy;
         var from = Owner.Board.TileAt (Owner.Position);
@@ -33,6 +28,7 @@ public class BiteAbility : AttackAbility {
         try {
             var unit = targetedUnit.GetComponent<Unit> ();
             unit.HealthComponent.AdjustHealth (-Damage);
+            CoroutineHelper.Instance.SafelyInterruptCoroutine (unit);
         } catch (System.Exception) {
             Debug.Log (string.Format ("unable to get unit script from gameobject"));
         }
@@ -47,5 +43,6 @@ public class BiteAbility : AttackAbility {
         this.Description = data.Description;
         this.Owner = owner;
         this.TargetType = data.TargetType;
+        this.AutoTargets = data.AutoTargets;
     }
 }

@@ -13,4 +13,5 @@ public class AbilityData : ScriptableObject {
     public RangeComponentType AoERangeComponentType;
     public Abilities AbilityType;
     public Targets TargetType;
+    public bool AutoTargets;
 }

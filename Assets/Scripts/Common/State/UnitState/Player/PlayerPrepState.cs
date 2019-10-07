@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerPrepState : UnitState {
     public static Action<Unit, int> onAbilitySet = delegate { };
@@ -39,14 +40,34 @@ public class PlayerPrepState : UnitState {
     }
 
     public override UnitState HandleInput (Controller controller) {
-        var didSwap = SwapActiveAbility (controller);
-        if (didSwap != null) {
+        var swappedAbility = SwapActiveAbility (controller);
+        if (swappedAbility != null) {
             BoardVisuals.RemoveTilesFromHighlightsByUnit (Owner);
             CleanIndicator ();
-            return didSwap;
+            return swappedAbility;
         }
 
         List<PathfindingData> tilesInRange = GetTilesInRange ();
+
+        // handling a special case where the targetting is programmatic.
+        // will ecentually need to accomodate for this in a more robust way using OOP
+        if (abilityComponent.CurrentAbility.AutoTargets) {
+            PathfindingData autoTarget = tilesInRange.FirstOrDefault (
+                element => element.tile.IsOccupied () && element.tile.OccupiedBy.GetComponent<Monster> ()
+            );
+
+            if (autoTarget == null) {
+                onAbilityCanceled ();
+                return new PlayerIdleState (Owner);
+            }
+
+            if (Owner.EnergyComponent.AdjustEnergy (-abilityComponent.CurrentAbility.EnergyCost) &&
+                abilityComponent.PrepAbility (tilesInRange, autoTarget)) {
+                onAbilityCommited (Owner, abilityComponent.IndexOfCurrentAbility ());
+                return new PlayerActingState (Owner, tilesInRange, autoTarget);
+            }
+        }
+
         Point mousePosition = BoardUtility.mousePosFromScreenPoint ();
         HighlightTiles (tilesInRange, mousePosition);
 
@@ -65,6 +86,7 @@ public class PlayerPrepState : UnitState {
                 return new PlayerActingState (Owner, tilesInRange, selectedTarget);
             }
         }
+
         return null;
     }
 

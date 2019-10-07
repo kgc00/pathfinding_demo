@@ -16,15 +16,15 @@ class CharacterSelector : MonoBehaviour {
     }
 
     void MoveCursorLeft () {
-        var newVal = mod_floor (characterSelectUI.ActiveItemIndex - 1, characterSelectUI.PanelItems.Count);
+        var newVal = ModuloAndFloor (characterSelectUI.ActiveItemIndex - 1, characterSelectUI.PanelItems.Count);
         characterSelectUI.UpdateActiveItem (newVal);
     }
     void MoveCursorRight () {
-        var newVal = mod_floor (characterSelectUI.ActiveItemIndex + 1, characterSelectUI.PanelItems.Count);
+        var newVal = ModuloAndFloor (characterSelectUI.ActiveItemIndex + 1, characterSelectUI.PanelItems.Count);
         characterSelectUI.UpdateActiveItem (newVal);
     }
 
-    private int mod_floor (int difference, int size) {
+    private int ModuloAndFloor (int difference, int size) {
         return ((difference % size) + size) % size;
     }
 

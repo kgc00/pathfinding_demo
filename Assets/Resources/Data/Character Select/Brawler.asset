@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Brawler
   m_EditorClassIdentifier: 
   Name: Brawler
-  IconName: Sword-Wound
+  IconName: Slash
   UnitType: 1

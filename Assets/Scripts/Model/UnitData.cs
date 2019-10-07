@@ -8,20 +8,11 @@ public class UnitData : ScriptableObject {
     public int MaxHP;
     public float CurrentEnergy;
     public float MaxEnergy;
+    public float MovementSpeed;
     public float EnergyRegenRate;
     public UnitTypes UnitType;
     public MovementType MovementType;
 
-    public UnitData Assign (List<AbilityData> a, int chp, int mhp, float err, float me, float ce, UnitTypes t) {
-        this.EquippedAbilities = a;
-        this.CurrentHP = chp;
-        this.MaxHP = mhp;
-        this.EnergyRegenRate = err;
-        this.CurrentEnergy = ce;
-        this.MaxEnergy = me;
-        this.UnitType = t;
-        return this;
-    }
     public UnitData Assign (UnitData data) {
         this.EquippedAbilities = data.EquippedAbilities;
         this.CurrentHP = data.CurrentHP;
@@ -30,6 +21,7 @@ public class UnitData : ScriptableObject {
         this.CurrentEnergy = data.CurrentEnergy;
         this.MaxEnergy = data.MaxEnergy;
         this.UnitType = data.UnitType;
+        this.MovementSpeed = data.MovementSpeed;
         return this;
     }
 }

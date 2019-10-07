@@ -12,6 +12,7 @@ public abstract class Ability : MonoBehaviour {
     public string DisplayName;
     public string Description;
     public Targets TargetType;
+    public bool AutoTargets;
 
     // fields populated at runtime
     [HideInInspector] public List<PathfindingData> TilesInRange;

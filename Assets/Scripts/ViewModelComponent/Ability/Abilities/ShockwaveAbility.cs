@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShockwaveAbility : AttackAbility {
     public override void Activate () {
-        StartCoroutine (countdown (1.15f, () => SpawnShockwave ()));
+        CoroutineHelper.Instance.StartInterruptibleRoutine (Owner, 1.15f, () => SpawnShockwave (), () => OnFinished (EnergyCost));
     }
 
     private void SpawnShockwave () {
@@ -15,13 +15,6 @@ public class ShockwaveAbility : AttackAbility {
         OnFinished (EnergyCost);
     }
 
-    private IEnumerator countdown (float timeToWait, System.Action onComplete) {
-        while (timeToWait > 0) {
-            timeToWait -= Time.deltaTime;
-            yield return null;
-        }
-        onComplete ();
-    }
     public override void OnAbilityConnected (GameObject targetedTile) {
         try {
             var unit = targetedTile.GetComponent<Tile> ().OccupiedBy;

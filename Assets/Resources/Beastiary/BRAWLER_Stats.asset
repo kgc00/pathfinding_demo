@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EquippedAbilities:
   - {fileID: 11400000, guid: 5c7d9e833e83c8242b9ed66185607ce7, type: 2}
-  - {fileID: 11400000, guid: 83a6ffc9713f94f40a6ab10c3f71b4a1, type: 2}
-  - {fileID: 11400000, guid: b76e1d31a85da1b408d166cb621d1013, type: 2}
+  - {fileID: 11400000, guid: 2973c955485327b4ca7f63f015ae0124, type: 2}
+  - {fileID: 11400000, guid: cc24b38830f2ccd4880809d0b3896795, type: 2}
   CurrentHP: 3
   MaxHP: 3
   CurrentEnergy: 10
   MaxEnergy: 10
+  MovementSpeed: 1.5
   EnergyRegenRate: 0.05
   UnitType: 0
   MovementType: 0
