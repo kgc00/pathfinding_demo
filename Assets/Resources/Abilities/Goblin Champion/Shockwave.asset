@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Shockwave
   Range: 4
-  EnergyCost: 2
+  EnergyCost: 4
   Damage: 1
   AreaOfEffect: 0
   Description: Fires off a shockwave affecting all surrounding tiles.  Deals damage
@@ -23,3 +23,4 @@ MonoBehaviour:
   AoERangeComponentType: 0
   AbilityType: 5
   TargetType: 3
+  AutoTargets: 0

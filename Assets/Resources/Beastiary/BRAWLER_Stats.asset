@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BRAWLER_Stats
   m_EditorClassIdentifier: 
   EquippedAbilities:
-  - {fileID: 11400000, guid: 5c7d9e833e83c8242b9ed66185607ce7, type: 2}
+  - {fileID: 11400000, guid: 1c8de4962a441594c801068ef62b4e57, type: 2}
   - {fileID: 11400000, guid: 2973c955485327b4ca7f63f015ae0124, type: 2}
   - {fileID: 11400000, guid: cc24b38830f2ccd4880809d0b3896795, type: 2}
   CurrentHP: 5

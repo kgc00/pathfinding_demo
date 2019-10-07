@@ -9,17 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52ee82ecb19bfd14880ff3dd146055e3, type: 3}
-  m_Name: Slash
+  m_Script: {fileID: 11500000, guid: 907e4541233bc5a4b86ef00546f3378c, type: 3}
+  m_Name: Run_Brawler
   m_EditorClassIdentifier: 
-  DisplayName: Slash
-  Range: 1
-  EnergyCost: 3
-  Damage: 1
+  DisplayName: Run
+  Range: 4
+  EnergyCost: 2
+  Damage: 0
   AreaOfEffect: 0
-  Description: Slashes an adjacent target.
+  Description: Moves the owner towards the targeted location.  Can be interrupted
+    by units that cross paths.
   RangeComponentType: 0
   AoERangeComponentType: 0
-  AbilityType: 7
+  AbilityType: 0
   TargetType: 0
-  AutoTargets: 1
+  AutoTargets: 0

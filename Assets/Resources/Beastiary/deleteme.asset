@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de6197d029d15a1468c1d62cb1b541c0, type: 3}
-  m_Name: HeroStats
+  m_Name: deleteme
   m_EditorClassIdentifier: 
   EquippedAbilities:
   - {fileID: 11400000, guid: 5c7d9e833e83c8242b9ed66185607ce7, type: 2}
@@ -20,6 +20,7 @@ MonoBehaviour:
   MaxHP: 3
   CurrentEnergy: 10
   MaxEnergy: 10
+  MovementSpeed: 0
   EnergyRegenRate: 0.05
   UnitType: 0
   MovementType: 0
