@@ -44,6 +44,7 @@ public class World : MonoBehaviour, IEventHandler {
     }
 
     private void Update () {
+#if UNITY_EDITOR
         if (Input.GetKeyDown (KeyCode.A)) {
             Point p = new Point (curLoc.x - 1, curLoc.y);
             if (world.ContainsKey (p)) {
@@ -71,6 +72,7 @@ public class World : MonoBehaviour, IEventHandler {
                 curLoc,
                 a);
         }
+#endif
 
         eventManager.HandleUpdate ();
     }

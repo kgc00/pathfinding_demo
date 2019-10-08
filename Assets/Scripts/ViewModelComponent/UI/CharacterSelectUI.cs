@@ -43,11 +43,17 @@ class CharacterSelectUI : MonoBehaviour {
         var characterSelectData = Resources.LoadAll ("Data/Character Select", typeof (CharacterSelectData)).Cast<CharacterSelectData> ().ToList ();
         for (int i = 0; i < characterSelectData.Count; i++) {
             GameObject panelItem = InstantiateItem (characterSelectData[i]);
+            AddClickHandler (i, panelItem);
             SetChildImage (panelItem, characterSelectData[i]);
             SetChildText (panelItem, characterSelectData[i]);
             PanelItems.Add (panelItem);
             panelToTypeMap.Add (i, characterSelectData[i].UnitType);
         }
+    }
+
+    private void AddClickHandler (int i, GameObject panelItem) {
+        var clickHandler = panelItem.AddComponent<CharacterSelectPanel> ();
+        clickHandler.Initialize (i, this);
     }
 
     private GameObject InstantiateItem (CharacterSelectData ability) {
@@ -60,7 +66,7 @@ class CharacterSelectUI : MonoBehaviour {
 
     private void SetChildImage (GameObject panelItem, CharacterSelectData ability) {
         var image = panelItem.transform
-            .Find ("Image Wrapper/Image")
+            .Find ("Inner Wrapper/Image Wrapper/Image")
             .GetComponent<Image> ();
 
         var resourcesPath = "Art/Abilities/" + ability.IconName;
@@ -72,7 +78,7 @@ class CharacterSelectUI : MonoBehaviour {
 
     private void SetChildText (GameObject panelItem, CharacterSelectData ability) {
         panelItem.transform
-            .Find ("Label Wrapper/Character Name")
+            .Find ("Inner Wrapper/Label Wrapper/Character Name")
             .GetComponent<TextMeshProUGUI> ()
             .SetText (ability.Name);
     }

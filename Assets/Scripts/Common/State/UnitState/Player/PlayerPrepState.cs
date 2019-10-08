@@ -57,6 +57,7 @@ public class PlayerPrepState : UnitState {
             );
 
             if (autoTarget == null) {
+                AudioComponent.PlaySound (Sounds.ERROR);
                 onAbilityCanceled ();
                 return new PlayerIdleState (Owner);
             }

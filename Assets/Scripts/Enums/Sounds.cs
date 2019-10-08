@@ -9,5 +9,6 @@ public enum Sounds {
     ENTRANCE,
     AREA_CLEARED,
     RUNNING,
-    PLAYER_DEATH
+    PLAYER_DEATH,
+    ERROR
 }

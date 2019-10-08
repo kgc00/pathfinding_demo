@@ -22,6 +22,8 @@ public class AudioUtil : MonoBehaviour {
                 return GameObject.Find ("Running").GetComponent<AudioSource> ();
             case Sounds.PLAYER_DEATH:
                 return GameObject.Find ("Player Death").GetComponent<AudioSource> ();
+            case Sounds.ERROR:
+                return GameObject.Find ("Error").GetComponent<AudioSource> ();
             default:
                 return null;
         }
