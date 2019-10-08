@@ -129,8 +129,9 @@ class AbilityPanel : MonoBehaviour {
         var resourcesPath = "Art/Abilities/" + ability.DisplayName;
         var fullApplicationPath = Application.dataPath + "/Resources/" + resourcesPath + ".png";
 
-        if (File.Exists (fullApplicationPath)) images[index].sprite = Resources.Load<Sprite> (resourcesPath);
-        else Debug.Log (string.Format ("could not find icon for: {0}", ability.DisplayName));
+        images[index].sprite = Resources.Load<Sprite> (resourcesPath);
+        // if (File.Exists (fullApplicationPath)) images[index].sprite = Resources.Load<Sprite> (resourcesPath);
+        // else Debug.Log (string.Format ("could not find icon for: {0}", ability.DisplayName));
     }
 
     private void SetChildText (GameObject panelItem, Ability ability, int index) {
