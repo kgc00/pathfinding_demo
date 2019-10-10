@@ -16,7 +16,7 @@ public class SetupMobRoom {
     }
 
     public static void EnableEntrances (Board board) {
-        var entrances = board.Tiles.Where (tile => tile.Value.TypeReference == TileTypes.ENTRANCE || tile.Value.TypeReference == TileTypes.BOSS_ENTRANCE).ToList ();
+        var entrances = board.Tiles.Where (tile => tile.Value.TypeReference == TileTypes.ENTRANCE).ToList ();
         entrances.ForEach (entrance => entrance.Value.GetComponent<Entrance> ().SetEnabled ());
     }
 }

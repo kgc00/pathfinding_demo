@@ -13,8 +13,10 @@ public class SetupState : AreaState {
     UnitTrackerComponent tracker;
     public override void Enter () {
         // filter our tiles down to entrances only
-        List<TileSpawnData> entrances = area.Board.levelData.tiles.Where (tiles => tiles.tileRef == TileTypes.ENTRANCE || tiles.tileRef == TileTypes.BOSS_ENTRANCE).ToList ();
-
+        List<TileSpawnData> entrances = area.Board.levelData.tiles.Where (tiles => tiles.tileRef == TileTypes.ENTRANCE).ToList ();
+        // UnityEngine.Debug.Log (string.Format ("length :{0}", entrances.Count));
+        // UnityEngine.Debug.Log (string.Format ("location :{0}", entrances[0].location));
+        // UnityEngine.Debug.Log (string.Format ("tile ref :{0}", entrances[0].tileRef));
         // find min and max values for this board
         Point min = BoardUtility.SetMinV2Int (area.Board.levelData);
         Point max = BoardUtility.SetMaxV2Int (area.Board.levelData);
@@ -66,7 +68,6 @@ public class SetupState : AreaState {
                 t.SetTransitionDirection (Directions.West);
             else if (t.Position.y == max.y)
                 t.SetTransitionDirection (Directions.North);
-
             t.SetEnabled ();
         });
         area.UpdateBossDoor ();

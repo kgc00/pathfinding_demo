@@ -17,6 +17,10 @@ public class WorldProgressionComponent {
         thresholds = new Dictionary<Point, int> () { { new Point (0, 1), staticSet } };
     }
 
+    static void ResetAreasCleared () {
+        AreasCleared = 0;
+    }
+
     public void AreaCleared (Area area) {
         AreasCleared++;
         area.UpdateBossDoor ();
@@ -28,6 +32,7 @@ public class WorldProgressionComponent {
 
     private static void ClearedBossRoom () {
         UnitsClearedManager.AddUnitCleared ();
+        ResetAreasCleared ();
         if (UnitsClearedManager.hasCompletionStatus) {
             UnitsClearedManager.ResetClearedUnits ();
             SceneUtility.LoadScene ("Win Screen");

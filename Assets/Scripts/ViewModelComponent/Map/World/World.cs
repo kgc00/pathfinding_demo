@@ -67,10 +67,7 @@ public class World : MonoBehaviour, IEventHandler {
             }
         } else if (Input.GetKeyDown (KeyCode.Space)) {
             var a = curArea.GetComponent<Area> ();
-            areaStateHandler.RemoveUnit (
-                a.Board.Units.First ().Value,
-                curLoc,
-                a);
+            areaStateHandler.KillEnemy (a);
         }
 #endif
 

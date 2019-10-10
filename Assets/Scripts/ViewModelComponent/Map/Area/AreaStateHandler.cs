@@ -26,6 +26,15 @@ public class AreaStateHandler : MonoBehaviour {
             area.Board.DeleteUnitAt (sd.location);
         }
     }
+
+    public void KillEnemy (Area area) {
+        var units = area.Board.Units.Where (entry => entry.Value.TypeReference != UnitTypes.HERO).ToList ();
+        if (units.Count > 0) {
+            if (!units[0].Value.HealthComponent) return;
+            units[0].Value.HealthComponent.AdjustHealth (-99);
+        }
+    }
+
     public void SetEnterDirection (out Directions from, Point curLoc, Point newLoc) {
         var t = newLoc - curLoc;
         switch (t.ToString ()) {
