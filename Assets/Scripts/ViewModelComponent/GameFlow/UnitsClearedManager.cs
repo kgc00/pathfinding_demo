@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 public class UnitsClearedManager {
-    public static Dictionary<PlayableUnits, bool> unitsCleared = new Dictionary<PlayableUnits, bool> { { PlayableUnits.SHARPSHOOTER, false }, { PlayableUnits.BRAWLER, false } };
+    public static Dictionary<PlayableUnits, bool> unitsCleared { get; private set; } = new Dictionary<PlayableUnits, bool> { { PlayableUnits.SHARPSHOOTER, false }, { PlayableUnits.BRAWLER, false } };
     public static PlayableUnits currentUnit { get; private set; } = PlayableUnits.NONE;
     public static bool hasCompletionStatus => unitsCleared.All (entry => entry.Value == true);
 

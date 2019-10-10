@@ -14,6 +14,7 @@ class CharacterSelectUI : MonoBehaviour {
     void Awake () {
         characterWrapper = Resources.Load<GameObject> ("Prefabs/UI/Character Wrapper");
         selector = gameObject.AddComponent<CharacterSelector> ().Initialize (this);
+        var unitsCleared = UnitsClearedManager.unitsCleared;
         PopulatePanel ();
         SetActiveItem ();
     }
@@ -46,8 +47,18 @@ class CharacterSelectUI : MonoBehaviour {
             AddClickHandler (i, panelItem);
             SetChildImage (panelItem, characterSelectData[i]);
             SetChildText (panelItem, characterSelectData[i]);
+            SetCheckVisibility (panelItem, characterSelectData[i]);
             PanelItems.Add (panelItem);
             panelToTypeMap.Add (i, characterSelectData[i].UnitType);
+        }
+    }
+
+    private static void SetCheckVisibility (GameObject panelItem, CharacterSelectData ability) {
+        if (UnitsClearedManager.unitsCleared[ability.UnitType]) {
+            panelItem.transform
+                .Find ("Inner Wrapper/Image Wrapper/Check Wrapper")
+                .gameObject
+                .SetActive (true);
         }
     }
 
