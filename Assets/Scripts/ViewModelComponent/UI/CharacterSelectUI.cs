@@ -83,8 +83,10 @@ class CharacterSelectUI : MonoBehaviour {
         var resourcesPath = "Art/Abilities/" + ability.IconName;
         var fullApplicationPath = Application.dataPath + "/Resources/" + resourcesPath + ".png";
 
-        if (File.Exists (fullApplicationPath)) image.sprite = Resources.Load<Sprite> (resourcesPath);
-        else Debug.Log (string.Format ("could not find icon for: {0}", ability.IconName));
+        // this check will always fail on webgl... probably due to application.datapath
+        // if (File.Exists (fullApplicationPath))
+        // else Debug.Log (string.Format ("could not find icon for: {0}", ability.IconName));
+        image.sprite = Resources.Load<Sprite> (resourcesPath);
     }
 
     private void SetChildText (GameObject panelItem, CharacterSelectData ability) {
