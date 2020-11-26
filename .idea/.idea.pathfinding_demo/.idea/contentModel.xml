@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\kirby\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\kirby\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_pathfinding_demo.-1999613567.00" t="ExcludeRecursive" />
+    <e p="C:\Users\kirby\Documents\Game Dev\Older\pathfinding_demo" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Editor" t="Include">
+          <e p="BoardCreatorInspector.cs" t="Include" />
+          <e p="TileInspector.cs" t="Include" />
+          <e p="UnitInspector.cs" t="Include" />
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="Common" t="Include">
+            <e p="Animation" t="Include">
+              <e p="EasingControl.cs" t="Include" />
+              <e p="EasingEquations.cs" t="Include" />
+              <e p="RectTransformAnchorPositionTweener.cs" t="Include" />
+              <e p="RectTransformAnimationExtensions.cs" t="Include" />
+              <e p="TransformAnimationExtensions.cs" t="Include" />
+              <e p="TransformLocalEulerTweener.cs" t="Include" />
+              <e p="TransformLocalPositionTweener.cs" t="Include" />
+              <e p="TransformPositionTweener.cs" t="Include" />
+              <e p="TransformScaleTweener.cs" t="Include" />
+              <e p="Tweener.cs" t="Include" />
+              <e p="Vector3Tweener.cs" t="Include" />
+            </e>
+            <e p="Controllers" t="Include">
+              <e p="AIController.cs" t="Include" />
+              <e p="Brains" t="Include">
+                <e p="Brain.cs" t="Include" />
+                <e p="BrainFactory.cs" t="Include" />
+                <e p="GoblinArcherBrain.cs" t="Include" />
+                <e p="GoblinChampionBrain.cs" t="Include" />
+                <e p="GoblinWarriorBrain.cs" t="Include" />
+                <e p="SlimeBrain.cs" t="Include" />
+              </e>
+              <e p="Controller.cs" t="Include" />
+              <e p="InputHandler.cs" t="Include" />
+            </e>
+            <e p="Drivers" t="Include">
+              <e p="AIDriver.cs" t="Include" />
+              <e p="Driver.cs" t="Include" />
+            </e>
+            <e p="State" t="Include">
+              <e p="AreaState" t="Include">
+                <e p="ActiveState.cs" t="Include" />
+                <e p="AreaState.cs" t="Include" />
+                <e p="SetupMobRoom.cs" t="Include" />
+                <e p="SetupState.cs" t="Include" />
+              </e>
+              <e p="TileState" t="Include">
+                <e p="NullOccupationState.cs" t="Include" />
+                <e p="OccupationState.cs" t="Include" />
+              </e>
+              <e p="UnitState" t="Include">
+                <e p="AI" t="Include">
+                  <e p="AIActingState.cs" t="Include" />
+                  <e p="AICooldownState.cs" t="Include" />
+                  <e p="AIIdleState.cs" t="Include" />
+                  <e p="AIPrepState.cs" t="Include" />
+                </e>
+                <e p="Player" t="Include">
+                  <e p="PlayerActingState.cs" t="Include" />
+                  <e p="PlayerCooldownState.cs" t="Include" />
+                  <e p="PlayerIdleState.cs" t="Include" />
+                  <e p="PlayerPrepState.cs" t="Include" />
+                  <e p="RangeUtil.cs" t="Include" />
+                </e>
+                <e p="UnitState.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Enums" t="Include">
+            <e p="Alliance.cs" t="Include" />
+            <e p="AreaStateTypes.cs" t="Include" />
+            <e p="ControlTypes.cs" t="Include" />
+            <e p="Directions.cs" t="Include" />
+            <e p="DirectionsExtensions.cs" t="Include" />
+            <e p="DriverTypes.cs" t="Include" />
+            <e p="EventTypes.cs" t="Include" />
+            <e p="HandlerType.cs" t="Include" />
+            <e p="MovementTypes.cs" t="Include" />
+            <e p="PlayableUnits.cs" t="Include" />
+            <e p="RangeComponentTypes.cs" t="Include" />
+            <e p="Sounds.cs" t="Include" />
+            <e p="Targets.cs" t="Include" />
+            <e p="TileTypes.cs" t="Include" />
+            <e p="UnitStates.cs" t="Include" />
+            <e p="UnitTypes.cs" t="Include" />
+          </e>
+          <e p="Legacy" t="Include">
+            <e p="SimpleController" t="Include">
+              <e p="SimpleAIDriver.cs" t="Include" />
+              <e p="SimpleDriver.cs" t="Include" />
+            </e>
+            <e p="SimpleMonster.cs" t="Include" />
+          </e>
+          <e p="Model" t="Include">
+            <e p="AI" t="Include">
+              <e p="PlanOfAction.cs" t="Include" />
+            </e>
+            <e p="AreaData.cs" t="Include" />
+            <e p="AreaStateData.cs" t="Include" />
+            <e p="AreaTypes.cs" t="Include" />
+            <e p="CharacterSelectData.cs" t="Include" />
+            <e p="event" t="Include">
+              <e p="AreaClearedEvent.cs" t="Include" />
+              <e p="AreaStateChangeEventArgs.cs" t="Include" />
+              <e p="GameClearedEvent.cs" t="Include" />
+              <e p="InfoEventArgs.cs" t="Include" />
+              <e p="InfoEventData.cs" t="Include" />
+              <e p="PlayerDiedEventArgs.cs" t="Include" />
+              <e p="PlayerLoadedEvenArgs.cs" t="Include" />
+              <e p="TransitionEventArgs.cs" t="Include" />
+            </e>
+            <e p="InterupptibleCoroutine.cs" t="Include" />
+            <e p="Layers.cs" t="Include" />
+            <e p="LevelData.cs" t="Include" />
+            <e p="PathfindingData.cs" t="Include" />
+            <e p="Point.cs" t="Include" />
+            <e p="PointExtensions.cs" t="Include" />
+            <e p="ShadowTiles.cs" t="Include" />
+            <e p="TileSpawnData.cs" t="Include" />
+            <e p="UnitData.cs" t="Include" />
+            <e p="UnitSpawnData.cs" t="Include" />
+            <e p="Vector3Extensions.cs" t="Include" />
+            <e p="WorldData.cs" t="Include" />
+          </e>
+          <e p="PreProduction" t="Include">
+            <e p="BoardCreator.cs" t="Include" />
+            <e p="EditorInputHandler.cs" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="Unlit Texture Colored.shader" t="Include" />
+          </e>
+          <e p="Utilities" t="Include">
+            <e p="CoroutineHelper.cs" t="Include" />
+            <e p="SceneUtility.cs" t="Include" />
+          </e>
+          <e p="ViewModelComponent" t="Include">
+            <e p="Ability" t="Include">
+              <e p="Abilities" t="Include">
+                <e p="BiteAbility.cs" t="Include" />
+                <e p="BombAbility.cs" t="Include" />
+                <e p="EarthSpikeAbility.cs" t="Include" />
+                <e p="KnockoutAbility.cs" t="Include" />
+                <e p="RunAbility.cs" t="Include" />
+                <e p="ShockwaveAbility.cs" t="Include" />
+                <e p="ShootAbility.cs" t="Include" />
+                <e p="SlashAbility.cs" t="Include" />
+              </e>
+              <e p="AbilityComponent.cs" t="Include" />
+              <e p="AbilityFactory.cs" t="Include" />
+              <e p="abstracts" t="Include">
+                <e p="Abilities.cs" t="Include" />
+                <e p="Ability.cs" t="Include" />
+                <e p="AbilityData.cs" t="Include" />
+                <e p="AttackAbility.cs" t="Include" />
+                <e p="AttackData.cs" t="Include" />
+                <e p="MovementAbility.cs" t="Include" />
+              </e>
+              <e p="Movement" t="Include">
+                <e p="MovementComponent.cs" t="Include" />
+                <e p="WalkingMovement.cs" t="Include" />
+              </e>
+              <e p="Range" t="Include">
+                <e p="ConstantRange.cs" t="Include" />
+                <e p="LinearObstructableRange.cs" t="Include" />
+                <e p="RangeComponent.cs" t="Include" />
+                <e p="RangeComponentFactory.cs" t="Include" />
+                <e p="SelfAndConstantRange.cs" t="Include" />
+                <e p="SelfRange.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Energy" t="Include">
+              <e p="EnergyComponent.cs" t="Include" />
+            </e>
+            <e p="GameFlow" t="Include">
+              <e p="CharacterSelector.cs" t="Include" />
+              <e p="UnitsClearedManager.cs" t="Include" />
+            </e>
+            <e p="Health" t="Include">
+              <e p="HealthComponent.cs" t="Include" />
+            </e>
+            <e p="Map" t="Include">
+              <e p="Area" t="Include">
+                <e p="Area.cs" t="Include" />
+                <e p="AreaStateHandler.cs" t="Include" />
+                <e p="UnitTrackerComponent.cs" t="Include" />
+              </e>
+              <e p="Board" t="Include">
+                <e p="Board.cs" t="Include" />
+                <e p="BoardPathfinding.cs" t="Include" />
+                <e p="BoardVisuals.cs" t="Include" />
+              </e>
+              <e p="IEventHandler.cs" t="Include" />
+              <e p="World" t="Include">
+                <e p="BoardUtility.cs" t="Include" />
+                <e p="EventManager.cs" t="Include" />
+                <e p="EventQueue.cs" t="Include" />
+                <e p="World.cs" t="Include" />
+                <e p="WorldEventHandler.cs" t="Include" />
+                <e p="WorldProgressionComponent.cs" t="Include" />
+                <e p="WorldSaveComponent.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Projectiles" t="Include">
+              <e p="DestinationComponent.cs" t="Include" />
+              <e p="ProjectileComponent.cs" t="Include" />
+            </e>
+            <e p="Sound" t="Include">
+              <e p="AudioComponent.cs" t="Include" />
+              <e p="AudioUtil.cs" t="Include" />
+            </e>
+            <e p="Tile" t="Include">
+              <e p="BossRoomEntrance.cs" t="Include" />
+              <e p="Entrance.cs" t="Include" />
+              <e p="Tile.cs" t="Include" />
+            </e>
+            <e p="UI" t="Include">
+              <e p="AbilityPanel.cs" t="Include" />
+              <e p="AbilityTooltip.cs" t="Include" />
+              <e p="CharacterSelectPanel.cs" t="Include" />
+              <e p="CharacterSelectUI.cs" t="Include" />
+              <e p="PlayerEnergyUI.cs" t="Include" />
+              <e p="PlayerHealthUI.cs" t="Include" />
+              <e p="TimerUI.cs" t="Include" />
+            </e>
+            <e p="Units" t="Include">
+              <e p="Hero.cs" t="Include" />
+              <e p="Monster.cs" t="Include" />
+              <e p="Unit.cs" t="Include" />
+              <e p="UnitFactory.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="TextMesh Pro" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="LiberationSans - OFL.txt" t="Include" />
+          </e>
+          <e p="Resources" t="Include">
+            <e p="LineBreaking Following Characters.txt" t="Include" />
+            <e p="LineBreaking Leading Characters.txt" t="Include" />
+            <e p="Shaders" t="Include">
+              <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+              <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+              <e p="TMP_Bitmap.shader" t="Include" />
+              <e p="TMP_SDF Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface.shader" t="Include" />
+              <e p="TMP_SDF.shader" t="Include" />
+              <e p="TMP_Sprite.shader" t="Include" />
+              <e p="TMPro.cginc" t="Include" />
+              <e p="TMPro_Properties.cginc" t="Include" />
+              <e p="TMPro_Surface.cginc" t="Include" />
+            </e>
+          </e>
+          <e p="Sprites" t="Include">
+            <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="pathfinding_demo.sln" t="IncludeFlat" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
