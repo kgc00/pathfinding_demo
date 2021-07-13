@@ -7,3 +7,4 @@ Features
 - a homebrew dependency injection system
 - modular component based implementation
 - custom pathfinding / ai implementation
+- level editor
