@@ -6,3 +6,4 @@ Features
 - multiple characters
 - a homebrew dependency injection system
 - modular component based implementation
+- custom pathfinding / ai implementation
